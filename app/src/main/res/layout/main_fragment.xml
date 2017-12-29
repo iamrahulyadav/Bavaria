@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_app_bg"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/facebook"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:background="#3b5998"
+        android:text="@string/login_via_facebook"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/default_text_size" />
+
+    <Button
+        android:id="@+id/twitter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:background="#55ACEE"
+        android:text="@string/login_via_twitter"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/default_text_size" />
+
+    <Button
+        android:id="@+id/linkedin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:background="#287bbc"
+        android:text="@string/login_via_linkedin"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/default_text_size" />
+
+    <Button
+        android:id="@+id/googleplus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:background="#D34836"
+        android:text="@string/login_via_googleplus"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/default_text_size" />
+</LinearLayout>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bavaria.group">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.NETWORK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="imandet.example.mapview.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
+    <application
+        android:name=".Bavaria"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value=" AIzaSyAjQ6vWw91vD5PUhc2R42emEsIWxAtNvtU" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name=".Activity.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".Activity.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="bavaria" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.Register"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.YearlyMembershipActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.ReplyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.MyTicketActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.ChatActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.Login"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.MaintenanceActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.PayOnlineActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MyAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.TwitterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ProjectDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ProjectPicsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ProjectListaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.PhotoVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.PhotoVideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.VideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Builiding"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ContactUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.LiveChatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.WebsiteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.PaymentOnlinePayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.InformationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ShareActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.VideoWeb"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.BlockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.FlatDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.FullScreenImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.PhotoVideoPicsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MultiTouchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.CateloguePicsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".Activity.MapsActivity"
+            android:label="@string/title_activity_maps" />
+
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+
+        <activity
+            android:name=".Activity.myAccount.InstallmentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.WaterbillActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.PaymenyHistoryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.OpenTicketActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.PayNowActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.PaymentDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.ConfirmPaymentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Activity.myAccount.SupportActivity" />
+        <activity
+            android:name=".Activity.myAccount.ChangePasswordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.PaymentConfirmActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Activity.myAccount.FaqActivity" />
+        <activity android:name=".Activity.myAccount.FaqViewActivity" />
+        <activity
+            android:name=".Activity.PayOnlineMainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity
+            android:name=".Activity.myAccount.ViewInvoiceActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.myAccount.UpdateProfileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.ForgotPasswordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".PhotoActivity" />
+        <activity android:name=".Activity.OpenPhotoListActivity" />
+        <activity android:name=".ImageshowActivity" />
+    </application>
+
+</manifest>

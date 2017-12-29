@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bavaria.group.Activity.OpenPhotoListActivity">
+    <ImageView
+        android:id="@+id/ivPhoto_photoVideoListActivity"
+        android:layout_width="@dimen/projectlist_item_icon_size"
+        android:layout_height="@dimen/projectlist_item_icon_size"
+        android:background="@drawable/default_img"
+        android:scaleType="centerCrop" />
+</LinearLayout>

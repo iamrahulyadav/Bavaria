@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مجموعة بافاريا</string>
+    <string name="about_us1">مجموعة بافاريا هي الشركة العقارية الأولى والأصلية التي تبيع وتدير الشقق في مناطق سكنية حصرية في الكويت.</string>
+    <string name="about_us2">مجموعة بافاريا العقارية في مجال الأعمال منذ أكثر من 8 سنوات وهي معروفة في قطاع العقارات للعاملين في الإسكان للعديد من الشركات الغربية الكبيرة في الكويت. وقد تم إنشاء اسم مجموعة بافاريا العقارية من خلال الثقة المستمرة من عملائنا الذين كانوا معنا منذ عام 2005. التزامنا هو أن نوفر لعملائنا مستوى لا مثيل لها من الخدمة.</string>
+    <string name="title_aboutus">مجموعة بافاريا</string>
+    <string name="share_build">بيلد التطبيق الخاص بك دون برمجة على www.appmachine.com</string>
+    <string name="facebook_app_id">1340644245951141</string>
+    <string name="sharelocation">مشاركة الموقع</string>
+
+    <string name="login_detail">
+        عملية التسجيل سهلة. أدخل رقم التعريف المدني / رقم الجوال.
+  سترسل لك بافاريا كلمة مرور مؤقتة لمرة واحدة على الرقم. سوف تفعلها
+  تحتاج إلى إدخال كلمة المرور المؤقتة لتسجيل الدخول إلى حسابك لأول تومي
+    </string>
+
+    <string name="office_time">ساعات العمل لدينا هي السبت إلى الخميس: 9:00 حتي 05:00. السبت: 9 صباحا - 1 مساء</string>
+
+    <!-- Login screen -->
+
+    <string name="civil_id">معرف مدني</string>
+    <string name="Password">كلمه السر</string>
+    <string name="Remember_me">تذكرنى</string>
+    <string name="Login">تسجيل الدخول</string>
+    <string name="Register">تسجيل</string>
+    <string name="Forgot_Your_Password">نسيت رقمك السري؟</string>
+    <string name="back">الى الخلف</string>
+
+    <!-- Main screen -->
+    <string name="projects">مشاريع</string>
+    <string name="pay_online">الدفع عبر الإنترنت</string>
+    <string name="my_account">حسابي</string>
+    <string name="maintenance">اعمال صيانة</string>
+    <string name="photo_video">صور فيديو</string>
+    <string name="about_us">معلومات عنا</string>
+    <string name="settings">إعدادات</string>
+    <string name="information">معلومات</string>
+
+    <!-- acoount faq screen -->
+    <string name="pinningads">تثبيت الإعلانات</string>
+    <string name="faq_s">الأسئلة الشائعة</string>
+
+    <!-- acoount myticket screen -->
+
+    <string name="my_tickets">تذاكري</string>
+    <string name="my_support_tickets">تذاكر الدعم الخاص بي</string>
+    <string name="search">بحث</string>
+    <string name="enter_ticket_or_subject">أدخل تذكرة # أو الموضوع</string>
+
+    <!-- acoount reply screen -->
+
+    <string name="reply">الرد</string>
+    <string name="ticket_no_14">تيكيت نو # 14</string>
+    <string name="subject">موضوع</string>
+    <string name="department"> قسم، أقسام</string>
+    <string name="submitted">قدمت</string>
+    <string name="ticket_status">حالة التذكرة:</string>
+    <string name="priority">أفضلية</string>
+    <string name="message">رسالة</string>
+    <string name="support">الدعم</string>
+    <string name="_14_7_2017">14/7/2017</string>
+    <string name="open">فتح</string>
+    <string name="high">متوسط</string>
+
+    <!-- change password screen -->
+
+    <string name="change_password">تغيير كلمة السر</string>
+    <string name="old_password">كلمة المرور القديمة</string>
+    <string name="new_password">كلمة السر الجديدة</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="update">تحديث</string>
+
+    <!-- Chat screen -->
+
+    <string name="chat_with_us">دردش معنا</string>
+
+    <!-- contact us screen -->
+
+    <string name="live_chat">دردشة مباشرة</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="website">موقع الكتروني</string>
+    <string name="support_bavariyagroup_net">support@bavariyagroup.net</string>
+    <string name="www_bavariyagroup_net">www.bavariyagroup.net</string>
+
+    <!-- faq view screen -->
+    <string name="faqviewQue">ما هي عملية تثبيت الإعلانات؟ </string>
+    <string name="faqviewAnsDetails">وهي ميزة اختيارية إضافية يمكنك من خلالها جعل إعلانك واحدا من الإعلانات الخمسة الأولى لمدة 24 ساعة وسيكون لها روتين مميز يختلف عن بقية الإعلانات.</string>
+
+    <string name="installment">تقسيط</string>
+
+    <!-- my account screen -->
+    <string name="user_name">اسم المستخدم</string>
+    <string name="yearly_membership">العضوية السنوية</string>
+    <string name="water_bill">فاتورة الماء</string>
+    <string name="payment_history">سجل الدفعات</string>
+
+    <!-- open ticket screen -->
+    <string name="open_ticket">تذكرة مفتوحة</string>
+    <string name="please_select_your_flat">الرجاء اختيار الشقة الخاصة بك!</string>
+    <string name="submit">عرض</string>
+
+    <!-- payment confirm screen -->
+    <string name="payment_confirm">تأكيد الدفع</string>
+    <string name="project">مشروع :</string>
+    <string name="sedra">سدرة</string>
+    <string name="building">بناء :</string>
+    <string name="floor">أرضية :</string>
+    <string name="flat">مسطحة :</string>
+    <string name="civilid">الرقم التعريفي للحساب:</string>
+    <string name="amount_to_pay">المبلغ المطلوب دفعه</string>
+    <string name="_1000_kwd">1000 د.ك</string>
+    <string name="a">ا</string>
+    <string name="confirm">تؤكد</string>
+    <string name="please_confirm_your_payment">يرجى تأكيد الدفع</string>
+
+    <!-- payment online screen -->
+    <string name="total_amount_kd">المبلغ الإجمالي (كد)</string>
+    <string name="payment_towards">دفع نحو</string>
+    <string name="pay_now">ادفع الآن</string>
+
+    <string name="payonlineinstuction">الرجاء إدخال المالكين المسجلين
+المدني معرف / رقم الهاتف لدفع المستحقات الخاصة بك ....!</string>
+    <string name="enter_civil_id_phone_number">أدخل الرقم المدني / رقم الهاتف</string>
+
+    <string name="photos">الصور</string>
+    <string name="catalogues">كتالوجات</string>
+    <string name="video">فيديو</string>
+
+    <string name="title">عنوان</string>
+    <string name="pics">بلدان جزر المحيط الهادئ</string>
+    <string name="check_availability">التحقق من الصلاحية</string>
+    <string name="share_location">مشاركة الموقع</string>
+    <string name="please_enter_civil_id">الرجاء إدخال معرف مدني</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="please_enter_phone_number">الرجاء إدخال رقم الهاتف</string>
+    <string name="register">تسجيل</string>
+
+    <string name="build_with_appmachine">بناء مع أبماشين</string>
+    <string name="share_via_twitter">مشاركة عبر تويتر</string>
+    <string name="share_via_facebook">مشاركة عبر فاسيبوك</string>
+    <string name="rate_via_playstore">معدل عبر بلايستور</string>
+    <string name="mail_in_link">البريد في الرابط</string>
+
+    <string name="my_ticket">تذكرتي</string>
+    <string name="call_us">اتصل بنا</string>
+    <string name="profile">الملف الشخصي</string>
+
+    <string name="pro_name">اسم الموالية</string>
+    <string name="desc">تنازلي</string>
+    <string name="membership">عضوية</string>
+    <string name="address">عنوان</string>
+    <string name="bavaria_group">مجموعة بافاريا</string>
+    <string name="_25_february_tower_20th_floor_khalid_bin_waleed_st_kuwait">برج 25 فبراير، 20th
+الطابق، شارع خالد بن الوليد
+الكويت</string>
+    <string name="amount">كمية</string>
+
+    <string name="loading">جار التحميل...</string>
+    <string name="login_via_facebook">تسجيل الدخول عبر الفيسبوك</string>
+    <string name="login_via_twitter">تسجيل الدخول عبر تويتر</string>
+    <string name="login_via_linkedin">تسجيل الدخول عبر لينكيدين</string>
+    <string name="login_via_googleplus">تسجيل الدخول عبر غوغليبلوس</string>
+    <string name="view_reply">عرض / رد</string>
+    <string name="al_sedra">السدرة</string>
+    <string name="block_a">بلوك A</string>
+    <string name="floor_a">أرضية</string>
+    <string name="flat_a">مسطحة</string>
+
+    <string name="project_name">اسم المشروع</string>
+    <string name="project_towards">مشروع نحو</string>
+    <string name="installments">الأقساط</string>
+    <string name="transaction_id">معرف المعاملة</string>
+    <string name="tx2541252525">TX2541252525</string>
+    <string name="transaction_date">تاريخ الصفقة</string>
+    <string name="transaction_time">وقت المعاملة</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="amount_paid">المبلغ المدفوع</string>
+    <string name="_200_kwd">200 د.ك.</string>
+    <string name="replied_by">أجاب:</string>
+    <string name="project_w">مشروع</string>
+    <string name="building_w">بناء</string>
+    <string name="due_date">تاريخ الاستحقاق</string>
+
+    <string name="expiry">انقضاء</string>
+
+
+</resources>
