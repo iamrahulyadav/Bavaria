@@ -1,6 +1,5 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,19 +13,14 @@ import com.bavaria.group.Util.BaseAppCompactActivity;
  */
 public class AboutUsActivity extends BaseAppCompactActivity {
 
-    private ImageView ivBack;
-
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutus);
-        ivBack = (ImageView) findViewById(R.id.ivBack_AboutusActivity);
-        ivBack.setOnClickListener(new View.OnClickListener()
-        {
+        ImageView ivBack = findViewById(R.id.ivBack_AboutusActivity);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(AboutUsActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
@@ -36,8 +30,7 @@ public class AboutUsActivity extends BaseAppCompactActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }

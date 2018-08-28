@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,49 +49,40 @@ public class BlockActivity extends BaseAppCompactActivity {
     String img_key;
 
     TextView tvFloorTitle;
-    LinearLayout llMain;
     String buildingName, projectname;
     ListView lvMain;
     ImageView ivBack;
     public MainUtils mainUtils;
-    private String str_BlockName,str_ProjectName;
-    public ArrayList  array_image;
+    public ArrayList array_image;
+    private String str_BlockName, str_ProjectName;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block);
         getDataFromIntent();
         mainUtils = new MainUtils(BlockActivity.this);
-        lvMain = (ListView) findViewById(R.id.lvMain_FloorActivity);
-        tvFloorTitle = (TextView) findViewById(R.id.tvFloorTitle_FloorActivity);
-        ivBack = (ImageView) findViewById(R.id.ivBack_BlockActivity);
-        ivBack.setOnClickListener(new View.OnClickListener()
-        {
+        lvMain = findViewById(R.id.lvMain_FloorActivity);
+        tvFloorTitle = findViewById(R.id.tvFloorTitle_FloorActivity);
+        ivBack = findViewById(R.id.ivBack_BlockActivity);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 finish();
             }
         });
-        array_image=new ArrayList<>();
+        array_image = new ArrayList<>();
         Bundle extras = getIntent().getExtras();
-        if(extras == null)
-        {
-        }
-        else
-        {
-            str_BlockName= extras.getString("str_Blockname");
-            str_ProjectName= extras.getString("str_Project");
+        if (extras == null) {
+        } else {
+            str_BlockName = extras.getString("str_Blockname");
+            str_ProjectName = extras.getString("str_Project");
             tvFloorTitle.setText(str_BlockName);
         }
 
-        if (Utils.isOnline(getApplicationContext()))
-        {
+        if (Utils.isOnline(getApplicationContext())) {
             new getFloorData().execute();
-        }
-        else {
+        } else {
             Toast.makeText(BlockActivity.this, "No internet connectivity found, please check your internet connection", Toast.LENGTH_SHORT).show();
         }
     }
@@ -112,6 +102,7 @@ public class BlockActivity extends BaseAppCompactActivity {
         projectname = intent.getStringExtra(Constant.ProjectName);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getFloorData extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -124,35 +115,34 @@ public class BlockActivity extends BaseAppCompactActivity {
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
 //            floorList = new ArrayList<HashMap<String, String>>();
-            floorList = new HashMap<String, List<String>>();
+            floorList = new HashMap<>();
             floorList.clear();
 
-            ImageList = new HashMap<String, HashMap<String, String>>();
+            ImageList = new HashMap<>();
             ImageList.clear();
 
-            keyList = new ArrayList<Integer>();
+            keyList = new ArrayList<>();
             keyList.clear();
 
-            keyImgList = new ArrayList<String>();
+            keyImgList = new ArrayList<>();
             keyImgList.clear();
 
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
-
-            return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&page=flatlist&iview=json&project_name="+ str_ProjectName.replaceAll(" ", "%20") + "&building_name="+str_BlockName.replaceAll(" ", "%20"));
+        protected String doInBackground(String... params) {
+            String response = "https://www.bavariagroup.net/index.php?view=raw&page=flatlist&iview=json&project_name=" + str_ProjectName.replaceAll(" ", "%20") + "&building_name=" + str_BlockName.replaceAll(" ", "%20");
+            Log.d("URL", "" + response);
+            return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&page=flatlist&iview=json&project_name=" + str_ProjectName.replaceAll(" ", "%20") + "&building_name=" + str_BlockName.replaceAll(" ", "%20"));
 
         }
 
         @Override
-        protected void onPostExecute(String s)
-        {
+        protected void onPostExecute(String s) {
             super.onPostExecute(s);
             dialog.dismiss();
             Log.e("RESPONSE", s);
@@ -160,8 +150,7 @@ public class BlockActivity extends BaseAppCompactActivity {
                 JSONObject obj = new JSONObject(s);
 //                Log.e("SIZE", "" + obj.length());
                 JSONArray array = null;
-                if (obj.has("no"))
-                {
+                if (obj.has("no")) {
                     array = obj.getJSONArray("no");
                     Utils.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_YES_OR_NO, "0");
                 }
@@ -171,36 +160,36 @@ public class BlockActivity extends BaseAppCompactActivity {
                     Utils.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_YES_OR_NO, "1");
                 }
 
-                values = new ArrayList<String>();
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject object = array.getJSONObject(i);
-                    hashmap = new HashMap<String, String>();
-                    key = object.getString("floor_name");
+                values = new ArrayList<>();
+                if (array != null) {
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject object = array.getJSONObject(i);
+                        hashmap = new HashMap<>();
+                        key = object.getString("floor_name");
 
-                    img_key = object.getString("floor_name") + object.getString("flat_name");
-//                    Log.e("KEYS", "" +img_key);
-                    keyImgList.add(img_key);
-                    hashmap.put("Available", object.getString("Available"));
-//                    hashmap.put("flat_image",object.getString("flat_image"));
-                    hashmap.put("flat_name", object.getString("flat_name"));
-                    JSONArray arry = object.getJSONArray("flat_image");
-                    Log.e("SIZE", "" + arry);
-                    for (int m = 0; m < arry.length(); m++)
-                    {
-                        int num = m + 1;
-                        hashmap.put("img" + num, "" + arry.get(m));
-                        Log.e("img" + num, "" + arry.get(m));
-                        Utils.WriteSharePrefrence(BlockActivity.this,IMAGESHOW_BLOCK, String.valueOf(arry.get(m)));
+                        img_key = object.getString("floor_name") + object.getString("flat_name");
+                        //                    Log.e("KEYS", "" +img_key);
+                        keyImgList.add(img_key);
+                        hashmap.put("Available", object.getString("Available"));
+                        //                    hashmap.put("flat_image",object.getString("flat_image"));
+                        hashmap.put("flat_name", object.getString("flat_name"));
+                        JSONArray arry = object.getJSONArray("flat_image");
+                        Log.e("SIZE", "" + arry);
+                        for (int m = 0; m < arry.length(); m++) {
+                            int num = m + 1;
+                            hashmap.put("img" + num, "" + arry.get(m));
+                            Log.e("img" + num, "" + arry.get(m));
+                            Utils.WriteSharePrefrence(BlockActivity.this, IMAGESHOW_BLOCK, String.valueOf(arry.get(m)));
+                        }
+
+                        values.add(object.getString("flat_name"));
+                        floorList.put(key, values);
+                        ImageList.put(img_key, hashmap);
                     }
-
-                    values.add(object.getString("flat_name"));
-                    floorList.put(key, values);
-                    ImageList.put(img_key, hashmap);
                 }
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
-               // Toast.makeText(BlockActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(BlockActivity.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
             }
 //            Log.e("FLOOR SIZE", "" + floorList.size());
             for (Map.Entry<String, List<String>> entry : floorList.entrySet()) {

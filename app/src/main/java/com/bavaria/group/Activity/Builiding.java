@@ -1,33 +1,23 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.os.AsyncTask;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.bavaria.group.Adapter.AvailabilityAdapter;
 import com.bavaria.group.Adapter.BuilidingAdapter;
-import com.bavaria.group.Constant.ConnectionDetector;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.MainUtils;
-import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.AvailabilityCheckData;
 
 import org.json.JSONArray;
@@ -37,10 +27,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by archirayan on 4/18/2016.
  */
@@ -48,32 +34,30 @@ public class Builiding extends BaseAppCompactActivity {
     String projectname;
     ArrayList<HashMap<String, String>> projectList;
     private ListView lvProjectList;
-    private ImageView ivBack;
     ArrayList<AvailabilityCheckData> newarr;
     public MainUtils utils;
-   public BuilidingAdapter adapter;
+    public BuilidingAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_list);
 
-        ivBack = (ImageView) findViewById(R.id.activity_building_list_back);
-        lvProjectList = (ListView) findViewById(R.id.activity_building_list_list);
-        projectList=new ArrayList<HashMap<String, String>>();
+        ImageView ivBack = findViewById(R.id.activity_building_list_back);
+        lvProjectList = findViewById(R.id.activity_building_list_list);
+        projectList = new ArrayList<>();
         newarr = new ArrayList<>();
         utils = new MainUtils(Builiding.this);
         Intent intent = getIntent();
         projectname = intent.getStringExtra(Constant.ProjectName);
-       // Utils.WriteSharePrefrence(Builiding.this,Constant.ProjectEmpName,projectname);
+        // Utils.WriteSharePrefrence(Builiding.this,Constant.ProjectEmpName,projectname);
         Log.d("projectname", projectname);
         new getBuildingList().execute();
 
 
-        ivBack.setOnClickListener(new View.OnClickListener()
-        {
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(Builiding.this, ProjectDetailsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
@@ -82,37 +66,27 @@ public class Builiding extends BaseAppCompactActivity {
         });
     }
 
-    private void getDataFromIntent()
-    {
-        /*Intent intent = getIntent();
-        projectname = intent.getStringExtra(Constant.ProjectName);
-        Utils.WriteSharePrefrence(Builiding.this,Constant.ProjectEmpName,projectname);*/
-
-        //projectname = Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_BLOCK_PROJECTNAME);
-    }
-
-    private class getBuildingList extends AsyncTask<String, String, String>
-    {
+    @SuppressLint("StaticFieldLeak")
+    private class getBuildingList extends AsyncTask<String, String, String> {
         Dialog dialog;
+
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
 
             dialog = new Dialog(Builiding.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
-            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/index.php?view=raw&page=projectcheck&iview=json&project_name=" +projectname.replaceAll(" ", "%20"));
+        protected String doInBackground(String... params) {
+            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/index.php?view=raw&page=projectcheck&iview=json&project_name=" + projectname.replaceAll(" ", "%20"));
 
         }
 
@@ -122,18 +96,17 @@ public class Builiding extends BaseAppCompactActivity {
             dialog.dismiss();
             Log.d("projectname", s);
 
-            HashMap<String, String> hashMap = null;
+            HashMap<String, String> hashMap;
             try {
-                JSONArray array = new JSONArray(s.toString());
-                for (int i = 0; i < array.length(); i++)
-                {
+                JSONArray array = new JSONArray(s);
+                for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
-                    hashMap = new HashMap<String, String>();
+                    hashMap = new HashMap<>();
                     hashMap.put("building_name", "" + object.getString("building_name"));
 
 //                    hashMap.put("image", "" + object.getString("image"));
                     projectList.add(hashMap);
-                    adapter = new BuilidingAdapter(Builiding.this, projectList,projectname);
+                    adapter = new BuilidingAdapter(Builiding.this, projectList, projectname);
                     lvProjectList.setAdapter(adapter);
                 }
             } catch (JSONException e) {

@@ -1,10 +1,10 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +21,6 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,25 +28,20 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static com.bavaria.group.Constant.Constant.CIVIT_ID;
 
 public class ReplyActivity extends BaseAppCompactActivity {
 
     public TextView reply_msg;
-    public String str_MessageView;
     TextView ediTxtSubject, ediTxtDepartment, ediTxtSubmited, ediTxttTicketStatus,
             ediTxtPriority, editTxtDescription;
     RecyclerView rlMessage;
-    TextView txtVwAttchmentFileName, txtVwFileChosenName, reply_btnBack, txtTicketNo;
-    Button btnChooseFile, btnReply, btnCloseTicket;
+    TextView reply_btnBack, txtTicketNo;
+    Button btnReply, btnCloseTicket;
     ImageView reply_logout;
     ReplyAdapter replyAdapter;
     Intent intent;
-    String ticket_id,strEtDesc;
+    String ticket_id, strEtDesc;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,20 +57,20 @@ public class ReplyActivity extends BaseAppCompactActivity {
 
     private void initViews() {
 
-        reply_btnBack = (TextView) findViewById(R.id.reply_btnBack);
-        txtTicketNo = (TextView) findViewById(R.id.txtVwTcktNo);
+        reply_btnBack = findViewById(R.id.reply_btnBack);
+        txtTicketNo = findViewById(R.id.txtVwTcktNo);
 
-        ediTxtSubject = (TextView) findViewById(R.id.ediTxtSubject);
-        ediTxtDepartment = (TextView) findViewById(R.id.ediTxtDepartment);
-        ediTxtSubmited = (TextView) findViewById(R.id.ediTxtSubmited);
-        ediTxttTicketStatus = (TextView) findViewById(R.id.ediTxttTicketStatus);
-        ediTxtPriority = (TextView) findViewById(R.id.ediTxtPriority);
-        rlMessage = (RecyclerView) findViewById(R.id.rlMessage);
+        ediTxtSubject = findViewById(R.id.ediTxtSubject);
+        ediTxtDepartment = findViewById(R.id.ediTxtDepartment);
+        ediTxtSubmited = findViewById(R.id.ediTxtSubmited);
+        ediTxttTicketStatus = findViewById(R.id.ediTxttTicketStatus);
+        ediTxtPriority = findViewById(R.id.ediTxtPriority);
+        rlMessage = findViewById(R.id.rlMessage);
         editTxtDescription = (EditText) findViewById(R.id.editTxtDescription);
-        reply_msg = (TextView) findViewById(R.id.reply_msg);
-        reply_logout = (ImageView) findViewById(R.id.reply_logout);
-        btnReply = (Button) findViewById(R.id.btnReply);
-        btnCloseTicket = (Button) findViewById(R.id.btnCloseTicket);
+        reply_msg = findViewById(R.id.reply_msg);
+        reply_logout = findViewById(R.id.reply_logout);
+        btnReply = findViewById(R.id.btnReply);
+        btnCloseTicket = findViewById(R.id.btnCloseTicket);
 
         reply_btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +97,7 @@ public class ReplyActivity extends BaseAppCompactActivity {
             public void onClick(View v) {
                 if (editTxtDescription.getText().toString().trim().length() > 0) {
                     editTxtDescription.setVisibility(View.VISIBLE);
-                    strEtDesc=editTxtDescription.getText().toString();
+                    strEtDesc = editTxtDescription.getText().toString();
                     new callReply(ticket_id).execute();
                 } else {
                     Toast.makeText(ReplyActivity.this, "Please Enter Message.", Toast.LENGTH_SHORT).show();
@@ -123,119 +114,18 @@ public class ReplyActivity extends BaseAppCompactActivity {
         });
     }
 
-    public void callViewTicketDetail(String TicketId) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("page", "ticketdetail");
-        data.put("iview", "json");
-        data.put("id", TicketId);
-
-        Call<JsonArray> loginCall = apiInterface.viewTicketDetail(data);
-        loginCall.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-
-                if (response.body() != null) {
-
-                    if (!response.body().getAsJsonArray().get(0).getAsJsonObject().get("status").getAsString().equalsIgnoreCase("Closed")) {
-                        btnCloseTicket.setVisibility(View.VISIBLE);
-                        btnReply.setVisibility(View.VISIBLE);
-                    }
-                    txtTicketNo.setText("Ticket No #" + response.body().getAsJsonArray().get(0).getAsJsonObject().get("id").getAsString());
-                    ediTxtSubject.setText(response.body().getAsJsonArray().get(0).getAsJsonObject().get("subject").getAsString());
-                    ediTxtDepartment.setText(response.body().getAsJsonArray().get(0).getAsJsonObject().get("dep").getAsString());
-                    ediTxtSubmited.setText(response.body().getAsJsonArray().get(0).getAsJsonObject().get("date").getAsString());
-                    ediTxttTicketStatus.setText(response.body().getAsJsonArray().get(0).getAsJsonObject().get("status").getAsString());
-                    ediTxtPriority.setText(response.body().getAsJsonArray().get(0).getAsJsonObject().get("priority").getAsString());
-
-                    if (!response.body().getAsJsonArray().get(0).getAsJsonObject().get("reply").toString().equalsIgnoreCase("null")) {
-
-                        JsonArray repliedBy = response.body().getAsJsonArray().get(0).getAsJsonObject().get("reply").getAsJsonArray();
-                        rlMessage.setLayoutManager(new LinearLayoutManager(ReplyActivity.this, LinearLayoutManager.VERTICAL, false));
-                    } else {
-                        Toast.makeText(ReplyActivity.this, "No Reply Found", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                Toast.makeText(ReplyActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void callReply(String TicketId) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "reply");
-        data.put("message", editTxtDescription.getText().toString());
-        data.put("user_id", Utils.ReadSharePrefrence(ReplyActivity.this, CIVIT_ID));
-        data.put("id", TicketId);
-
-        Call<JsonObject> loginCall = apiInterface.reply(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null) {
-
-                    if (response.body().get("status").toString().replaceAll("\"", "").equalsIgnoreCase("true")) {
-                        Toast.makeText(ReplyActivity.this, "Your reply has been sent", Toast.LENGTH_LONG).show();
-                        new callViewTicketDetail(ticket_id).execute();
-                        editTxtDescription.setText("");
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(ReplyActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void callCloseTicket(String TicketId) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "close");
-        data.put("id", TicketId);
-
-        Call<JsonObject> loginCall = apiInterface.closeTicket(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null) {
-
-                    if (response.body().get("status").toString().equalsIgnoreCase("true")) {
-                        Toast.makeText(ReplyActivity.this, "Ticket Close", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(ReplyActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callViewTicketDetail extends AsyncTask<String, String, String> {
         ProgressDialog pd;
         String ticket_id;
 
-        public callViewTicketDetail(String ticket_id) {
+        callViewTicketDetail(String ticket_id) {
             this.ticket_id = ticket_id;
         }
 
@@ -251,7 +141,7 @@ public class ReplyActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("page", "ticketdetail");
@@ -260,43 +150,46 @@ public class ReplyActivity extends BaseAppCompactActivity {
             return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/index.php?", data);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //pd.dismiss();
-            Log.e("RESPONSE",""+s);
+            Log.e("RESPONSE", "" + s);
             try {
-                JSONArray jsonArray = new JSONArray(s.toString());
+                JSONArray jsonArray = new JSONArray(s);
 
                 JSONObject object = null;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     object = jsonArray.getJSONObject(i);
                 }
 
-                if (!object.getString("status").equalsIgnoreCase("Closed")) {
+                if (object != null && !object.getString("status").equalsIgnoreCase("Closed")) {
                     btnCloseTicket.setVisibility(View.VISIBLE);
                     btnReply.setVisibility(View.VISIBLE);
                     editTxtDescription.setVisibility(View.VISIBLE);
                 }
 
-                txtTicketNo.setText("Ticket No #" + object.getString("id"));
-                ediTxtSubject.setText(object.getString("subject"));
-                ediTxtDepartment.setText(object.getString("dep"));
-                ediTxtSubmited.setText(object.getString("date"));
-                ediTxttTicketStatus.setText(object.getString("status"));
-                ediTxtPriority.setText(object.getString("priority"));
-                reply_msg.setText(object.getString("message"));
+                if (object != null) {
+                    txtTicketNo.setText("Ticket No #" + object.getString("id"));
+                    ediTxtSubject.setText(object.getString("subject"));
+                    ediTxtDepartment.setText(object.getString("dep"));
+                    ediTxtSubmited.setText(object.getString("date"));
+                    ediTxttTicketStatus.setText(object.getString("status"));
+                    ediTxtPriority.setText(object.getString("priority"));
+                    reply_msg.setText(object.getString("message"));
 
-                if (!object.getString("reply").equalsIgnoreCase("null")) {
+                    if (!object.getString("reply").equalsIgnoreCase("null")) {
 
-                    JSONArray repliedBy = object.getJSONArray("reply");
-                    rlMessage.setLayoutManager(new LinearLayoutManager(ReplyActivity.this, LinearLayoutManager.VERTICAL, false));
-                    replyAdapter = new ReplyAdapter(ReplyActivity.this, repliedBy);
-                    rlMessage.setAdapter(replyAdapter);
+                        JSONArray repliedBy = object.getJSONArray("reply");
+                        rlMessage.setLayoutManager(new LinearLayoutManager(ReplyActivity.this, LinearLayoutManager.VERTICAL, false));
+                        replyAdapter = new ReplyAdapter(ReplyActivity.this, repliedBy);
+                        rlMessage.setAdapter(replyAdapter);
 
-                } else {
+                    }
 
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
 //                Toast.makeText(Register.this, "Something went wrong..", Toast.LENGTH_SHORT).show();
@@ -304,11 +197,12 @@ public class ReplyActivity extends BaseAppCompactActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callReply extends AsyncTask<String, String, String> {
         ProgressDialog pd;
         String ticket_id;
 
-        public callReply(String ticket_id) {
+        callReply(String ticket_id) {
             this.ticket_id = ticket_id;
         }
 
@@ -324,7 +218,7 @@ public class ReplyActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("iaction", "reply");
@@ -337,17 +231,17 @@ public class ReplyActivity extends BaseAppCompactActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-           // pd.dismiss();
+            // pd.dismiss();
 //            Log.e("RESPONSE",""+s);
             try {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("status").toString().equalsIgnoreCase("true")) {
-                 //   Toast.makeText(ReplyActivity.this, "Your reply has been sent", Toast.LENGTH_LONG).show();
+                JSONObject object = new JSONObject(s);
+                if (object.getString("status").equalsIgnoreCase("true")) {
+                    //   Toast.makeText(ReplyActivity.this, "Your reply has been sent", Toast.LENGTH_LONG).show();
                     new callViewTicketDetail(ticket_id).execute();
                     //replyAdapter.notifyDataSetChanged();
                     editTxtDescription.setText("");
                 } else {
-                    Toast.makeText(ReplyActivity.this, object.getString("msg").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReplyActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
@@ -356,11 +250,12 @@ public class ReplyActivity extends BaseAppCompactActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callCloseTicket extends AsyncTask<String, String, String> {
         ProgressDialog pd;
         String ticket_id;
 
-        public callCloseTicket(String ticket_id) {
+        callCloseTicket(String ticket_id) {
             this.ticket_id = ticket_id;
         }
 
@@ -376,7 +271,7 @@ public class ReplyActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("iaction", "close");
@@ -391,8 +286,8 @@ public class ReplyActivity extends BaseAppCompactActivity {
             pd.dismiss();
 //            Log.e("RESPONSE",""+s);
             try {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("status").toString().equalsIgnoreCase("true")) {
+                JSONObject object = new JSONObject(s);
+                if (object.getString("status").equalsIgnoreCase("true")) {
                     Toast.makeText(ReplyActivity.this, "Ticket Close", Toast.LENGTH_SHORT).show();
                     finish();
                 }

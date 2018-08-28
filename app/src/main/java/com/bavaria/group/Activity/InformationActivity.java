@@ -3,7 +3,6 @@ package com.bavaria.group.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,9 +25,9 @@ public class InformationActivity extends BaseAppCompactActivity implements View.
     }
 
     private void init() {
-        backImg = (ImageView) findViewById(R.id.activity_information_back_Img);
-        supportBtn = (Button) findViewById(R.id.activity_information_support_Btn);
-        shareBtn = (Button) findViewById(R.id.activity_information_share_Btn);
+        backImg = findViewById(R.id.activity_information_back_Img);
+        supportBtn = findViewById(R.id.activity_information_support_Btn);
+        shareBtn = findViewById(R.id.activity_information_share_Btn);
         shareBtn.setOnClickListener(this);
         supportBtn.setOnClickListener(this);
         backImg.setOnClickListener(this);

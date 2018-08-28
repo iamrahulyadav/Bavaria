@@ -1,11 +1,11 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +21,6 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.verifyUserData;
 
 import org.json.JSONArray;
@@ -32,17 +30,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
 public class PayOnlineMainActivity extends BaseAppCompactActivity {
 
     TextView payOnline_btnBack;
     ImageView payOnline_logout;
     EditText edtTxtCivilID;
-    Button btnSubmit;
+    Button btnSubmit, btnPayGuest;
     LinearLayout payonline_llMain;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +45,12 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
     }
 
     private void initViews() {
-        payonline_llMain = (LinearLayout) findViewById(R.id.payonline_llMain);
-        payOnline_btnBack = (TextView) findViewById(R.id.payOnline_btnBack);
-        payOnline_logout = (ImageView) findViewById(R.id.payOnline_logout);
-        edtTxtCivilID = (EditText) findViewById(R.id.edtTxtCivilID);
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        payonline_llMain = findViewById(R.id.payonlinemain_ll);
+        payOnline_btnBack = findViewById(R.id.payOnline_btnBack);
+        payOnline_logout = findViewById(R.id.payOnline_logout);
+        edtTxtCivilID = findViewById(R.id.edtTxtCivilID);
+        btnSubmit = findViewById(R.id.btnSubmit);
+        btnPayGuest = findViewById(R.id.payGuest);
 
         payOnline_btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +65,14 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
                 Utils.ClearSharePrefrence(PayOnlineMainActivity.this);
                 Toast.makeText(PayOnlineMainActivity.this, "Logout Successful", Toast.LENGTH_SHORT).show();
                 finish();
+            }
+        });
+
+        btnPayGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(), GuestPayActivity.class);
+                startActivity(in);
             }
         });
 
@@ -94,37 +96,7 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
             isvalid = false;
         }
 
-
         return isvalid;
-    }
-
-    public void callVerifyUser() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("civil_id", edtTxtCivilID.getText().toString());
-        data.put("type", "ajax");
-        data.put("action", "verifyuser");
-        data.put("view", "json");
-
-        Call<ArrayList<verifyUserData>> loginCall = apiInterface.verifyUser(data);
-        loginCall.enqueue(new Callback<ArrayList<verifyUserData>>() {
-            @Override
-            public void onResponse(Call<ArrayList<verifyUserData>> call, Response<ArrayList<verifyUserData>> response) {
-                if (response.body() != null) {
-                    ArrayList<verifyUserData> verifyUserDataa = response.body();
-                    Intent in = new Intent(getApplicationContext(), PayOnlineActivity.class);
-                    in.putExtra("projectlist", verifyUserDataa);
-                    in.putExtra("civil_id", edtTxtCivilID.getText().toString());
-                    startActivity(in);
-                    overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<verifyUserData>> call, Throwable t) {
-                Toast.makeText(PayOnlineMainActivity.this, "Please enter valid Civil Id", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -138,6 +110,7 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callVerifyUser extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -151,12 +124,13 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("civil_id", edtTxtCivilID.getText().toString());
             data.put("type", "ajax");
             data.put("action", "verifyuser");
             data.put("view", "json");
+            Log.e("TAG", "" + Constant.NEW_BASE_URL + "/?" + data);
             String res = new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/?", data);
             Log.e("RESPONSE", "" + res);
             return res;
@@ -190,12 +164,19 @@ public class PayOnlineMainActivity extends BaseAppCompactActivity {
                         verifyUserDataa.setTotal_amount(object.getString("total_amount"));
                         verifyUserDataa.setWater_bil(object.getString("water_bil"));
                         verifyUserDataa.setProject_name(object.getString("project_name"));
+                        verifyUserDataa.setFirstname(object.getString("firstname"));
+                        verifyUserDataa.setLastname(object.getString("lastname"));
                         verifyUserDatas.add(verifyUserDataa);
                     }
+
+                    Utils.WriteSharePrefrence(PayOnlineMainActivity.this, Constant.CIVIT_ID, edtTxtCivilID.getText().toString());
 
                     Intent in = new Intent(getApplicationContext(), PayOnlineActivity.class);
                     in.putExtra("projectlist", verifyUserDatas);
                     in.putExtra("civil_id", edtTxtCivilID.getText().toString());
+                    if (object != null) {
+                        in.putExtra("name", object.getString("firstname") + object.getString("lastname"));
+                    }
                     startActivity(in);
                     overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
                 }

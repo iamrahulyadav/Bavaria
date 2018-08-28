@@ -27,10 +27,10 @@ public class PhotoVideoActivity extends Activity implements View.OnClickListener
     }
 
     private void inIt() {
-        llPhoto = (LinearLayout) findViewById(R.id.llPhoto_PhotoVideoActivity);
-        llVideo = (LinearLayout) findViewById(R.id.llVideo_PhotoVideoActivity);
-        llCatalogue = (LinearLayout) findViewById(R.id.llCatalog_PhotoVideoActivity);
-        ivBack = (ImageView) findViewById(R.id.ivBack_PhotoVideoActivity);
+        llPhoto = findViewById(R.id.llPhoto_PhotoVideoActivity);
+        llVideo = findViewById(R.id.llVideo_PhotoVideoActivity);
+        llCatalogue = findViewById(R.id.llCatalog_PhotoVideoActivity);
+        ivBack = findViewById(R.id.ivBack_PhotoVideoActivity);
         llPhoto.setOnClickListener(this);
         llVideo.setOnClickListener(this);
         llCatalogue.setOnClickListener(this);
@@ -40,8 +40,7 @@ public class PhotoVideoActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         Intent intent;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.llPhoto_PhotoVideoActivity:
                 Utils.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_PHOTO_OR_VIDEO, "0");
                 intent = new Intent(getApplicationContext(), PhotoActivity.class);

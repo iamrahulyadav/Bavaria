@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bavaria.group.Activity.MainActivity;
 import com.bavaria.group.R;
@@ -51,10 +50,7 @@ public class Utils
                     }
                 }
 
-                if (mobileInfo != null && mobileInfo.isAvailable() && mobileInfo.isConnected()) {
-                    // Mobile Network is connected
-                    return true;
-                }
+                return mobileInfo != null && mobileInfo.isAvailable();
             }
         }
         return false;
@@ -137,8 +133,8 @@ public class Utils
         Window window = dialog.getWindow();
         window.setLayout(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
-        Button yesDialogBtn = (Button) dialog.findViewById(R.id.btn_yes);
-        Button noDialogBtn = (Button) dialog.findViewById(R.id.btn_No);
+        Button yesDialogBtn = dialog.findViewById(R.id.btn_yes);
+        Button noDialogBtn = dialog.findViewById(R.id.btn_No);
 
         yesDialogBtn.setOnClickListener(new View.OnClickListener() {
             @Override

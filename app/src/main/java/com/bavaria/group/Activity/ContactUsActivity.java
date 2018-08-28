@@ -1,40 +1,31 @@
 package com.bavaria.group.Activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bavaria.group.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by archirayan4 on 5/5/2016.
  */
-public class ContactUsActivity extends FragmentActivity implements View.OnClickListener,OnMapReadyCallback {
+public class ContactUsActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback {
 
     TextView liveChatTxt, emailTxt, websiteTxt;
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    ImageView ivBack, ivFb, ivTwitter, ivInstagram, ivYouTube, ivClose;
+    //    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
+    ImageView ivBack, ivFb, ivTwitter, ivInstagram, ivYouTube;
     Button btnAppStoteApple, btnPlayStore, btnSharelocation;
-    private GoogleMap googleMap, mapZoom;
-    private FrameLayout flMapZoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,25 +36,22 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
 
         init();
 
-
     }
 
-
-    private void init()
-    {
-        liveChatTxt = (TextView) findViewById(R.id.activity_contactup_live_chat_Txt);
-        emailTxt = (TextView) findViewById(R.id.activity_contactup_email_Txt);
-        websiteTxt = (TextView) findViewById(R.id.activity_contactup_website_Txt);
-        ivBack = (ImageView) findViewById(R.id.ivBack_ContactUsActivity);
-        ivFb = (ImageView) findViewById(R.id.ivFacebook_AboutusActivity);
-        ivTwitter = (ImageView) findViewById(R.id.ivTwiiter_AboutusActivity);
-        ivInstagram = (ImageView) findViewById(R.id.ivInstagram_AboutusActivity);
-        ivYouTube = (ImageView) findViewById(R.id.ivYouTube_AboutusActivity);
-       // ivClose = (ImageView) findViewById(R.id.ivCloseContactus);
-        flMapZoom = (FrameLayout) findViewById(R.id.flMapView);
-        btnAppStoteApple = (Button) findViewById(R.id.btnappstoreapple);
-        btnPlayStore = (Button) findViewById(R.id.btngoogleplaystore);
-        btnSharelocation = (Button) findViewById(R.id.btn_sharelocation);
+    private void init() {
+        liveChatTxt = findViewById(R.id.activity_contactup_live_chat_Txt);
+        emailTxt = findViewById(R.id.activity_contactup_email_Txt);
+        websiteTxt = findViewById(R.id.activity_contactup_website_Txt);
+        ivBack = findViewById(R.id.ivBack_ContactUsActivity);
+        ivFb = findViewById(R.id.ivFacebook_AboutusActivity);
+        ivTwitter = findViewById(R.id.ivTwiiter_AboutusActivity);
+        ivInstagram = findViewById(R.id.ivInstagram_AboutusActivity);
+        ivYouTube = findViewById(R.id.ivYouTube_AboutusActivity);
+        // ivClose = (ImageView) findViewById(R.id.ivCloseContactus);
+//        FrameLayout flMapZoom = findViewById(R.id.flMapView);
+        btnAppStoteApple = findViewById(R.id.btnappstoreapple);
+        btnPlayStore = findViewById(R.id.btngoogleplaystore);
+        btnSharelocation = findViewById(R.id.btn_sharelocation);
 
 
         emailTxt.setOnClickListener(this);
@@ -120,7 +108,7 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
+        Intent intent;
         switch (v.getId()) {
            /* case R.id.ivCloseContactus:
                 flMapZoom.setVisibility(View.GONE);
@@ -216,8 +204,6 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
         }
     }
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -228,8 +214,8 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
     public void onMapReady(GoogleMap googleMap) {
 
         //mycoordinate.latitude =29.375859;    mycoordinate.longitude =47.977405;
-        LatLng latlong = new LatLng(29.375859,47.977405);
+        LatLng latlong = new LatLng(29.375859, 47.977405);
         googleMap.addMarker(new MarkerOptions().position(latlong).title(""));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlong,5.0f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlong, 9.0f));
     }
 }

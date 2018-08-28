@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bavaria.group.OnItemClickListener;
 import com.bavaria.group.R;
@@ -18,15 +17,16 @@ import com.bavaria.group.retrofit.Model.verifyUserData;
 
 import java.util.ArrayList;
 
-import static com.bavaria.group.Activity.PayOnlineActivity.othersnameAdapter;
 import static com.bavaria.group.Activity.PayOnlineActivity.paymentAdapter;
 import static com.bavaria.group.Activity.PayOnlineActivity.spPaymentTowards;
-import static com.bavaria.group.Activity.PayOnlineActivity.spPaymentType;
 import static com.bavaria.group.Activity.PayOnlineActivity.tvTotal;
 import static com.bavaria.group.Constant.Constant.BUILDING_ID;
 import static com.bavaria.group.Constant.Constant.CHECK_CLICK;
+import static com.bavaria.group.Constant.Constant.FLAT_NAME;
+import static com.bavaria.group.Constant.Constant.FLOOR_NAME;
 import static com.bavaria.group.Constant.Constant.INSTALLMENT_ID;
 import static com.bavaria.group.Constant.Constant.MEMBERSHIP_ID;
+import static com.bavaria.group.Constant.Constant.PROJECT_NAME;
 import static com.bavaria.group.Constant.Constant.TOTAL_AMT;
 import static com.bavaria.group.Constant.Constant.WATERBILL_ID;
 
@@ -35,7 +35,6 @@ import static com.bavaria.group.Constant.Constant.WATERBILL_ID;
  * Archirayan Infotech pvt Ltd
  * dilip.bakotiya@gmail.com || info@archirayan.com
  */
-
 
 public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myViewHolder> {
 
@@ -73,9 +72,11 @@ public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myVi
         if (Integer.parseInt(verifyUserDataa.get(position).getBuilding_id()) == lastCheckedPosition1)
         {
             holder.rbSelect.setChecked(true);
+
             Utils.WriteSharePrefrence(context, CHECK_CLICK, "true");
         } else {
             holder.rbSelect.setChecked(false);
+
         }
 
         holder.rbSelect.setOnClickListener(new View.OnClickListener()
@@ -97,7 +98,9 @@ public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myVi
                 Utils.WriteSharePrefrence(context, INSTALLMENT_ID, verifyUserDataa.get(position).getInstallment_id());
                 Utils.WriteSharePrefrence(context, WATERBILL_ID, verifyUserDataa.get(position).getWaterbill_id());
                 Utils.WriteSharePrefrence(context, MEMBERSHIP_ID, verifyUserDataa.get(position).getFees_id());
-
+                Utils.WriteSharePrefrence(context, PROJECT_NAME, verifyUserDataa.get(position).getProject_name());
+                Utils.WriteSharePrefrence(context, FLOOR_NAME, verifyUserDataa.get(position).getFloor_name());
+                Utils.WriteSharePrefrence(context, FLAT_NAME, verifyUserDataa.get(position).getFlat_name());
             }
         });
 
@@ -120,7 +123,6 @@ public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myVi
                 Utils.WriteSharePrefrence(context, INSTALLMENT_ID, verifyUserDataa.get(position).getInstallment_id());
                 Utils.WriteSharePrefrence(context, WATERBILL_ID, verifyUserDataa.get(position).getWaterbill_id());
                 Utils.WriteSharePrefrence(context, MEMBERSHIP_ID, verifyUserDataa.get(position).getFees_id());
-
             }
         });
     }
@@ -132,7 +134,6 @@ public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myVi
 
     public class myViewHolder extends RecyclerView.ViewHolder
     {
-
         TextView tvProjectNm, tvBuildingNm, tvFloorNm, tvFlatNm;
         RadioButton rbSelect;
         RelativeLayout rlMain;
@@ -141,13 +142,13 @@ public class PayOnlineAdapter extends RecyclerView.Adapter<PayOnlineAdapter.myVi
         public myViewHolder(final View itemView)
         {
             super(itemView);
-            rlMain = (RelativeLayout) itemView.findViewById(R.id.rl_main);
-            llMain = (LinearLayout) itemView.findViewById(R.id.ll_main);
-            tvProjectNm = (TextView) itemView.findViewById(R.id.projectNm);
-            tvBuildingNm = (TextView) itemView.findViewById(R.id.blockNm);
-            tvFloorNm = (TextView) itemView.findViewById(R.id.FloorNm);
-            tvFlatNm = (TextView) itemView.findViewById(R.id.FlatNm);
-            rbSelect = (RadioButton) itemView.findViewById(R.id.radio_btn);
+            rlMain = itemView.findViewById(R.id.rl_main);
+            llMain = itemView.findViewById(R.id.ll_main);
+            tvProjectNm = itemView.findViewById(R.id.projectNm);
+            tvBuildingNm = itemView.findViewById(R.id.blockNm);
+            tvFloorNm = itemView.findViewById(R.id.FloorNm);
+            tvFlatNm = itemView.findViewById(R.id.FlatNm);
+            rbSelect = itemView.findViewById(R.id.radio_btn);
         }
     }
 

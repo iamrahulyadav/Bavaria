@@ -4,27 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.bavaria.group.Activity.PayOnlineActivity;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
-import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.Model.GetOthersNameClass;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,7 +28,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
 
     Intent intent;
     String id, kid;
-    String STR_URL, strUrl;
+    String strUrl;
     AdvancedWebView mWebView;
 
     @Override
@@ -52,7 +44,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
 
     private void initWebView() {
 
-        mWebView = (AdvancedWebView) findViewById(R.id.webview);
+        mWebView = findViewById(R.id.webview);
         mWebView.setListener(this, this);
         mWebView.setGeolocationEnabled(false);
         mWebView.setMixedContentAllowed(true);
@@ -62,7 +54,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
 
             @Override
             public void onPageFinished(WebView view, String url) {
-             //   Toast.makeText(ViewInvoiceActivity.this, "Finished loading", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(ViewInvoiceActivity.this, "Finished loading", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -71,7 +63,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-              // Toast.makeText(ViewInvoiceActivity.this, title, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(ViewInvoiceActivity.this, title, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -150,6 +142,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
         //   Toast.makeText(ViewInvoiceActivity.this, "onExternalPageRequest(url = "+url+")", Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class Getinvoice extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -165,7 +158,7 @@ public class ViewInvoiceActivity extends BaseAppCompactActivity implements Advan
         //       https://www.bavariagroup.net/my-account?action=downloadpdf&id=155&kid=536&downlaod=true
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("action", "downloadpdf");
             data.put("id", id);

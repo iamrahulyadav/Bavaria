@@ -1,7 +1,6 @@
 package com.bavaria.group.Activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
 import com.bavaria.group.R;
@@ -19,7 +18,7 @@ public class WebsiteActivity extends BaseAppCompactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_website);
-        webView = (WebView) findViewById(R.id.activity_website_Wv);
+        webView = findViewById(R.id.activity_website_Wv);
         webView.loadUrl("http://www.bavariagroup.net");
     }
 

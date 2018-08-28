@@ -1,5 +1,6 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -24,8 +25,6 @@ import java.util.HashMap;
  * Created by archirayan1 on 3/10/2016.
  */
 public class ProjectPicsActivity extends Activity {
-    private ImageView ivBack;
-    private GridView gvPicsList;
     private ProjectImageAdapter adapter;
     private String id = "";
 
@@ -33,8 +32,8 @@ public class ProjectPicsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_pics);
-        ivBack = (ImageView) findViewById(R.id.ivBack_ProjectPicsActivity);
-        gvPicsList = (GridView) findViewById(R.id.gvImage_ProjectPicsActivity);
+        ImageView ivBack = findViewById(R.id.ivBack_ProjectPicsActivity);
+        GridView gvPicsList = findViewById(R.id.gvImage_ProjectPicsActivity);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getString("id");
@@ -64,6 +63,7 @@ public class ProjectPicsActivity extends Activity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class getProjectImageData extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -74,14 +74,14 @@ public class ProjectPicsActivity extends Activity {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("id=", id);
             return new MakeServiceCall().MakeServiceCall(Constant.BASE_URL + "propertyid_pics.php", data);
 //            https://bavariagroup.net/en/api/propertyid_pics.php?id=9

@@ -1,5 +1,6 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
@@ -51,37 +52,33 @@ import static com.bavaria.group.Constant.Constant.SHRED_PR.KEY_CATID;
 /**
  * Created by archirayan1 on 3/8/2016.
  */
-public class ProjectDetailsActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback
-{
+public class ProjectDetailsActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback {
     public static String categoryName, categoryDesc, imagePath, catId, imgId, lat, lng, city, state, country;
     public static ArrayList<String> imgList;
     public String latlong;
-    private ImageView ivBack, ivImagePro;
+    private ImageView ivImagePro;
     private Button btCategory;
-    private TextView tvCategoryDesc, tvState, tvProName;
+    private TextView tvCategoryDesc;
     private RatingBar rating;
-    private ProjectImageAdapter adapter;
     private GridView gvImage;
     private LinearLayout llProjectDetails, llProjectPics;
-    private GoogleMap mMap;
     private Double latitude, longitude;
     public MainUtils mainUtils;
     String strName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_details);
-        imgList = new ArrayList<String>();
+        imgList = new ArrayList<>();
 
         inIt();
         getDataFromIntent();
-        mainUtils=new MainUtils(ProjectDetailsActivity.this);
+        mainUtils = new MainUtils(ProjectDetailsActivity.this);
         addListenerOnRatingBar();
         new getProjectDetailsData().execute();
-        if (Utils.isOnline(getApplicationContext()))
-        {
-            if (!imgId.equalsIgnoreCase(""))
-            {
+        if (Utils.isOnline(getApplicationContext())) {
+            if (!imgId.equalsIgnoreCase("")) {
                 new getProjectPics().execute();
             } else {
                 Toast.makeText(ProjectDetailsActivity.this, "No images found.", Toast.LENGTH_SHORT).show();
@@ -94,51 +91,45 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
         mapFragment.getMapAsync(this);
     }
 
-    public void addListenerOnRatingBar()
-    {
-           rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
-           {
+    public void addListenerOnRatingBar() {
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser)
-            {
+                                        boolean fromUser) {
             }
         });
     }
 
-    private void inIt()
-    {
-        tvState = (TextView) findViewById(R.id.tvState_PropertyDetailsActivity);
-        Button btnCheckAvability = (Button) findViewById(R.id.activity_project_details_avability);
-        Button btnShareLocation = (Button) findViewById(R.id.activity_project_details_share_location);
-        ivBack = (ImageView) findViewById(R.id.ivBack_ProjectDetailsActivity);
-        btCategory = (Button) findViewById(R.id.btCategory_ProjectDetailsActivity);
-        tvCategoryDesc = (TextView) findViewById(R.id.tvDescription_PropertyDetailsActivity);
-        Button btPics = (Button) findViewById(R.id.btPics_ProjectDetailsActivity);
-        rating = (RatingBar) findViewById(R.id.ratingBar_ProjectDetailsActivity);
-        llProjectDetails = (LinearLayout) findViewById(R.id.llProjectDetails_ProjectDetailsActivity);
-        llProjectPics = (LinearLayout) findViewById(R.id.llProjectPics_ProjectDetailsActivity);
-        ivImagePro = (ImageView) findViewById(R.id.ivImage_ProjectDetailActivity);
-        gvImage = (GridView) findViewById(R.id.gvImageList);
+    private void inIt() {
+        TextView tvState = findViewById(R.id.tvState_PropertyDetailsActivity);
+        Button btnCheckAvability = findViewById(R.id.activity_project_details_avability);
+        Button btnShareLocation = findViewById(R.id.activity_project_details_share_location);
+        ImageView ivBack = findViewById(R.id.ivBack_ProjectDetailsActivity);
+        btCategory = findViewById(R.id.btCategory_ProjectDetailsActivity);
+        tvCategoryDesc = findViewById(R.id.tvDescription_PropertyDetailsActivity);
+        Button btPics = findViewById(R.id.btPics_ProjectDetailsActivity);
+        rating = findViewById(R.id.ratingBar_ProjectDetailsActivity);
+        llProjectDetails = findViewById(R.id.llProjectDetails_ProjectDetailsActivity);
+        llProjectPics = findViewById(R.id.llProjectPics_ProjectDetailsActivity);
+        ivImagePro = findViewById(R.id.ivImage_ProjectDetailActivity);
+        gvImage = findViewById(R.id.gvImageList);
         ivBack.setOnClickListener(this);
         btPics.setOnClickListener(this);
         btCategory.setOnClickListener(this);
         btnCheckAvability.setOnClickListener(this);
         btnShareLocation.setOnClickListener(this);
-        if (tvState.toString().equalsIgnoreCase(""))
-        {
+        if (tvState.toString().equalsIgnoreCase("")) {
             tvState.setText("");
         } else {
             tvState.setText(Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_COUNTRY));
         }
     }
 
-    private void getDataFromIntent()
-    {
+    private void getDataFromIntent() {
 
 
         catId = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, KEY_CATID);
         imagePath = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_IMAGE_PATH);
-        categoryName =  Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_NAME);
+        categoryName = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_NAME);
         imgId = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_IMAGE_ID);
         categoryDesc = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_DESC);
         lat = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_LAT);
@@ -150,12 +141,10 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
         setData();
     }
 
-    private void setData()
-    {
+    private void setData() {
         btCategory.setText(categoryName);
         tvCategoryDesc.setText(city);
-        if (!imagePath.equalsIgnoreCase(""))
-        {
+        if (!imagePath.equalsIgnoreCase("")) {
             Glide.with(getApplicationContext()).load(imagePath).into(ivImagePro);
         }
         latitude = Double.parseDouble(lat);
@@ -178,17 +167,14 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
                 llProjectDetails.setVisibility(View.VISIBLE);
                 break;
             case R.id.btPics_ProjectDetailsActivity:
-                if (llProjectPics.getVisibility() == View.GONE)
-                {
+                if (llProjectPics.getVisibility() == View.GONE) {
                     llProjectDetails.setVisibility(View.GONE);
                     llProjectPics.setVisibility(View.VISIBLE);
-                            if(mainUtils.isConnectingToInternet(ProjectDetailsActivity.this)) {
-                                new getProjectPics().execute();
-                            }
-                            else
-                            {
-                                Toast.makeText(ProjectDetailsActivity.this,"Please check internet connection.", Toast.LENGTH_SHORT).show();
-                            }
+                    if (MainUtils.isConnectingToInternet(ProjectDetailsActivity.this)) {
+                        new getProjectPics().execute();
+                    } else {
+                        Toast.makeText(ProjectDetailsActivity.this, "Please check internet connection.", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 break;
@@ -215,45 +201,40 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        mMap = googleMap;
+    public void onMapReady(GoogleMap googleMap) {
         LatLng sydney = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(categoryName));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
+        googleMap.addMarker(new MarkerOptions().position(sydney).title(categoryName));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
     }
 
-    public void callAvailabilityCheck()
-    {
+    public void callAvailabilityCheck() {
 
-        strName= Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_NAME);
+        strName = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_NAME);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
+        HashMap<String, String> data = new HashMap<>();
         data.put("view", "raw");
         data.put("page", "projectcheck");
         data.put("iview", "json");
-        data.put("project_name",strName );
+        data.put("project_name", strName);
 
         Call<ArrayList<AvailabilityCheckData>> loginCall = apiInterface.availabilityCheck(data);
         loginCall.enqueue(new Callback<ArrayList<AvailabilityCheckData>>() {
             @Override
             public void onResponse(Call<ArrayList<AvailabilityCheckData>> call, Response<ArrayList<AvailabilityCheckData>> response) {
 
-                if (response.body() != null)
-                {
+                if (response.body() != null) {
 
                     ArrayList<AvailabilityCheckData> newarr = response.body();
                     AvailabilityAdapter availabilityAdapter = new AvailabilityAdapter(ProjectDetailsActivity.this, newarr);
-                 //    Toast.makeText(ProjectDetailsActivity.this, "datafound", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(ProjectDetailsActivity.this, "datafound", Toast.LENGTH_SHORT).show();
 
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<AvailabilityCheckData>> call, Throwable t)
-            {
-                Log.i("data","value");
-              //  Toast.makeText(ProjectDetailsActivity.this, R.string.datanotfound, Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ArrayList<AvailabilityCheckData>> call, Throwable t) {
+                Log.i("data", "value");
+                //  Toast.makeText(ProjectDetailsActivity.this, R.string.datanotfound, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -264,6 +245,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class getProjectDetailsData extends AsyncTask<String, String, String> {
         private Dialog dialog;
 
@@ -275,7 +257,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
@@ -283,7 +265,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("id", catId);
             return new MakeServiceCall().MakeServiceCall(Constant.BASE_URL + "property_pic.php", data);
         }
@@ -293,7 +275,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
 //            Log.d("Response", "" + s);
             dialog.dismiss();
             try {
-                JSONObject object = new JSONObject(s.toString());
+                JSONObject object = new JSONObject(s);
                 if (object.getString("successful").equalsIgnoreCase("true")) {
                     Glide.with(ProjectDetailsActivity.this).load(object.getString("image")).into(ivImagePro);
                 }
@@ -303,6 +285,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getProjectPics extends AsyncTask<String, String, String> {
         private Dialog dialog;
 
@@ -315,43 +298,36 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
             imgList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
-            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "?view=raw&page=picturelist&iview=json&id=" +imgId);
+        protected String doInBackground(String... params) {
+            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "?view=raw&page=picturelist&iview=json&id=" + imgId);
         }
 
         @Override
-        protected void onPostExecute(String s)
-        {
+        protected void onPostExecute(String s) {
             dialog.dismiss();
             try {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("successful").equalsIgnoreCase("true"))
-                {
+                JSONObject object = new JSONObject(s);
+                if (object.getString("successful").equalsIgnoreCase("true")) {
                     JSONArray array = object.getJSONArray("image");
-                    for (int i = 0; i < array.length(); i++)
-                    {
+                    for (int i = 0; i < array.length(); i++) {
                         imgList.add(array.getString(i));
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(!imgList.isEmpty())
-            {
-                adapter = new ProjectImageAdapter(ProjectDetailsActivity.this, imgList);
+            if (!imgList.isEmpty()) {
+                ProjectImageAdapter adapter = new ProjectImageAdapter(ProjectDetailsActivity.this, imgList);
                 gvImage.setAdapter(adapter);
-            }
-            else
-            {
-               // Toast.makeText(ProjectDetailsActivity.this, "Image not available.", Toast.LENGTH_SHORT).show();
+            } else {
+                // Toast.makeText(ProjectDetailsActivity.this, "Image not available.", Toast.LENGTH_SHORT).show();
             }
         }
 

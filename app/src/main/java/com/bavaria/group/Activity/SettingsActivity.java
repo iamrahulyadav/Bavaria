@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +17,12 @@ import com.bavaria.group.Util.Utils;
 public class SettingsActivity extends BaseAppCompactActivity implements View.OnClickListener {
     TextView uName;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        uName = (TextView) findViewById(R.id.tvUserName_SettingsActivity);
+        uName = findViewById(R.id.tvUserName_SettingsActivity);
         if (Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_LOGGEDIN).equalsIgnoreCase("1")) {
             Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_UNAME);
             uName.setText(Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_UNAME));

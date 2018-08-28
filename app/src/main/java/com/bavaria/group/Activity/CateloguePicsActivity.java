@@ -1,6 +1,5 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by archirayan1 on 6/29/2016.
@@ -26,25 +24,20 @@ import java.util.List;
 public class CateloguePicsActivity extends BaseAppCompactActivity {
     public static ArrayList<String> imgList;
     String ArrayString;
-    List<String> items;
     JSONArray jsonArray;
-    private ImageView ivBack;
     private GridView gvPicsList;
-    private PhotoVideoImageAdapter adapter;
-    private String imgId = "";
-    private String category_id = "";
-    private String[] catelogueImagelist;
-    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_video_pics);
-        ivBack = (ImageView) findViewById(R.id.ivBack_PhotoVideoPicsActivity);
-        gvPicsList = (GridView) findViewById(R.id.gvImage_PhotoVideoPicsActivity);
+        ImageView ivBack = findViewById(R.id.ivBack_PhotoVideoPicsActivity);
+        gvPicsList = findViewById(R.id.gvImage_PhotoVideoPicsActivity);
         ArrayString = "";
         Bundle b = getIntent().getExtras();
-        ArrayString = b.getString("image");
+        if (b != null) {
+            ArrayString = b.getString("image");
+        }
         try {
             jsonArray = new JSONArray(ArrayString);
         } catch (JSONException e) {
@@ -80,7 +73,7 @@ public class CateloguePicsActivity extends BaseAppCompactActivity {
         });
 
         if (Utils.isOnline(getApplicationContext())) {
-            status = Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_PHOTO_OR_VIDEO);
+            String status = Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_PHOTO_OR_VIDEO);
             setCatalogueImageData();
         } else {
             Toast.makeText(CateloguePicsActivity.this, "No internet connectivity found, Please check your internet connection", Toast.LENGTH_SHORT).show();
@@ -89,7 +82,7 @@ public class CateloguePicsActivity extends BaseAppCompactActivity {
     }
 
     private void setCatalogueImageData() {
-        imgList = new ArrayList<String>();
+        imgList = new ArrayList<>();
 //        Toast.makeText(CateloguePicsActivity.this, ""+catelogueImagelist.length , Toast.LENGTH_SHORT).show();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
@@ -101,7 +94,7 @@ public class CateloguePicsActivity extends BaseAppCompactActivity {
         }
 //        Log.e("TOTAL IMAGES", "" + imgList.size());
         if (imgList.size() > 0) {
-            adapter = new PhotoVideoImageAdapter(CateloguePicsActivity.this, imgList);
+            PhotoVideoImageAdapter adapter = new PhotoVideoImageAdapter(CateloguePicsActivity.this, imgList);
             gvPicsList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

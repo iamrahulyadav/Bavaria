@@ -1,8 +1,8 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -25,8 +25,7 @@ public class ForgotPasswordActivity extends BaseAppCompactActivity implements Vi
     public String str_CivilId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         init();
@@ -36,10 +35,10 @@ public class ForgotPasswordActivity extends BaseAppCompactActivity implements Vi
     }
 
     private void init() {
-        backImage = (TextView) findViewById(R.id.activity_login_back);
-        userNameEdt = (EditText) findViewById(R.id.activity_login_username);
-        btnForgot = (TextView) findViewById(R.id.activity_btnforgotpsw);
-        utils=new Utils();
+        backImage = findViewById(R.id.activity_login_back);
+        userNameEdt = findViewById(R.id.activity_login_username);
+        btnForgot = findViewById(R.id.activity_btnforgotpsw);
+        utils = new Utils();
     }
 
 
@@ -57,57 +56,46 @@ public class ForgotPasswordActivity extends BaseAppCompactActivity implements Vi
         }
     }
 
-    private void forgotPassword()
-    {
-            if(userNameEdt.getText().toString().trim().equalsIgnoreCase(""))
-            {
-                Toast.makeText(this, "Please insert Civil Id", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                new forgetpasswordApi().execute();
-            }
+    private void forgotPassword() {
+        if (userNameEdt.getText().toString().trim().equalsIgnoreCase("")) {
+            Toast.makeText(this, "Please insert Civil Id", Toast.LENGTH_SHORT).show();
+        } else {
+            new forgetpasswordApi().execute();
+        }
     }
 
-    private class forgetpasswordApi extends AsyncTask<String,String,String>
-    {
+    @SuppressLint("StaticFieldLeak")
+    private class forgetpasswordApi extends AsyncTask<String, String, String> {
         public ProgressDialog pd;
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
-            pd=new ProgressDialog(ForgotPasswordActivity.this);
+            pd = new ProgressDialog(ForgotPasswordActivity.this);
             pd.setMessage("Loading...");
             pd.setCancelable(false);
             pd.show();
         }
 
         @Override
-        protected String doInBackground(String... strings)
-        {
-            str_CivilId=userNameEdt.getText().toString().trim();
-            return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&iaction=forget&civil_id="+str_CivilId);
+        protected String doInBackground(String... strings) {
+            str_CivilId = userNameEdt.getText().toString().trim();
+            return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&iaction=forget&civil_id=" + str_CivilId);
         }
 
         @Override
-        protected void onPostExecute(String s)
-        {
+        protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
             try {
-                JSONObject jsonObject=new JSONObject(s.toString());
-                if(jsonObject.getString("successful").equalsIgnoreCase("true"))
-                {
+                JSONObject jsonObject = new JSONObject(s);
+                if (jsonObject.getString("successful").equalsIgnoreCase("true")) {
                     Toast.makeText(ForgotPasswordActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(ForgotPasswordActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                 }
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

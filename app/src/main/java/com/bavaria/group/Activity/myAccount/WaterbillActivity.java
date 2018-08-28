@@ -1,11 +1,12 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +18,7 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.WaterBillDataPojo;
-import com.bavaria.group.retrofit.Model.WaterBillPojo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +26,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class WaterbillActivity extends BaseAppCompactActivity {
 
@@ -47,9 +41,9 @@ public class WaterbillActivity extends BaseAppCompactActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waterbill);
 
-        recyclerView = (RecyclerView) findViewById(R.id.waterbill_recyclerview);
-        ivBack = (TextView) findViewById(R.id.waterbill_btnBack);
-        ivLogout = (ImageView) findViewById(R.id.waterbill_logout);
+        recyclerView = findViewById(R.id.waterbill_recyclerview);
+        ivBack = findViewById(R.id.waterbill_btnBack);
+        ivLogout = findViewById(R.id.waterbill_logout);
 
         waterBillDataPojos = new ArrayList<>();
 
@@ -62,8 +56,7 @@ public class WaterbillActivity extends BaseAppCompactActivity {
 
         ivLogout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Utils.getPopupWindow(WaterbillActivity.this);
             }
         });
@@ -77,42 +70,7 @@ public class WaterbillActivity extends BaseAppCompactActivity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
-    public void callWaterBill() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("page", "wb");
-        data.put("iview", "json");
-        data.put("id", Utils.ReadSharePrefrence(WaterbillActivity.this, Constant.CIVIT_ID));
-
-        Call<WaterBillPojo> loginCall = apiInterface.waterBill(data);
-        loginCall.enqueue(new Callback<WaterBillPojo>() {
-            @Override
-            public void onResponse(Call<WaterBillPojo> call, Response<WaterBillPojo> response) {
-
-                if (response.body() != null) {
-
-                    WaterBillPojo waterBillPojo = response.body();
-                    waterBillDataPojos = waterBillPojo.getData();
-
-                    if (waterBillPojo.getStatus().equalsIgnoreCase("true")) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(WaterbillActivity.this, LinearLayoutManager.VERTICAL, false));
-                        waterBillAdapter = new WaterBillAdapter(WaterbillActivity.this, waterBillDataPojos);
-
-                        recyclerView.setAdapter(waterBillAdapter);
-                    }
-                } else {
-                    Toast.makeText(WaterbillActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WaterBillPojo> call, Throwable t) {
-                Toast.makeText(WaterbillActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    @SuppressLint("StaticFieldLeak")
     public class callWaterBill extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -127,12 +85,13 @@ public class WaterbillActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("page", "wb");
             data.put("iview", "json");
             data.put("id", Utils.ReadSharePrefrence(WaterbillActivity.this, Constant.CIVIT_ID));
+            Log.e("TAG", "" + Constant.NEW_BASE_URL + "/index.php?" + data);
             return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/index.php?", data);
         }
 
@@ -146,7 +105,7 @@ public class WaterbillActivity extends BaseAppCompactActivity {
                 if (object.getString("status").equalsIgnoreCase("true")) {
 
                     JSONArray jsonArray = object.getJSONArray("data");
-                    JSONObject explrObject = null;
+                    JSONObject explrObject;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         explrObject = jsonArray.getJSONObject(i);
 

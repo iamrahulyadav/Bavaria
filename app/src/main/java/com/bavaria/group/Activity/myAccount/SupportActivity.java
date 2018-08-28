@@ -2,7 +2,6 @@ package com.bavaria.group.Activity.myAccount;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,31 +21,30 @@ public class SupportActivity extends BaseAppCompactActivity implements View.OnCl
     TextView tvCallus, tvBack, tvCancel;
     LinearLayout llChat, llOpenTicket, llMyTicket, llFaq;
     ImageView ivLogout;
-    TextView myAcc_tvName,myAcc_tvEmail;
+    TextView myAcc_tvName, myAcc_tvEmail;
 
     RelativeLayout llBottom;
     RecyclerView contactRecycler;
     SupportContactAdapter supportContactAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
 
-        tvCallus = (TextView) findViewById(R.id.support_callus);
-        llChat = (LinearLayout) findViewById(R.id.support_llChat);
-        llOpenTicket = (LinearLayout) findViewById(R.id.support_llOpenTicket);
-        llMyTicket = (LinearLayout) findViewById(R.id.support_llMyTicket);
-        llFaq = (LinearLayout) findViewById(R.id.support_llFaq);
-        contactRecycler = (RecyclerView) findViewById(R.id.openticket_contactlist);
-        tvCancel = (TextView) findViewById(R.id.openticket_btnCancel);
-        llBottom = (RelativeLayout) findViewById(R.id.llBottom);
+        tvCallus = findViewById(R.id.support_callus);
+        llChat = findViewById(R.id.support_llChat);
+        llOpenTicket = findViewById(R.id.support_llOpenTicket);
+        llMyTicket = findViewById(R.id.support_llMyTicket);
+        llFaq = findViewById(R.id.support_llFaq);
+        contactRecycler = findViewById(R.id.openticket_contactlist);
+        tvCancel = findViewById(R.id.openticket_btnCancel);
+        llBottom = findViewById(R.id.llBottom);
 
-        tvBack = (TextView) findViewById(R.id.support_btnBack);
-        ivLogout = (ImageView) findViewById(R.id.support_logout);
-        myAcc_tvName= (TextView) findViewById(R.id.myAcc_tvName);
-        myAcc_tvEmail= (TextView) findViewById(R.id.myAcc_tvEmail);
+        tvBack = findViewById(R.id.support_btnBack);
+        ivLogout = findViewById(R.id.support_logout);
+        myAcc_tvName = findViewById(R.id.myAcc_tvName);
+        myAcc_tvEmail = findViewById(R.id.myAcc_tvEmail);
         contactRecycler.setLayoutManager(new LinearLayoutManager(SupportActivity.this, LinearLayoutManager.VERTICAL, false));
         supportContactAdapter = new SupportContactAdapter(SupportActivity.this);
         contactRecycler.setAdapter(supportContactAdapter);
@@ -67,8 +65,7 @@ public class SupportActivity extends BaseAppCompactActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.support_callus:
                 llBottom.setVisibility(View.VISIBLE);
                 break;
@@ -122,8 +119,7 @@ public class SupportActivity extends BaseAppCompactActivity implements View.OnCl
 
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }

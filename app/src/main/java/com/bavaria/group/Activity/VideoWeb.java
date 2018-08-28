@@ -13,7 +13,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bavaria.group.R;
 
@@ -31,21 +30,27 @@ public class VideoWeb extends AppCompatActivity implements AdvancedWebView.Liste
     String vid, proName, proDesc;
     AdvancedWebView mWebView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videoweb);
         Bundle extras = getIntent().getExtras();
-        vid = extras.getString("video");
-        proName = extras.getString("pro_name");
-        proDesc = extras.getString("pro_small_desc");
+        if (extras != null) {
+            vid = extras.getString("video");
+        }
+        if (extras != null) {
+            proName = extras.getString("pro_name");
+            proDesc = extras.getString("pro_small_desc");
 
-        mWebView = (AdvancedWebView) findViewById(R.id.wvVideo_VideoWeb);
+        }
+
+        mWebView = findViewById(R.id.wvVideo_VideoWeb);
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
 //        proNameTxt = (TextView) findViewById(R.id.activity_videoweb_pro_name_Txt);
 //        descTxt = (TextView) findViewById(R.id.activity_videoweb_desc_Txt);
-        icBackImg = (ImageView) findViewById(R.id.activity_videoweb_icBack_Img);
+        icBackImg = findViewById(R.id.activity_videoweb_icBack_Img);
         icBackImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

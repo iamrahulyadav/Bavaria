@@ -2,7 +2,6 @@ package com.bavaria.group.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,15 +20,15 @@ public class ConfirmPaymentActivity extends BaseAppCompactActivity {
 
         intent = getIntent();
 
-        tvProjectnm = (TextView) findViewById(R.id.project_nm);
-        tvpaymenttype = (TextView) findViewById(R.id.paymenttype_nm);
-        tvPay = (TextView) findViewById(R.id.btnPay_confirmPayment);
-        tvTotal = (TextView) findViewById(R.id.confirmPayment_Amount);
-        tvBack = (TextView) findViewById(R.id.btnBack_confirmPayment);
-        tvBuilding = (TextView) findViewById(R.id.building_nm);
-        tvFLoor = (TextView) findViewById(R.id.floor_nm);
-        tvFlat = (TextView) findViewById(R.id.flat_nm);
-        tvAmt = (TextView) findViewById(R.id.amount);
+        tvProjectnm = findViewById(R.id.project_nm);
+        tvpaymenttype = findViewById(R.id.paymenttype_nm);
+        tvPay = findViewById(R.id.btnPay_confirmPayment);
+        tvTotal = findViewById(R.id.confirmPayment_Amount);
+        tvBack = findViewById(R.id.btnBack_confirmPayment);
+        tvBuilding = findViewById(R.id.building_nm);
+        tvFLoor = findViewById(R.id.floor_nm);
+        tvFlat = findViewById(R.id.flat_nm);
+        tvAmt = findViewById(R.id.amount);
 
         tvProjectnm.setText(intent.getStringExtra("project name"));
         tvpaymenttype.setText(intent.getStringExtra("payment type"));

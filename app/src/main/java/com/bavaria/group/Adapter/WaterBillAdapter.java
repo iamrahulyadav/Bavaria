@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bavaria.group.Activity.myAccount.PayNowActivity;
+import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.R;
+import com.bavaria.group.Util.Utils;
 import com.bavaria.group.retrofit.Model.WaterBillDataPojo;
 
 import java.util.ArrayList;
@@ -63,7 +65,11 @@ public class WaterBillAdapter extends RecyclerView.Adapter<WaterBillAdapter.myVi
                     intent.putExtra("pay Amount", holder.etTotalAmt.getText().toString());
                     intent.putExtra("bill id", arrayList.get(position).getBill_id());
                     intent.putExtra("building id", arrayList.get(position).getBuilding_id());
-                    intent.putExtra("payment type", "3");
+                    intent.putExtra("payment type", "Water Bill");
+
+                    intent.putExtra("name", Utils.ReadSharePrefrence(context, Constant.USERNAME));
+                    intent.putExtra("Email_id", Utils.ReadSharePrefrence(context, Constant.EMAIL));
+                    intent.putExtra("phoneNumber", Utils.ReadSharePrefrence(context, Constant.PHONENUMBER));
                     context.startActivity(intent);
                 }
             }
@@ -72,27 +78,25 @@ public class WaterBillAdapter extends RecyclerView.Adapter<WaterBillAdapter.myVi
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return arrayList.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder
-    {
+    public class myViewHolder extends RecyclerView.ViewHolder {
         TextView tvProjectName, tvBuildingNm, tvFloorName, tvFlatNm, tvExpiry, tvAmt, tvPAy;
         EditText etTotalAmt;
-        public myViewHolder(View itemView)
-        {
+
+        public myViewHolder(View itemView) {
             super(itemView);
 
-            tvProjectName = (TextView) itemView.findViewById(R.id.waterbill_tvProjectNm);
-            tvBuildingNm = (TextView) itemView.findViewById(R.id.waterbill_tvBuildingNm);
-            tvFloorName = (TextView) itemView.findViewById(R.id.waterbill_tvFloorNm);
-            tvFlatNm = (TextView) itemView.findViewById(R.id.waterbill_tvFlatNm);
-            tvExpiry = (TextView) itemView.findViewById(R.id.waterbill_tvExpiry);
-            tvAmt = (TextView) itemView.findViewById(R.id.waterbill_tvAmount);
-            tvPAy = (TextView) itemView.findViewById(R.id.waterbill_tvPay);
-            etTotalAmt = (EditText) itemView.findViewById(R.id.waterbill_tvTotalAmount);
+            tvProjectName = itemView.findViewById(R.id.waterbill_tvProjectNm);
+            tvBuildingNm = itemView.findViewById(R.id.waterbill_tvBuildingNm);
+            tvFloorName = itemView.findViewById(R.id.waterbill_tvFloorNm);
+            tvFlatNm = itemView.findViewById(R.id.waterbill_tvFlatNm);
+            tvExpiry = itemView.findViewById(R.id.waterbill_tvExpiry);
+            tvAmt = itemView.findViewById(R.id.waterbill_tvAmount);
+            tvPAy = itemView.findViewById(R.id.waterbill_tvPay);
+            etTotalAmt = itemView.findViewById(R.id.waterbill_tvTotalAmount);
 
         }
     }

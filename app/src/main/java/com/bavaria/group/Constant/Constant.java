@@ -13,6 +13,7 @@ public class Constant {
     public static String CIVIT_ID = "civil_id";
     public static String ID = "id";
     public static String EMAIL = "email";
+    public static String PHONENUMBER = "phonenumber";
     public static String BUILDING_ID = "building_id";
     public static String TOTAL_AMT = "total_amt";
     public static String INSTALLMENT_ID = "installment_id";
@@ -23,10 +24,12 @@ public class Constant {
 
     public static String CHECK_CLICK ="check_click";
 
-
+    public static String PROJECT_NAME = "project_name";
+    public static String FLOOR_NAME = "floor_name";
+    public static String FLAT_NAME = "flat_name";
 
     //old
-    public static String AppName = "Bavarai";
+    public static String AppName = "Bavaria";
     public static String USERID = "UserId";
     public static String USERROLE = "UserRole";
     public static String BASE_URL_HIRE_HOPE = "https://bavariagroup.net/index.php/en/?option=com_hoicoiapi&task=";
@@ -44,6 +47,7 @@ public class Constant {
     public static class SHRED_PR {
         public static final String SHARE_PREF = AppName + "_preferences";
         public static final String KEY_IS_LOGGEDIN = "islogin";
+        public static final String IS_SHOWN = "is_shown";
         public static final String KEY_IS_UNAME = "uname";
         public static final String KEY_IS_EMAIL = "uemail";
         public static final String KEY_IS_ID = "uid";

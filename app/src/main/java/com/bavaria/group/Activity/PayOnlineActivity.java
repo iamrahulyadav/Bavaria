@@ -1,7 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,8 +39,11 @@ import static com.bavaria.group.Adapter.PayOnlineAdapter.pos1;
 import static com.bavaria.group.Adapter.PayOnlineAdapter.verifyUserDataa;
 import static com.bavaria.group.Constant.Constant.BUILDING_ID;
 import static com.bavaria.group.Constant.Constant.CHECK_CLICK;
+import static com.bavaria.group.Constant.Constant.FLAT_NAME;
+import static com.bavaria.group.Constant.Constant.FLOOR_NAME;
 import static com.bavaria.group.Constant.Constant.INSTALLMENT_ID;
 import static com.bavaria.group.Constant.Constant.MEMBERSHIP_ID;
+import static com.bavaria.group.Constant.Constant.PROJECT_NAME;
 import static com.bavaria.group.Constant.Constant.WATERBILL_ID;
 
 /**
@@ -53,7 +55,9 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
 
     public static ArrayAdapter<String> paymentAdapter;
     public static ArrayAdapter<String> othersnameAdapter;
+    @SuppressLint("StaticFieldLeak")
     public static TextView tvPAyNow, tvTotal;
+    @SuppressLint("StaticFieldLeak")
     public static Spinner spPaymentTowards, spPaymentType;
     Intent intent;
     ArrayList<verifyUserData> verifyUserData;
@@ -65,9 +69,12 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
     ImageView ivLogout;
     String bill_id = "";
     LinearLayout payonline_llMain, payonline_llpaymentType, payonline_llpaymentTotal;
-    String stretAmount, strBuildingId, strPaymentTowards, strPaymentType;
+    String name;
+    String strBuildingId;
+    String strPaymentType;
     String[] paymentTowards = {"Yearly Maintenance", "Water Bill", "Others"};
     ArrayList<String> othersNameArraylist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +84,23 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
         intent = getIntent();
         verifyUserData = (ArrayList<verifyUserData>) intent.getSerializableExtra("projectlist");
         civilid = intent.getStringExtra("civil_id");
+        name = intent.getStringExtra("name");
 
-        etAmt = (EditText) findViewById(R.id.payonline_etAmount);
-        tvPAyNow = (TextView) findViewById(R.id.payonline_tvSubmit);
-        tvTotal = (TextView) findViewById(R.id.payonline_tvTotalAmt);
-        tvBack = (TextView) findViewById(R.id.payonline_btnBack);
-        ivLogout = (ImageView) findViewById(R.id.payonline_ivLogout);
+        etAmt = findViewById(R.id.payonline_etAmount);
+        tvPAyNow = findViewById(R.id.payonline_tvSubmit);
+        tvTotal = findViewById(R.id.payonline_tvTotalAmt);
+        tvBack = findViewById(R.id.payonline_btnBack);
+        ivLogout = findViewById(R.id.payonline_ivLogout);
 
-        recyclerView = (RecyclerView) findViewById(R.id.payonline_recyclerview);
-        spPaymentTowards = (Spinner) findViewById(R.id.payonline_spPriority);
-        spPaymentType = (Spinner) findViewById(R.id.payonline_spPaymentType);
-        payonline_llMain = (LinearLayout) findViewById(R.id.payonline_llMain);
-        payonline_llpaymentType = (LinearLayout) findViewById(R.id.ll_paymentType);
-        payonline_llpaymentTotal = (LinearLayout) findViewById(R.id.ll_paymentTotal);
+        recyclerView = findViewById(R.id.payonline_recyclerview);
+        spPaymentTowards = findViewById(R.id.payonline_spPriority);
+        spPaymentType = findViewById(R.id.payonline_spPaymentType);
+        payonline_llMain = findViewById(R.id.payonline_llMain);
+        payonline_llpaymentType = findViewById(R.id.ll_paymentType);
+        payonline_llpaymentTotal = findViewById(R.id.ll_paymentTotal);
         othersNameArraylist = new ArrayList<>();
+        PayOnlineAdapter.lastCheckedPosition = -1;
+        PayOnlineAdapter.lastCheckedPosition1 = -1;
 
         spPaymentTowards.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -100,10 +110,10 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                     payonline_llpaymentTotal.setVisibility(View.VISIBLE);
                     payonline_llpaymentType.setVisibility(View.GONE);
 
-                    tvTotal.setText(verifyUserDataa.get(pos1).getTotal_amount());
+                    tvTotal.setText(verifyUserDataa.get(pos1).getFees());
                     othersNameArraylist.clear();
                     strPaymentType = spPaymentTowards.getSelectedItem().toString();
-                    othersnameAdapter = new ArrayAdapter<String>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
+                    othersnameAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
                     spPaymentType.setAdapter(othersnameAdapter);
 
                 } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Water Bill")) {
@@ -115,7 +125,7 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                     othersNameArraylist.clear();
                     strPaymentType = spPaymentTowards.getSelectedItem().toString();
 
-                    othersnameAdapter = new ArrayAdapter<String>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
+                    othersnameAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
                     spPaymentType.setAdapter(othersnameAdapter);
 
                 } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Others")) {
@@ -126,7 +136,6 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                     new GetOtherName().execute();
 
                 }
-
             }
 
             @Override
@@ -137,13 +146,12 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
 
         strBuildingId = Utils.ReadSharePrefrence(PayOnlineActivity.this, BUILDING_ID);
 
-        paymentAdapter = new ArrayAdapter<String>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, paymentTowards);
+        paymentAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, paymentTowards);
         spPaymentTowards.setAdapter(paymentAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(PayOnlineActivity.this, LinearLayoutManager.HORIZONTAL, false));
         payOnlineAdapter = new PayOnlineAdapter(PayOnlineActivity.this, verifyUserData);
         recyclerView.setAdapter(payOnlineAdapter);
-
 
         ivLogout.setOnClickListener(this);
         tvBack.setOnClickListener(this);
@@ -154,7 +162,6 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // String code1 = othersnameAdapter.getItem(position).toString();
                 strPaymentType = spPaymentType.getSelectedItem().toString();
-
             }
 
             @Override
@@ -169,14 +176,13 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
 
         switch (v.getId()) {
 
-            case R.id.payOnline_btnBack:
-                onBackPressed();
-                break;
+//            case R.id.payOnline_btnBack:
+//                onBackPressed();
+//                break;
 
             case R.id.payonline_ivLogout:
                 Utils.getPopupWindow(PayOnlineActivity.this);
                 break;
-
 
             case R.id.payonline_btnBack:
                 finish();
@@ -185,9 +191,10 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
             case R.id.payonline_tvSubmit:
                 String STR_CLICK = Utils.ReadSharePrefrence(PayOnlineActivity.this, CHECK_CLICK);
                 if (!etAmt.getText().toString().equals("")) {
-                     if (!etAmt.getText().toString().equals("0")) {
-                         Log.e("Clicked","button"+ STR_CLICK);
+                    if (!etAmt.getText().toString().equals("0")) {
+                        Log.e("Clicked", "button" + STR_CLICK);
                         if (STR_CLICK.equals("true")) {
+
                             if (spPaymentTowards.getSelectedItemPosition() == 0) {
                                 bill_id = Utils.ReadSharePrefrence(PayOnlineActivity.this, INSTALLMENT_ID);
                             } else if (spPaymentTowards.getSelectedItemPosition() == 1) {
@@ -201,16 +208,22 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                             intent.putExtra("civil_id", civilid);
                             intent.putExtra("pay Amount", etAmt.getText().toString());
                             intent.putExtra("bill id", bill_id);
+                            intent.putExtra("name", name);
+                            intent.putExtra("Email_id", Utils.ReadSharePrefrence(PayOnlineActivity.this, Constant.EMAIL));
+                            intent.putExtra("phoneNumber", Utils.ReadSharePrefrence(PayOnlineActivity.this, Constant.PHONENUMBER));
                             intent.putExtra("building id", strBuildingId);
                             intent.putExtra("payment type", strPaymentType);
+                            intent.putExtra("project_name", Utils.ReadSharePrefrence(PayOnlineActivity.this, PROJECT_NAME));
+                            intent.putExtra("floor_name", Utils.ReadSharePrefrence(PayOnlineActivity.this, FLOOR_NAME));
+                            intent.putExtra("flat_name", Utils.ReadSharePrefrence(PayOnlineActivity.this, FLAT_NAME));
                             startActivity(intent);
                             overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
                             break;
 
                         } else {
-                           // Toast.makeText(this, "Please select your flat", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(this, "Please select your flat", Toast.LENGTH_SHORT).show();
 
-                              Snackbar.make(payonline_llMain, "Please select your flat", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(payonline_llMain, "Please select your flat", Snackbar.LENGTH_SHORT).show();
                         }
                     } else {
                         etAmt.setError("Please Enter Valid Amount");
@@ -222,15 +235,22 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // PayOnlineAdapter.lastCheckedPosition = -1;
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
-        PayOnlineAdapter.lastCheckedPosition=-1;
-        PayOnlineAdapter.lastCheckedPosition1=-1;
+        //startActivity(new Intent(PayOnlineActivity.this,MyAccountActivity.class));
+        PayOnlineAdapter.lastCheckedPosition = -1;
+        PayOnlineAdapter.lastCheckedPosition1 = -1;
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class GetOtherName extends AsyncTask<String, String, String> {
-        ProgressDialog pd;
 
         @Override
         protected void onPreExecute() {
@@ -244,7 +264,7 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
         //   https://www.bavariagroup.net/index.php?view=raw&page=payment_type_list&iview=json
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("page", "payment_type_list");
@@ -262,14 +282,14 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                     othersNameArraylist.clear();
 
                     JSONArray jsonArray = object.getJSONArray("data");
-                    JSONObject explrObject = null;
+                    JSONObject explrObject;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         explrObject = jsonArray.getJSONObject(i);
                         GetOthersNameClass objOthers = new GetOthersNameClass();
                         objOthers.setO_Name(explrObject.getString("name"));
                         objOthers.setO_Id(explrObject.getString("id"));
-                        othersNameArraylist.add(objOthers.getO_Name().toString());
-                        othersnameAdapter = new ArrayAdapter<String>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
+                        othersNameArraylist.add(objOthers.getO_Name());
+                        othersnameAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
                         spPaymentType.setAdapter(othersnameAdapter);
 
                     }

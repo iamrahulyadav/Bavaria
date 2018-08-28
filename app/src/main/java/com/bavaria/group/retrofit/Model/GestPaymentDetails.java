@@ -1,20 +1,8 @@
 package com.bavaria.group.retrofit.Model;
 
-import java.io.Serializable;
+public class GestPaymentDetails {
 
-/**
- * Created by Archirayan on 06-Jul-17.
- * Archirayan Infotech pvt Ltd
- * dilip.bakotiya@gmail.com || info@archirayan.com
- */
-
-
-public class verifyUserData implements Serializable{
-
-    String total_amount, water_bil, fees, project_name, building_name, floor_name, flat_name, building_id,
-            installment_id, waterbill_id, fees_id, firstname, lastname;
-
-    private boolean isSelceted;
+    String total_amount, water_bil, Id, fees, project_name, floor_name, building_name, flat_name, building_id, installment_id, waterbill_id, fees_id;
 
     public String getTotal_amount() {
         return total_amount;
@@ -30,6 +18,14 @@ public class verifyUserData implements Serializable{
 
     public void setWater_bil(String water_bil) {
         this.water_bil = water_bil;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public String getFees() {
@@ -48,20 +44,20 @@ public class verifyUserData implements Serializable{
         this.project_name = project_name;
     }
 
-    public String getBuilding_name() {
-        return building_name;
-    }
-
-    public void setBuilding_name(String building_name) {
-        this.building_name = building_name;
-    }
-
     public String getFloor_name() {
         return floor_name;
     }
 
     public void setFloor_name(String floor_name) {
         this.floor_name = floor_name;
+    }
+
+    public String getBuilding_name() {
+        return building_name;
+    }
+
+    public void setBuilding_name(String building_name) {
+        this.building_name = building_name;
     }
 
     public String getFlat_name() {
@@ -102,29 +98,5 @@ public class verifyUserData implements Serializable{
 
     public void setFees_id(String fees_id) {
         this.fees_id = fees_id;
-    }
-
-    public boolean isSelected() {
-        return isSelceted;
-    }
-
-    public void setSelected(boolean isSelceted) {
-        isSelceted = isSelceted;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 }

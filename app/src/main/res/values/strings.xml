@@ -44,6 +44,12 @@ AIzaSyAqWwxGWSOJdlSmCWZ9CHe6evHOLKv98YA </string>
     <string name="Forgot_Your_Password">Forgot Your Password?</string>
     <string name="back">Back</string>
 
+    <string name="name">Name</string>
+    <string name="phoneno">Phone No.</string>
+    <string name="email_id">Email ID</string>
+    <string name="civil_idd">Civil ID</string>
+    <string name="amounttopay">Amount to Pay</string>
+
     <!-- Main screen -->
     <string name="projects">Projects</string>
     <string name="pay_online">Pay Online</string>
@@ -107,6 +113,8 @@ AIzaSyAqWwxGWSOJdlSmCWZ9CHe6evHOLKv98YA </string>
     <string name="open_ticket">Open Ticket</string>
     <string name="please_select_your_flat">Please Select your flat!</string>
     <string name="submit">Submit</string>
+    <string name="payasguest">Pay as Guest</string>
+    <string name="guestinfo">If you not register user click Below...!</string>
 
     <!-- payment confirm screen -->
     <string name="payment_confirm">Payment Confirm</string>

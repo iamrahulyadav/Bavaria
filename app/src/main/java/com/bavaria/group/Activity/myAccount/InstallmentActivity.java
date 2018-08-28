@@ -1,9 +1,9 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,10 +17,7 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.InstallmentDataPojo;
-import com.bavaria.group.retrofit.Model.InstallmentPojo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +25,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InstallmentActivity extends BaseAppCompactActivity {
 
@@ -47,9 +40,9 @@ public class InstallmentActivity extends BaseAppCompactActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installment);
 
-        recyclerView = (RecyclerView) findViewById(R.id.installment_recyclerview);
-        ivBack = (TextView) findViewById(R.id.installment_btnBack);
-        logout = (ImageView) findViewById(R.id.installment_logout);
+        recyclerView = findViewById(R.id.installment_recyclerview);
+        ivBack = findViewById(R.id.installment_btnBack);
+        logout = findViewById(R.id.installment_logout);
 
         installmentDataPojos = new ArrayList<>();
 
@@ -75,48 +68,13 @@ public class InstallmentActivity extends BaseAppCompactActivity {
         new callInstallment().execute();
     }
 
-    public void callInstallment() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("page", "inst");
-        data.put("iview", "json");
-        data.put("id", Utils.ReadSharePrefrence(InstallmentActivity.this, Constant.CIVIT_ID));
-
-        Call<InstallmentPojo> loginCall = apiInterface.installment(data);
-        loginCall.enqueue(new Callback<InstallmentPojo>() {
-            @Override
-            public void onResponse(Call<InstallmentPojo> call, Response<InstallmentPojo> response) {
-
-                if (response.body() != null) {
-
-                    InstallmentPojo installmentDataa = response.body();
-                    installmentDataPojos = installmentDataa.getData();
-
-                    if (installmentDataa.getStatus().equalsIgnoreCase("true")) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(InstallmentActivity.this, LinearLayoutManager.VERTICAL, false));
-                        installmentAdapter = new InstallmentAdapter(InstallmentActivity.this, installmentDataPojos);
-
-                        recyclerView.setAdapter(installmentAdapter);
-                    } else {
-                        Toast.makeText(InstallmentActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InstallmentPojo> call, Throwable t) {
-                Toast.makeText(InstallmentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callInstallment extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -132,7 +90,7 @@ public class InstallmentActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("page", "inst");
@@ -148,11 +106,10 @@ public class InstallmentActivity extends BaseAppCompactActivity {
             pd.dismiss();
 //            Log.e("RESPONSE",""+s);
             try {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("status").toString().equalsIgnoreCase("true"))
-                {
+                JSONObject object = new JSONObject(s);
+                if (object.getString("status").equalsIgnoreCase("true")) {
                     JSONArray jsonArray = object.getJSONArray("data");
-                    JSONObject explrObject = null;
+                    JSONObject explrObject;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         explrObject = jsonArray.getJSONObject(i);
 
@@ -175,7 +132,7 @@ public class InstallmentActivity extends BaseAppCompactActivity {
 
                     }
                 } else {
-                    Toast.makeText(InstallmentActivity.this, object.getString("msg").toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InstallmentActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

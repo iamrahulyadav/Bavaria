@@ -98,6 +98,15 @@
     <string name="open_ticket">تذكرة مفتوحة</string>
     <string name="please_select_your_flat">الرجاء اختيار الشقة الخاصة بك!</string>
     <string name="submit">عرض</string>
+    <string name="payasguest">ادفع كضيف</string>
+    <string name="guestinfo">إذا لم تقم بتسجيل المستخدم انقر أدناه ...!</string>
+
+
+    <string name="name">اسم</string>
+    <string name="phoneno">رقم الهاتف.</string>
+    <string name="email_id">عنوان الايميل</string>
+    <string name="civil_idd">البطاقة المدنية</string>
+    <string name="amounttopay">المبلغ للدفع</string>
 
     <!-- payment confirm screen -->
     <string name="payment_confirm">تأكيد الدفع</string>
@@ -182,6 +191,18 @@
     <string name="due_date">تاريخ الاستحقاق</string>
 
     <string name="expiry">انقضاء</string>
-
-
+    <string name="datanotfound">لم يتم العثور على بيانات.</string>
+    <string name="create">خلق</string>
+    <string name="support_timeout">ساعات العمل لدينا ساتوردي إلى الخميس: 9:00 حتي 05:00. السبت: 9 صباحا - 1 مساء</string>
+    <string name="payment">المدفوعات</string>
+    <string name="paymenttype">نوع الدفع</string>
+    <string name="prompt">حدد اختيارك ... </string>
+    <string name="myticketdetails"> إرسال وتتبع أي استفسارات معنا هنا ...</string>
+    <string name="detail"> يرجى ملء النموذج أدناه و \ n سوف نعود اليكم في أقرب وقت ممكن</string>
+    <string name="pinning_ads">ما هي عملية تثبيت الإعلانات؟</string>
+    <string name="crash_toast_text">مرحبا</string>
+    <string name="title_activity_maps">خريطة</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="map_keybavariyatest">
+AIzaSyAqWwxGWSOJdlSmCWZ9CHe6evHOLKv98YA </string>
 </resources>

@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -41,10 +41,8 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
     SpinnerAdapter adapter_project, adapter_building, adapter_floor, adapter_flat;
     ArrayList<String> projectList, builingList, floorList, flatList;
     private Spinner spProjectSelect, spBuildingSelect, spFlatSelect, spFloorSelect;
-    private ImageView ivBack;
     private EditText etName, etEmail, etDescription, etPhone;
     private String name, email, phone, description;
-    private Button btSubmit;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +74,14 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
     }
 
     private void setStartupData() {
-        builingList = new ArrayList<String>();
+        builingList = new ArrayList<>();
         builingList.clear();
         builingList.add("Make your selection...");
         adapter_building = new SpinnerAdapter(MaintenanceActivity.this, android.R.layout.simple_spinner_item, builingList);
         spBuildingSelect.setAdapter(adapter_building);
         adapter_building.notifyDataSetChanged();
 
-        floorList = new ArrayList<String>();
+        floorList = new ArrayList<>();
         floorList.clear();
         floorList.add("Make your selection...");
         adapter_floor = new SpinnerAdapter(MaintenanceActivity.this, android.R.layout.simple_spinner_item, floorList);
@@ -91,7 +89,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         adapter_floor.notifyDataSetChanged();
 
 
-        flatList = new ArrayList<String>();
+        flatList = new ArrayList<>();
         flatList.clear();
         flatList.add("Make your selection...");
         adapter_flat = new SpinnerAdapter(MaintenanceActivity.this, android.R.layout.simple_spinner_item, flatList);
@@ -101,18 +99,18 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
     }
 
     private void inIt() {
-        spProjectSelect = (Spinner) findViewById(R.id.spSelectProject_Maintenance);
-        spBuildingSelect = (Spinner) findViewById(R.id.spSelectBuilding_Maintenance);
-        spFloorSelect = (Spinner) findViewById(R.id.spSelectFloor_Maintenance);
-        spFlatSelect = (Spinner) findViewById(R.id.spSelectFlat_Maintenance);
+        spProjectSelect = findViewById(R.id.spSelectProject_Maintenance);
+        spBuildingSelect = findViewById(R.id.spSelectBuilding_Maintenance);
+        spFloorSelect = findViewById(R.id.spSelectFloor_Maintenance);
+        spFlatSelect = findViewById(R.id.spSelectFlat_Maintenance);
 
-        etName = (EditText) findViewById(R.id.etName_Maintainance);
-        etEmail = (EditText) findViewById(R.id.etEmail_Maintainance);
-        etPhone = (EditText) findViewById(R.id.etPhone_Maintainance);
-        etDescription = (EditText) findViewById(R.id.etDescription_Maintainance);
+        etName = findViewById(R.id.etName_Maintainance);
+        etEmail = findViewById(R.id.etEmail_Maintainance);
+        etPhone = findViewById(R.id.etPhone_Maintainance);
+        etDescription = findViewById(R.id.etDescription_Maintainance);
 
-        btSubmit = (Button) findViewById(R.id.btSubmit_Maintainance);
-        ivBack = (ImageView) findViewById(R.id.ivBack_Maintenance);
+        Button btSubmit = findViewById(R.id.btSubmit_Maintainance);
+        ImageView ivBack = findViewById(R.id.ivBack_Maintenance);
 
         spProjectSelect.setOnItemSelectedListener(this);
         spBuildingSelect.setOnItemSelectedListener(this);
@@ -248,6 +246,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getProject extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -258,9 +257,9 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            projectList = new ArrayList<String>();
+            projectList = new ArrayList<>();
             projectList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
@@ -279,7 +278,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
 
             try {
                 projectList.add(getResources().getString(R.string.prompt));
-                JSONArray array = new JSONArray(s.toString());
+                JSONArray array = new JSONArray(s);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     projectList.add(object.getString("category_name"));
@@ -295,6 +294,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getBuilding extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -305,9 +305,9 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            builingList = new ArrayList<String>();
+            builingList = new ArrayList<>();
             builingList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
@@ -315,7 +315,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         @Override
         protected String doInBackground(String... params) {
 //            https://www.bavariagroup.net/api/get_building_project.php?project_name=Aliya
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("project_name", ProjectSelect);
 //            Log.e(" projectName", ">>>>> " + ProjectSelect);
 
@@ -331,7 +331,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
 
             try {
                 builingList.add(getResources().getString(R.string.prompt));
-                JSONArray array = new JSONArray(s.toString());
+                JSONArray array = new JSONArray(s);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     builingList.add(object.getString("building_name"));
@@ -351,6 +351,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
 // project=aliya&building=Building%20A&floor=1&flat=A&name=archi&
 // phone=90075698&email=archirayan18@gmail.com&description=test123
 
+    @SuppressLint("StaticFieldLeak")
     private class getBlockList extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -361,9 +362,9 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            floorList = new ArrayList<String>();
+            floorList = new ArrayList<>();
             floorList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
@@ -371,7 +372,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         @Override
         protected String doInBackground(String... params) {
 //            https://www.bavariagroup.net/api/get_building_project.php?project_name=Aliya
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("project_name", ProjectSelect);
             data.put("building_name", BuildingSelect);
 //            Log.e(" PRO", ">>>>> " + ProjectSelect);
@@ -391,7 +392,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
 
                 floorList.add(getResources().getString(R.string.prompt));
 
-                JSONArray array = new JSONArray(s.toString());
+                JSONArray array = new JSONArray(s);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
 //                    hashMap = new HashMap<String,String>();
@@ -409,6 +410,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getFlatList extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -419,16 +421,16 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            flatList = new ArrayList<String>();
+            flatList = new ArrayList<>();
             flatList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("floor_name", FloorSelect);
 //            Log.e(" FloorSelect", ">>>>> " + FloorSelect);
 
@@ -446,7 +448,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             try {
                 flatList.add(getResources().getString(R.string.prompt));
 
-                JSONArray array = new JSONArray(s.toString());
+                JSONArray array = new JSONArray(s);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
 //                    hashMap = new HashMap<String,String>();
@@ -463,6 +465,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class submitData extends AsyncTask<String, String, String> {
         Dialog dialog;
         String response = null;
@@ -474,14 +477,14 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("project", ProjectSelect);
             data.put("building", BuildingSelect);
             data.put("floor", FloorSelect);
@@ -515,12 +518,7 @@ public class MaintenanceActivity extends BaseAppCompactActivity implements Adapt
             Log.e("RESPONSE", ">>>>>>>" + s);
             dialog.dismiss();
             String msg = "Record Successfully Saved.";
-            try {
 
-            } catch (Exception e) {
-                // WindowManager$BadTokenException will be caught and the app would not display
-                // the 'Force Close' message
-            }
 //            projectList.clear();
 //            adapter_project.notifyDataSetChanged();
             builingList.clear();

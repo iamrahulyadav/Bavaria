@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,11 +12,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bavaria.group.Activity.myAccount.InstallmentActivity;
 import com.bavaria.group.Activity.myAccount.PaymenyHistoryActivity;
 import com.bavaria.group.Activity.myAccount.SupportActivity;
 import com.bavaria.group.Activity.myAccount.UpdateProfileActivity;
@@ -27,10 +25,7 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.verifyUserData;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,10 +34,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by archirayan1 on 3/4/2016.
  */
@@ -50,8 +41,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
     ImageView tvSignout;
     LinearLayout llYearlyMembership, llInstallment, llWaterBill, llPaymenyHistory, llOpenTicket, llViewTicket;
     //    https://bavariagroup.net/en/index.php/en/component/users/?view=login
-    private TextView tvName, tvEmail, tvBack;
-    private ProgressBar progress;
+    private TextView tvName;
     String strCivilId;
 
     @Override
@@ -59,17 +49,17 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myaccount);
 
-        tvName = (TextView) findViewById(R.id.myAcc_tvName);
-        tvEmail = (TextView) findViewById(R.id.myAcc_tvEmail);
-        llYearlyMembership = (LinearLayout) findViewById(R.id.myAcc_llYearlyMembership);
-        llInstallment = (LinearLayout) findViewById(R.id.myAcc_llInstallment);
-        llWaterBill = (LinearLayout) findViewById(R.id.myAcc_llWaterBill);
-        llPaymenyHistory = (LinearLayout) findViewById(R.id.myAcc_llPaymentHistory);
-        llOpenTicket = (LinearLayout) findViewById(R.id.myAcc_llSupport);
-        llViewTicket = (LinearLayout) findViewById(R.id.myAcc_llChangePassword);
-        tvBack = (TextView) findViewById(R.id.myAcc_btnBack);
+        tvName = findViewById(R.id.myAcc_tvName);
+        TextView tvEmail = findViewById(R.id.myAcc_tvEmail);
+        llYearlyMembership = findViewById(R.id.myAcc_llYearlyMembership);
+        llInstallment = findViewById(R.id.myAcc_llInstallment);
+        llWaterBill = findViewById(R.id.myAcc_llWaterBill);
+        llPaymenyHistory = findViewById(R.id.myAcc_llPaymentHistory);
+        llOpenTicket = findViewById(R.id.myAcc_llSupport);
+        llViewTicket = findViewById(R.id.myAcc_llChangePassword);
+        TextView tvBack = findViewById(R.id.myAcc_btnBack);
 
-        tvSignout = (ImageView) findViewById(R.id.myAcc_logout);
+        tvSignout = findViewById(R.id.myAcc_logout);
         tvName.setText(Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.USERNAME));
         tvEmail.setText(Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.EMAIL));
 
@@ -82,7 +72,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         tvBack.setOnClickListener(this);
         tvSignout.setOnClickListener(this);
 
-        strCivilId=Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.EMAIL);
+        strCivilId = Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.EMAIL);
         new callUserProfile().execute();
 
     }
@@ -146,44 +136,16 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         }
     }
 
-    public void callUserProfile() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "user_profile");
-        data.put("civil_id", Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.CIVIT_ID));
-
-        Call<JsonObject> loginCall = apiInterface.userProfile(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null)
-                {
-                    if (response.body().get("successful").getAsString().equalsIgnoreCase("true"))
-                    {
-                        tvEmail.setText(response.body().get("email").getAsString());
-                        tvName.setText(response.body().get("name").getAsString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(MyAccountActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class callUserProfile extends AsyncTask<String, String, String> {
         Dialog dialog;
-        String name, emailId, id, phone;
+        String id;
 
         @Override
         protected void onPreExecute() {
@@ -193,7 +155,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
@@ -202,7 +164,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("view", "raw");
             data.put("iaction", "user_profile");
             data.put("civil_id", Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.CIVIT_ID));
@@ -216,10 +178,10 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
             dialog.dismiss();
             Log.e("Response", "" + s);
             try {
-                JSONObject object = new JSONObject(s.toString());
+                JSONObject object = new JSONObject(s);
                 if (object.getString("successful").equalsIgnoreCase("true")) {
 
-               //     tvEmail.setText(object.getString("email"));
+                    //     tvEmail.setText(object.getString("email"));
                     tvName.setText(object.getString("display_name"));
                 } else {
                     Toast.makeText(MyAccountActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -232,13 +194,12 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         }
     }
 
-    public class callVerifyUser extends AsyncTask<String, String, String>
-    {
+    @SuppressLint("StaticFieldLeak")
+    public class callVerifyUser extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             pd = new ProgressDialog(MyAccountActivity.this);
             pd.setMessage("Loading");
@@ -247,9 +208,9 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
-            data.put("civil_id",strCivilId);
+            data.put("civil_id", strCivilId);
             data.put("type", "ajax");
             data.put("action", "verifyuser");
             data.put("view", "json");
@@ -262,12 +223,12 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
             pd.dismiss();
 //            Log.e("RESPONSE",""+s);
             try {
-                JSONArray jsonArray = new JSONArray(s.toString());
+                JSONArray jsonArray = new JSONArray(s);
 //                if (object.getString("status").toString().equalsIgnoreCase("true")) {
 //                    Toast.makeText(PayOnlineMainActivity.this, object.getString("msg").toString(), Toast.LENGTH_SHORT).show();
 //
                 ArrayList<verifyUserData> verifyUserDatas = new ArrayList<>();
-                JSONObject object = null;
+                JSONObject object;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     object = jsonArray.getJSONObject(i);
 

@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bavaria.group.Activity.myAccount.PayNowActivity;
+import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.R;
+import com.bavaria.group.Util.Utils;
 import com.bavaria.group.retrofit.Model.InstallmentDataPojo;
 
 import java.util.ArrayList;
@@ -57,6 +59,10 @@ public class InstallmentAdapter extends RecyclerView.Adapter<InstallmentAdapter.
                 intent.putExtra("bill id", arrayList.get(position).getBill_id());
                 intent.putExtra("building id", arrayList.get(position).getBuilding_id());
                 intent.putExtra("payment type", "1");
+
+                intent.putExtra("name", Utils.ReadSharePrefrence(context, Constant.USERNAME));
+                intent.putExtra("Email_id", Utils.ReadSharePrefrence(context, Constant.EMAIL));
+                intent.putExtra("phoneNumber", Utils.ReadSharePrefrence(context, Constant.PHONENUMBER));
                 context.startActivity(intent);
             }
         });
@@ -76,14 +82,14 @@ public class InstallmentAdapter extends RecyclerView.Adapter<InstallmentAdapter.
         public myViewHolder(View itemView) {
             super(itemView);
 
-            tvProjectName = (TextView) itemView.findViewById(R.id.installment_tvProjectNm);
-            tvBuildingNm = (TextView) itemView.findViewById(R.id.installment_tvBuildingNm);
-            tvFloorName = (TextView) itemView.findViewById(R.id.installment_tvFloorNm);
-            tvFLatNm = (TextView) itemView.findViewById(R.id.installment_tvFlatNm);
-            tvAmt = (TextView) itemView.findViewById(R.id.installment_tvAmount);
-            tvTotalAmt = (EditText) itemView.findViewById(R.id.installment_etTotalAmount);
+            tvProjectName = itemView.findViewById(R.id.installment_tvProjectNm);
+            tvBuildingNm = itemView.findViewById(R.id.installment_tvBuildingNm);
+            tvFloorName = itemView.findViewById(R.id.installment_tvFloorNm);
+            tvFLatNm = itemView.findViewById(R.id.installment_tvFlatNm);
+            tvAmt = itemView.findViewById(R.id.installment_tvAmount);
+            tvTotalAmt = itemView.findViewById(R.id.installment_etTotalAmount);
 
-            tvPay = (TextView) itemView.findViewById(R.id.installment_tvPay);
+            tvPay = itemView.findViewById(R.id.installment_tvPay);
         }
     }
 }

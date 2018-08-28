@@ -1,10 +1,7 @@
 package com.bavaria.group.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,17 +12,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bavaria.group.Constant.Constant;
-import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
 import com.bavaria.group.retrofit.ApiClient;
 import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.verifyUserData;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +35,6 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
     ArrayList<String> stringArr;
     ArrayList<String> dueArr;
     ListView lv, lv1;
-    String projectNm, buildingNm, floorNm, flatNm, amountDue, totalAmt;
     String[] newItem;
     Intent intent;
     String civilid;
@@ -63,15 +54,15 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
         dueArr.add("WaterBill");
         dueArr.add("Installment");
 
-        tvNext = (TextView) findViewById(R.id.btnNext_paymentOnline);
-        tvBack = (TextView) findViewById(R.id.btnBack_paymentDetails);
-        tvProject = (Spinner) findViewById(R.id.paymentDetail_tvProject);
-        tvPaymentDue = (Spinner) findViewById(R.id.paymentDetail_tvPAymentDue);
-        totalPayment = (EditText) findViewById(R.id.total_payment);
-        tvpaymentamt = (TextView) findViewById(R.id.payment_due);
+        tvNext = findViewById(R.id.btnNext_paymentOnline);
+        tvBack = findViewById(R.id.btnBack_paymentDetails);
+        tvProject = findViewById(R.id.paymentDetail_tvProject);
+        tvPaymentDue = findViewById(R.id.paymentDetail_tvPAymentDue);
+        totalPayment = findViewById(R.id.total_payment);
+        tvpaymentamt = findViewById(R.id.payment_due);
 
-        lv = (ListView) findViewById(R.id.loop_view);
-        lv1 = (ListView) findViewById(R.id.loop_view1);
+        lv = findViewById(R.id.loop_view);
+        lv1 = findViewById(R.id.loop_view1);
 
         tvNext.setOnClickListener(this);
 //        tvProject.setOnClickListener(this);
@@ -82,7 +73,7 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
             callVerifyUser();
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, dueArr);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, dueArr);
         tvPaymentDue.setAdapter(arrayAdapter);
 
 
@@ -217,7 +208,7 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
 
     public void callVerifyUser() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
+        HashMap<String, String> data = new HashMap<>();
         data.put("civil_id", civilid);
         data.put("type", "ajax");
         data.put("action", "verifyuser");
@@ -235,25 +226,27 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
 
                     verifyUserDataa = response.body();
 
-                    for (i = 0; i < verifyUserDataa.size(); i++) {
+                    if (verifyUserDataa != null) {
+                        for (i = 0; i < verifyUserDataa.size(); i++) {
 
-                        stringArr.add(verifyUserDataa.get(i).getProject_name() + " - " + verifyUserDataa.get(i).getBuilding_name() + " - " + verifyUserDataa.get(i).getFlat_name() + " - " + verifyUserDataa.get(i).getFloor_name());
+                            stringArr.add(verifyUserDataa.get(i).getProject_name() + " - " + verifyUserDataa.get(i).getBuilding_name() + " - " + verifyUserDataa.get(i).getFlat_name() + " - " + verifyUserDataa.get(i).getFloor_name());
 
-                        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, stringArr);
-                        tvProject.setAdapter(arrayAdapter1);
+                            ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, stringArr);
+                            tvProject.setAdapter(arrayAdapter1);
 
-                        String fees, totalamt;
+//                            String fees, totalamt;
 
 
-                        fees = verifyUserDataa.get(i).getFees();
-                        totalamt = verifyUserDataa.get(i).getTotal_amount();
+//                            fees = verifyUserDataa.get(i).getFees();
+//                            totalamt = verifyUserDataa.get(i).getTotal_amount();
 
-//                        projectNm = verifyUserDataa.get(i).getProject_name();
-//                        buildingNm = verifyUserDataa.get(i).getBuilding_name();
-//                        floorNm = verifyUserDataa.get(i).getFloor_name();
-//                        flatNm = verifyUserDataa.get(i).getFlat_name();
-//                        amountDue = verifyUserDataa.get(i).getFees();
-//                        totalAmt = verifyUserDataa.get(i).getTotal_amount();
+                            //                        projectNm = verifyUserDataa.get(i).getProject_name();
+                            //                        buildingNm = verifyUserDataa.get(i).getBuilding_name();
+                            //                        floorNm = verifyUserDataa.get(i).getFloor_name();
+                            //                        flatNm = verifyUserDataa.get(i).getFlat_name();
+                            //                        amountDue = verifyUserDataa.get(i).getFees();
+                            //                        totalAmt = verifyUserDataa.get(i).getTotal_amount();
+                        }
                     }
                 }
             }
@@ -291,86 +284,86 @@ public class PaymentDetailActivity extends BaseAppCompactActivity implements Vie
         super.onBackPressed();
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
-
-    public class callVerifyUser extends AsyncTask<String, String, String> {
-        ProgressDialog pd;
-
-        @Override
-        protected void onPreExecute() {
-
-            super.onPreExecute();
-            pd = new ProgressDialog(PaymentDetailActivity.this);
-            pd.setMessage("Loading");
-            pd.show();
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
-
-            data.put("civil_id", civilid);
-            data.put("type", "ajax");
-            data.put("action", "verifyuser");
-            data.put("view", "json");
-            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/?", data);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            pd.dismiss();
-
-            int i;
-//            Log.e("RESPONSE",""+s);
-            try {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("status").toString().equalsIgnoreCase("true")) {
-                    Toast.makeText(PaymentDetailActivity.this, object.getString("msg").toString(), Toast.LENGTH_SHORT).show();
-
-                    ArrayList<verifyUserData> verifyUserDatas = new ArrayList<>();
-                    verifyUserData verifyUserDataa = new verifyUserData();
-                    verifyUserDataa.setFees_id(object.getString("fees_id"));
-                    verifyUserDataa.setFees(object.getString("fees"));
-                    verifyUserDataa.setWaterbill_id(object.getString("waterbill_id"));
-                    verifyUserDataa.setInstallment_id(object.getString(""));
-                    verifyUserDataa.setInstallment_id(object.getString("installment_id"));
-                    verifyUserDataa.setBuilding_id(object.getString("building_id"));
-                    verifyUserDataa.setBuilding_name(object.getString("building_name"));
-                    verifyUserDataa.setFloor_name(object.getString("floor_name"));
-                    verifyUserDataa.setFlat_name(object.getString("flat_name"));
-                    verifyUserDataa.setTotal_amount(object.getString("total_amount"));
-                    verifyUserDataa.setWater_bil(object.getString("water_bil"));
-                    verifyUserDataa.setProject_name(object.getString("project_name"));
-
-                    verifyUserDatas.add(verifyUserDataa);
-
-                    for (i = 0; i < verifyUserDatas.size(); i++) {
-
-                        stringArr.add(verifyUserDatas.get(i).getProject_name() + " - " + verifyUserDatas.get(i).getBuilding_name() + " - " + verifyUserDatas.get(i).getFlat_name() + " - " + verifyUserDatas.get(i).getFloor_name());
-
-                        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, stringArr);
-                        tvProject.setAdapter(arrayAdapter1);
-
-                        String fees, totalamt;
-
-
-                        fees = verifyUserDatas.get(i).getFees();
-                        totalamt = verifyUserDatas.get(i).getTotal_amount();
-
-//                        projectNm = verifyUserDataa.get(i).getProject_name();
-//                        buildingNm = verifyUserDataa.get(i).getBuilding_name();
-//                        floorNm = verifyUserDataa.get(i).getFloor_name();
-//                        flatNm = verifyUserDataa.get(i).getFlat_name();
-//                        amountDue = verifyUserDataa.get(i).getFees();
-//                        totalAmt = verifyUserDataa.get(i).getTotal_amount();
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-//                Toast.makeText(Register.this, "Something went wrong..", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//
+//    public class callVerifyUser extends AsyncTask<String, String, String> {
+//        ProgressDialog pd;
+//
+//        @Override
+//        protected void onPreExecute() {
+//
+//            super.onPreExecute();
+//            pd = new ProgressDialog(PaymentDetailActivity.this);
+//            pd.setMessage("Loading");
+//            pd.show();
+//
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            HashMap<String, String> data = new HashMap<>();
+//
+//            data.put("civil_id", civilid);
+//            data.put("type", "ajax");
+//            data.put("action", "verifyuser");
+//            data.put("view", "json");
+//            return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/?", data);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//            super.onPostExecute(s);
+//            pd.dismiss();
+//
+//            int i;
+////            Log.e("RESPONSE",""+s);
+//            try {
+//                JSONObject object = new JSONObject(s);
+//                if (object.getString("status").equalsIgnoreCase("true")) {
+//                    Toast.makeText(PaymentDetailActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
+//
+//                    ArrayList<verifyUserData> verifyUserDatas = new ArrayList<>();
+//                    verifyUserData verifyUserDataa = new verifyUserData();
+//                    verifyUserDataa.setFees_id(object.getString("fees_id"));
+//                    verifyUserDataa.setFees(object.getString("fees"));
+//                    verifyUserDataa.setWaterbill_id(object.getString("waterbill_id"));
+//                    verifyUserDataa.setInstallment_id(object.getString(""));
+//                    verifyUserDataa.setInstallment_id(object.getString("installment_id"));
+//                    verifyUserDataa.setBuilding_id(object.getString("building_id"));
+//                    verifyUserDataa.setBuilding_name(object.getString("building_name"));
+//                    verifyUserDataa.setFloor_name(object.getString("floor_name"));
+//                    verifyUserDataa.setFlat_name(object.getString("flat_name"));
+//                    verifyUserDataa.setTotal_amount(object.getString("total_amount"));
+//                    verifyUserDataa.setWater_bil(object.getString("water_bil"));
+//                    verifyUserDataa.setProject_name(object.getString("project_name"));
+//
+//                    verifyUserDatas.add(verifyUserDataa);
+//
+//                    for (i = 0; i < verifyUserDatas.size(); i++) {
+//
+//                        stringArr.add(verifyUserDatas.get(i).getProject_name() + " - " + verifyUserDatas.get(i).getBuilding_name() + " - " + verifyUserDatas.get(i).getFlat_name() + " - " + verifyUserDatas.get(i).getFloor_name());
+//
+//                        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<>(PaymentDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, stringArr);
+//                        tvProject.setAdapter(arrayAdapter1);
+//
+////                        String fees, totalamt;
+//
+//
+////                        fees = verifyUserDatas.get(i).getFees();
+////                        totalamt = verifyUserDatas.get(i).getTotal_amount();
+//
+////                        projectNm = verifyUserDataa.get(i).getProject_name();
+////                        buildingNm = verifyUserDataa.get(i).getBuilding_name();
+////                        floorNm = verifyUserDataa.get(i).getFloor_name();
+////                        flatNm = verifyUserDataa.get(i).getFlat_name();
+////                        amountDue = verifyUserDataa.get(i).getFees();
+////                        totalAmt = verifyUserDataa.get(i).getTotal_amount();
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+////                Toast.makeText(Register.this, "Something went wrong..", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
 }

@@ -27,11 +27,11 @@ public class ShareActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void init() {
-        backImg = (ImageView) findViewById(R.id.activity_share_back_Img);
-        btMail = (Button) findViewById(R.id.activity_share_mail_Btn);
-        btTwitter = (Button) findViewById(R.id.btTwitter_ShareActivity);
-        btPlayStore = (Button) findViewById(R.id.btPlayStore_ShareActivity);
-        btFb = (Button) findViewById(R.id.btFB_ShareActivity);
+        backImg = findViewById(R.id.activity_share_back_Img);
+        btMail = findViewById(R.id.activity_share_mail_Btn);
+        btTwitter = findViewById(R.id.btTwitter_ShareActivity);
+        btPlayStore = findViewById(R.id.btPlayStore_ShareActivity);
+        btFb = findViewById(R.id.btFB_ShareActivity);
 
         btMail.setOnClickListener(this);
         backImg.setOnClickListener(this);

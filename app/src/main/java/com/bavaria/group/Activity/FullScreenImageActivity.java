@@ -1,21 +1,19 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bavaria.group.Adapter.CustomPagerAdapter;
@@ -35,13 +33,12 @@ import java.util.ArrayList;
  * Created by archirayan1 on 5/28/2016.
  */
 public class FullScreenImageActivity extends BaseAppCompactActivity {
+
+    @SuppressLint("StaticFieldLeak")
     public static ViewPager pager;
     public ArrayList<String> imgList;
     public ImageView ivBack, ivShare;
-    public LinearLayout ll;
     public int position;
-    public int pos;
-    public String ImString, catId;
     public CustomPagerAdapter adapter;
 
     /**
@@ -49,14 +46,6 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
-    public static Bitmap captureView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-//        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-        v.draw(c);
-        return b;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +55,13 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_fullscreen_image);
-        ivBack = (ImageView) findViewById(R.id.ivBack_FullscreenActivity);
-        ivShare = (ImageView) findViewById(R.id.ivShare_FulscreenActivity);
+        ivBack = findViewById(R.id.ivBack_FullscreenActivity);
+        ivShare = findViewById(R.id.ivShare_FulscreenActivity);
         //ll = (LinearLayout) findViewById(R.id.linear);
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
-            imgList = (ArrayList<String>) extra.getStringArrayList("img_list");
+            imgList = extra.getStringArrayList("img_list");
             position = Integer.parseInt(extra.getString("position"));
         }
 
@@ -91,8 +80,8 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
         ivShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = (View) pager.findViewWithTag(pager.getCurrentItem());
-                ImageView imageView = (ImageView) view.findViewById(R.id.ivPagerImage);
+                View view = pager.findViewWithTag(pager.getCurrentItem());
+                ImageView imageView = view.findViewById(R.id.ivPagerImage);
                 Uri bmpUri = getLocalBitmapUri(imageView);
                 if (bmpUri != null) {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -109,7 +98,7 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
 
 
         //Set the pager with an adapter
-        pager = (ViewPager) findViewById(R.id.pager_FullScreenImageActivity);
+        pager = findViewById(R.id.pager_FullScreenImageActivity);
         adapter = new CustomPagerAdapter(getApplicationContext(), imgList);
         pager.setAdapter(adapter);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -128,7 +117,7 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
     public Uri getLocalBitmapUri(ImageView imageView) {
         // Extract Bitmap from ImageView drawable
         Drawable drawable = imageView.getDrawable();
-        Bitmap bmp = null;
+        Bitmap bmp;
         if (drawable instanceof BitmapDrawable) {
             bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         } else {
@@ -178,8 +167,7 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.

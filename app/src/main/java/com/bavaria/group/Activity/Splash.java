@@ -11,25 +11,20 @@ import com.bavaria.group.R;
  * Created by archirayan on 2/23/2016.
  */
 
-public class Splash extends Activity
-{
-    // Splash screen timer
-    private static int SPLASH_TIME_OUT = 2000;
+public class Splash extends Activity {
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splush);
-        new Handler().postDelayed(new Runnable()
-        {
+        int SPLASH_TIME_OUT = 2000;
+        new Handler().postDelayed(new Runnable() {
             /*
              * Showing splash screen with a timer. This will be useful when you
              * want to show case your app logo / company
              */
 
             @Override
-            public void run()
-            {
+            public void run() {
                 Intent in = new Intent(Splash.this, MainActivity.class);
                 startActivity(in);
                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);

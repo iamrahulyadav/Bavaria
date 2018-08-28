@@ -52,7 +52,7 @@ public class PhotoVideoImageAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.add_image_item, null);
             holder = new ViewHolder();
-            holder.ivProperty = (ImageView) view.findViewById(R.id.ivProject_ProjectDetailImage_Activity);
+            holder.ivProperty = view.findViewById(R.id.ivProject_ProjectDetailImage_Activity);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -68,7 +68,7 @@ public class PhotoVideoImageAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MultiTouchActivity.class);
-                intent.putExtra("img", imgList.get(position));
+                intent.putExtra("image", imgList.get(position));
                 mContext.startActivity(intent);
             }
         });

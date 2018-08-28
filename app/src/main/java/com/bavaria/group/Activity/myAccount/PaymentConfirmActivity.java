@@ -1,7 +1,6 @@
 package com.bavaria.group.Activity.myAccount;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;

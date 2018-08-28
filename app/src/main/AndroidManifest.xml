@@ -19,6 +19,7 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
@@ -30,7 +31,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value=" AIzaSyAjQ6vWw91vD5PUhc2R42emEsIWxAtNvtU" />
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -261,6 +262,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".PhotoActivity" />
+        <activity
+            android:name=".Activity.GuestPayActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activity.OpenPhotoListActivity" />
         <activity android:name=".ImageshowActivity" />
     </application>

@@ -64,10 +64,10 @@ public class MyTicketsAdapter extends RecyclerView.Adapter<MyTicketsAdapter.myVi
         public myViewHolder(View itemView) {
             super(itemView);
 
-            tvDate = (TextView) itemView.findViewById(R.id.txtVwDate);
-            tvNoData = (TextView) itemView.findViewById(R.id.txtVwNoData);
-            tvSupport = (TextView) itemView.findViewById(R.id.txtVwSupport);
-            btnViewReply = (Button) itemView.findViewById(R.id.btnViewReply);
+            tvDate = itemView.findViewById(R.id.txtVwDate);
+            tvNoData = itemView.findViewById(R.id.txtVwNoData);
+            tvSupport = itemView.findViewById(R.id.txtVwSupport);
+            btnViewReply = itemView.findViewById(R.id.btnViewReply);
         }
     }
 }

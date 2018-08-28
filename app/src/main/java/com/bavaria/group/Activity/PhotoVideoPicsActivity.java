@@ -1,5 +1,6 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -29,20 +30,15 @@ import java.util.ArrayList;
  */
 public class PhotoVideoPicsActivity extends Activity {
     public static ArrayList<String> imgList;
-    private ImageView ivBack;
     private GridView gvPicsList;
-    private PhotoVideoImageAdapter adapter;
     private String imgId = "";
-    private String category_id = "";
-    private String[] catelogueImagelist;
-    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_video_pics);
-        ivBack = (ImageView) findViewById(R.id.ivBack_PhotoVideoPicsActivity);
-        gvPicsList = (GridView) findViewById(R.id.gvImage_PhotoVideoPicsActivity);
+        ImageView ivBack = findViewById(R.id.ivBack_PhotoVideoPicsActivity);
+        gvPicsList = findViewById(R.id.gvImage_PhotoVideoPicsActivity);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             imgId = extras.getString("pid");
@@ -50,8 +46,7 @@ public class PhotoVideoPicsActivity extends Activity {
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PhotoVideoListActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
@@ -60,7 +55,7 @@ public class PhotoVideoPicsActivity extends Activity {
         });
 
         if (Utils.isOnline(getApplicationContext())) {
-            status = Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_PHOTO_OR_VIDEO);
+//            String status = Utils.ReadSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_PHOTO_OR_VIDEO);
             new getPhotoVideoImageData().execute();
         } else {
             Toast.makeText(PhotoVideoPicsActivity.this, "No internet connectivity found, Please check your internet connection", Toast.LENGTH_SHORT).show();
@@ -73,6 +68,7 @@ public class PhotoVideoPicsActivity extends Activity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getPhotoVideoImageData extends AsyncTask<String, String, String> {
         private Dialog dialog;
 
@@ -84,9 +80,9 @@ public class PhotoVideoPicsActivity extends Activity {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            imgList = new ArrayList<String>();
+            imgList = new ArrayList<>();
             imgList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
@@ -105,7 +101,7 @@ public class PhotoVideoPicsActivity extends Activity {
 //            Log.d("Response", "" + s);
             dialog.dismiss();
             try {
-                JSONObject object = new JSONObject(s.toString());
+                JSONObject object = new JSONObject(s);
                 if (object.getString("successful").equalsIgnoreCase("true")) {
 //                    Toast.makeText(PhotoVideoPicsActivity.this, "" + object.getString("error_msg"), Toast.LENGTH_SHORT).show();
                     JSONArray array = object.getJSONArray("image");
@@ -116,7 +112,7 @@ public class PhotoVideoPicsActivity extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            adapter = new PhotoVideoImageAdapter(PhotoVideoPicsActivity.this, imgList);
+            PhotoVideoImageAdapter adapter = new PhotoVideoImageAdapter(PhotoVideoPicsActivity.this, imgList);
             gvPicsList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

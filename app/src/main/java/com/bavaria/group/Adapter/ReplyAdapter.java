@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.R;
+import com.bavaria.group.Util.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +41,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.myViewHolder
     @Override
     public void onBindViewHolder(final myViewHolder holder, final int position) {
         try {
-            holder.tvReplyerNm.setText(arrayList.getJSONObject(position).getString("replied_by"));
+//            holder.tvReplyerNm.setText(arrayList.getJSONObject(position).getString("replied_by"));
+            holder.tvReplyerNm.setText(Utils.ReadSharePrefrence(context, Constant.USERNAME));
             holder.tvMsg.setText(arrayList.getJSONObject(position).getString("message"));
            // holder.tvDate.setText(arrayList.getJSONObject(position).getString("date"));
         } catch (JSONException e) {
@@ -61,8 +64,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.myViewHolder
         public myViewHolder(View itemView) {
             super(itemView);
 
-            tvReplyerNm = (TextView) itemView.findViewById(R.id.replier_nm);
-            tvMsg = (TextView) itemView.findViewById(R.id.reply_msg);
+            tvReplyerNm = itemView.findViewById(R.id.replier_nm);
+            tvMsg = itemView.findViewById(R.id.reply_msg);
          //   tvDate = (TextView) itemView.findViewById(R.id.reply_date);
         }
     }

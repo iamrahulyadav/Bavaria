@@ -1,10 +1,10 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,11 +43,10 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
         new getFaq().execute();
     }
 
-    private void initViews()
-    {
-        faq_recycler_view = (RecyclerView) findViewById(R.id.Faq_recycler_view);
-        ivBack = (TextView) findViewById(R.id.faq_btnBack);
-        faq_logout = (ImageView) findViewById(R.id.faq_logout);
+    private void initViews() {
+        faq_recycler_view = findViewById(R.id.Faq_recycler_view);
+        ivBack = findViewById(R.id.faq_btnBack);
+        faq_logout = findViewById(R.id.faq_logout);
 
         faq_recycler_view.setLayoutManager(new LinearLayoutManager(FaqActivity.this, LinearLayoutManager.VERTICAL, false));
 
@@ -80,8 +79,7 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
 
 
     @Override
-    public void onClick(View view, int position)
-    {
+    public void onClick(View view, int position) {
         Intent intent = new Intent(FaqActivity.this, FaqViewActivity.class);
         intent.putExtra("title", faqPojos.get(position).getComment_count());
         intent.putExtra("content", faqPojos.get(position).getPost_content());
@@ -89,13 +87,14 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
         overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class getFaq extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            faqPojos=new ArrayList<>();
+            faqPojos = new ArrayList<>();
             pd = new ProgressDialog(FaqActivity.this);
             pd.setMessage("Loading");
             pd.show();
@@ -103,7 +102,7 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("view", "json");
             data.put("page", "faq");
             return new MakeServiceCall().MakeServiceCall(Constant.NEW_BASE_URL + "/index.php?", data);
@@ -113,29 +112,23 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            try
-            {
-                JSONArray jsonArray = new JSONArray(s.toString());
-                JSONObject object = null;
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+                JSONObject object;
+                for (int i = 0; i < jsonArray.length(); i++) {
                     object = jsonArray.getJSONObject(i);
                     FaqPojo faqPojo = new FaqPojo();
                     faqPojo.setComment_count(object.getString("post_title"));
                     faqPojo.setPost_content(object.getString("post_content"));
                     faqPojos.add(faqPojo);
                 }
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             if (faqPojos != null) {
                 faqAdapter = new FaqAdapter(FaqActivity.this, faqPojos, FaqActivity.this);
                 faq_recycler_view.setAdapter(faqAdapter);
-            }
-            else
-            {
+            } else {
                 Toast.makeText(FaqActivity.this, R.string.datanotfound, Toast.LENGTH_SHORT).show();
             }
         }

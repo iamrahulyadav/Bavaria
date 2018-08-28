@@ -42,6 +42,10 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/index.php")
+    Call<JsonObject> getFloorFlat(@FieldMap HashMap<String, String> hashmap);
+
+    @FormUrlEncoded
+    @POST("/index.php")
     Call<WaterBillPojo> waterBill(@FieldMap HashMap<String, String> hashmap);
 
     @FormUrlEncoded
@@ -91,4 +95,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("/index.php")
     Call<JsonObject> userProfile(@FieldMap HashMap<String, String> hashmap);
+
+    @FormUrlEncoded
+    @POST("/index.php")
+    Call<JsonObject> submitGuestData(@FieldMap HashMap<String, String> hashmap);
 }

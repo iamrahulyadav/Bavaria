@@ -1,16 +1,12 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +15,9 @@ import com.bavaria.group.Adapter.MembershipAdapter;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
-import com.bavaria.group.SQLiteDatabase.DbHelper;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
 import com.bavaria.group.retrofit.Model.MembershipDataPojo;
-import com.bavaria.group.retrofit.Model.MembershipPojo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,10 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class YearlyMembershipActivity extends BaseAppCompactActivity {
 
     RecyclerView recyclerView;
@@ -45,19 +33,18 @@ public class YearlyMembershipActivity extends BaseAppCompactActivity {
     TextView ivBack;
     ImageView ivLogout;
     ArrayList<MembershipDataPojo> membershipDataPojos;
-    private DbHelper dbHelper;
+//    private DbHelper dbHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yearly_membership);
 
-        dbHelper = new DbHelper(YearlyMembershipActivity.this);
+//        dbHelper = new DbHelper(YearlyMembershipActivity.this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.yearlyMembership_recyclerview);
-        ivBack = (TextView) findViewById(R.id.membership_btnBack);
-        ivLogout = (ImageView) findViewById(R.id.membership_logout);
+        recyclerView = findViewById(R.id.yearlyMembership_recyclerview);
+        ivBack = findViewById(R.id.membership_btnBack);
+        ivLogout = findViewById(R.id.membership_logout);
 
         membershipDataPojos = new ArrayList<>();
 
@@ -92,45 +79,7 @@ public class YearlyMembershipActivity extends BaseAppCompactActivity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
-    public void callMembership() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("page", "ym");
-        data.put("iview", "json");
-        data.put("id", Utils.ReadSharePrefrence(YearlyMembershipActivity.this, Constant.CIVIT_ID));
-
-        Call<MembershipPojo> loginCall = apiInterface.yearlyMembership(data);
-        loginCall.enqueue(new Callback<MembershipPojo>() {
-            @Override
-            public void onResponse(Call<MembershipPojo> call, Response<MembershipPojo> response) {
-
-                if (response.body() != null) {
-
-                    MembershipPojo membershipPojo = response.body();
-                    membershipDataPojos = membershipPojo.getData();
-
-                    if (membershipPojo.getStatus().equalsIgnoreCase("true")) {
-                        recyclerView.setLayoutManager(new LinearLayoutManager(YearlyMembershipActivity.this, LinearLayoutManager.VERTICAL, false));
-                        membershipAdapter = new MembershipAdapter(YearlyMembershipActivity.this, membershipDataPojos);
-
-                        recyclerView.setAdapter(membershipAdapter);
-                    } else {
-                        Toast.makeText(YearlyMembershipActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-
-//                    dbHelper.deleteMembershipData();
-//                    dbHelper.addMembershipData(membershipData);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MembershipPojo> call, Throwable t) {
-                Toast.makeText(YearlyMembershipActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    @SuppressLint("StaticFieldLeak")
     public class callMembership extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -145,7 +94,7 @@ public class YearlyMembershipActivity extends BaseAppCompactActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("page", "ym");
@@ -166,7 +115,7 @@ public class YearlyMembershipActivity extends BaseAppCompactActivity {
                 if (object.getString("status").equalsIgnoreCase("true")) {
 
                     JSONArray jsonArray = object.getJSONArray("data");
-                    JSONObject explrObject = null;
+                    JSONObject explrObject;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         explrObject = jsonArray.getJSONObject(i);
 

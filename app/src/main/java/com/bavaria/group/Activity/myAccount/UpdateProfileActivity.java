@@ -1,10 +1,10 @@
 package com.bavaria.group.Activity.myAccount;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -17,18 +17,11 @@ import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UpdateProfileActivity extends BaseAppCompactActivity implements OnClickListener {
 
@@ -37,25 +30,25 @@ public class UpdateProfileActivity extends BaseAppCompactActivity implements OnC
     ImageView ivLogout;
     String strPhoneNo, strEmail;
 
+    @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile);
 
-        tvUname = (TextView) findViewById(R.id.user_name);
-        etEmail = (EditText) findViewById(R.id.updateprofile_email);
-        etPhonenumber = (EditText) findViewById(R.id.updateprofile_phonenumber);
-        tvSave = (TextView) findViewById(R.id.updateprofile_save);
-        tvChngePass = (TextView) findViewById(R.id.updateprofile_chngepass);
-        tvBack = (TextView) findViewById(R.id.updateprofile_btnBack);
-        ivLogout = (ImageView) findViewById(R.id.updateprofile_logout);
+        tvUname = findViewById(R.id.user_name);
+        etEmail = findViewById(R.id.updateprofile_email);
+        etPhonenumber = findViewById(R.id.updateprofile_phonenumber);
+        tvSave = findViewById(R.id.updateprofile_save);
+        tvChngePass = findViewById(R.id.updateprofile_chngepass);
+        tvBack = findViewById(R.id.updateprofile_btnBack);
+        ivLogout = findViewById(R.id.updateprofile_logout);
 
         tvSave.setOnClickListener(this);
         tvChngePass.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         ivLogout.setOnClickListener(this);
-        tvUname.setText("Hello,"+Utils.ReadSharePrefrence(UpdateProfileActivity.this, Constant.USERNAME));
+        tvUname.setText("Hello," + Utils.ReadSharePrefrence(UpdateProfileActivity.this, Constant.USERNAME));
         // callUserProfile();
         new GetUserProfile().execute();
     }
@@ -96,62 +89,7 @@ public class UpdateProfileActivity extends BaseAppCompactActivity implements OnC
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
-    public void callUpdateProfile() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "update_profile");
-        data.put("civil_id", Utils.ReadSharePrefrence(UpdateProfileActivity.this, Constant.CIVIT_ID));
-        data.put("phone_no", etPhonenumber.getText().toString());
-        data.put("email", etEmail.getText().toString());
-
-        Call<JsonObject> loginCall = apiInterface.updateProfile(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null) {
-                    if (response.body().get("successful").getAsString().equalsIgnoreCase("true")) {
-                        Toast.makeText(UpdateProfileActivity.this, "Your profile has been update", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(UpdateProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void callUserProfile() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "user_profile");
-        data.put("civil_id", Utils.ReadSharePrefrence(UpdateProfileActivity.this, Constant.CIVIT_ID));
-
-        Call<JsonObject> loginCall = apiInterface.userProfile(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null) {
-                    if (response.body().get("successful").getAsString().equalsIgnoreCase("true")) {
-                        etEmail.setText(response.body().get("email").getAsString());
-                        etPhonenumber.setText(response.body().get("phone_no").getAsString());
-                        tvUname.setText("Hello,"+response.body().get("name").getAsString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(UpdateProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+    @SuppressLint("StaticFieldLeak")
     public class GetUpdateProfile extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -167,7 +105,7 @@ public class UpdateProfileActivity extends BaseAppCompactActivity implements OnC
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("iaction", "update_profile");
@@ -189,6 +127,7 @@ public class UpdateProfileActivity extends BaseAppCompactActivity implements OnC
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class GetUserProfile extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -203,7 +142,7 @@ public class UpdateProfileActivity extends BaseAppCompactActivity implements OnC
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
 
             data.put("view", "raw");
             data.put("iaction", "user_profile");

@@ -1,5 +1,6 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +17,6 @@ import com.bavaria.group.Adapter.VideoAdapter;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.Utils;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,22 +30,22 @@ import java.util.HashMap;
  */
 public class VideoActivity extends Activity {
     VideoAdapter adapter;
-    ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
     ImageView icBackImg;
     ListView listView;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+//    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         MultiDex.install(this);
-        icBackImg = (ImageView) findViewById(R.id.activity_video_icBack_Img);
-        listView = (ListView) findViewById(R.id.activity_video_Lv);
+        icBackImg = findViewById(R.id.activity_video_icBack_Img);
+        listView = findViewById(R.id.activity_video_Lv);
         icBackImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +76,7 @@ public class VideoActivity extends Activity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getVideoData extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -109,7 +110,7 @@ public class VideoActivity extends Activity {
 //                }
 //                Log.d("ResCode", String.valueOf(httpconn.getResponseCode()));
 
-                return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&page=videos&iview=json");
+            return new MakeServiceCall().MakeServiceCall("https://www.bavariagroup.net/index.php?view=raw&page=videos&iview=json");
 
 
 //            } catch (Exception e) {
@@ -124,12 +125,12 @@ public class VideoActivity extends Activity {
             pd.dismiss();
 //            Log.e("Response", "" + s);
             try {
-                JSONObject obj = new JSONObject(s.toString());
+                JSONObject obj = new JSONObject(s);
 
                 JSONArray jArray = obj.getJSONArray("data");
                 for (int i = 0; i < jArray.length(); i++) {
                     JSONObject object = jArray.getJSONObject(i);
-                    HashMap<String, String> hm = new HashMap<String, String>();
+                    HashMap<String, String> hm = new HashMap<>();
                     hm.put("id", "" + object.getString("id"));
                     hm.put("pro_name", "" + object.getString("pro_name"));
                     hm.put("pro_small_desc", "" + object.getString("pro_small_desc"));

@@ -1,51 +1,40 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.Utils;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
-import com.bavaria.group.retrofit.Model.GetLogin;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static com.bavaria.group.Constant.Constant.CIVIT_ID;
 import static com.bavaria.group.Constant.Constant.EMAIL;
 import static com.bavaria.group.Constant.Constant.ID;
 import static com.bavaria.group.Constant.Constant.IS_LOGIN;
+import static com.bavaria.group.Constant.Constant.PHONENUMBER;
 import static com.bavaria.group.Constant.Constant.USERNAME;
 
 /**
@@ -55,8 +44,7 @@ import static com.bavaria.group.Constant.Constant.USERNAME;
 //, GoogleApiClient.ConnectionCallbacks,
 //        GoogleApiClient.OnConnectionFailedListener
 
-public class Login extends FragmentActivity implements View.OnClickListener
-{
+public class Login extends FragmentActivity implements View.OnClickListener {
     public static final String PACKAGE = "com.bavaria.group";
     public static final String LINKEDIN_CONSUMER_KEY = "75wqzglcc6u78m"; // your KEY
     public static final String LINKEDIN_CONSUMER_SECRET = "pojG0awu89mJj9r5"; // your SECRET
@@ -77,9 +65,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
     LinearLayout llLogout, llLogin, llBottom;
     String fbId, fbEmail, fbFname, fbLname;
     private ProgressDialog progressDialog;
-    private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
-    private Boolean saveLogin;
     private String user, pass;
     public TextView txt_forget_password;
     LinearLayout llMain;
@@ -88,6 +74,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
 //    private static final String topCardUrl = "https://" + host + "/v1/people/~:" +
 //            "(email-address,formatted-name,phone-numbers,public-profile-url,picture-url,picture-urls::(original))";
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -180,12 +167,12 @@ public class Login extends FragmentActivity implements View.OnClickListener
 //                Toast.makeText(Login.this, "Login attempt failed", Toast.LENGTH_SHORT).show();
 //            }
 //        });
-        saveLoginCheckBox = (CheckBox) findViewById(R.id.saveLoginCheckBox);
-        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        saveLoginCheckBox = findViewById(R.id.saveLoginCheckBox);
+        SharedPreferences loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
 
-        saveLogin = loginPreferences.getBoolean("saveLogin", false);
-        if (saveLogin == true) {
+        Boolean saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin) {
             userNameEdt.setText(loginPreferences.getString("username", user));
             passwordEdt.setText(loginPreferences.getString("password", pass));
             saveLoginCheckBox.setChecked(true);
@@ -212,22 +199,21 @@ public class Login extends FragmentActivity implements View.OnClickListener
 //        }
 //    }
 
-    public void init()
-    {
-        llMain=(LinearLayout)findViewById(R.id.login_llMain);
-        submit = (TextView) findViewById(R.id.activity_login_submit);
-        register = (TextView) findViewById(R.id.activity_login_register);
-        backImage = (TextView) findViewById(R.id.activity_login_back);
-        userNameEdt = (EditText) findViewById(R.id.activity_login_username);
-        passwordEdt = (EditText) findViewById(R.id.activity_login_password);
-        txt_forget_password= (TextView) findViewById(R.id.txt_forget_password);
+    public void init() {
+        llMain = findViewById(R.id.login_llMain);
+        submit = findViewById(R.id.activity_login_submit);
+        register = findViewById(R.id.activity_login_register);
+        backImage = findViewById(R.id.activity_login_back);
+        userNameEdt = findViewById(R.id.activity_login_username);
+        passwordEdt = findViewById(R.id.activity_login_password);
+        txt_forget_password = findViewById(R.id.txt_forget_password);
 
 //        tvLogout = (TextView) findViewById(R.id.tvLogout_LoginActivity);
-        llLogin = (LinearLayout) findViewById(R.id.llLogin_LoginActivity);
+        llLogin = findViewById(R.id.llLogin_LoginActivity);
 //        llLogout = (LinearLayout) findViewById(R.id.llLogout_MainActivity);
 //        tvUname = (TextView) findViewById(R.id.tvUname_MainActivity);
 //        tvUemail = (TextView) findViewById(R.id.tvEmail_MainActivity);
-        llBottom = (LinearLayout) findViewById(R.id.llBottom_LoginActivity);
+        llBottom = findViewById(R.id.llBottom_LoginActivity);
 
 //        tvFbLogin = (TextView) findViewById(R.id.tvFB_LoginActivity);
 //        tvGoogleLogin = (TextView) findViewById(R.id.tvGoogle_LoginActivity);
@@ -262,7 +248,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Intent in = null;
+        Intent in;
         switch (v.getId()) {
             case R.id.activity_login_submit:
 //                email = userNameEdt.getText().toString();
@@ -313,7 +299,6 @@ public class Login extends FragmentActivity implements View.OnClickListener
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
                 startActivity(in);
                 break;
-
 
 
 //            case R.id.tvLogout_LoginActivity:
@@ -400,45 +385,6 @@ public class Login extends FragmentActivity implements View.OnClickListener
 //
 //    }
 
-    public void callLogin() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "login");
-        data.put("email", userNameEdt.getText().toString());
-        data.put("password", passwordEdt.getText().toString());
-
-        Call<GetLogin> loginCall = apiInterface.login(data);
-        loginCall.enqueue(new Callback<GetLogin>() {
-            @Override
-            public void onResponse(Call<GetLogin> call, Response<GetLogin> response) {
-
-                if (response.body() != null) {
-
-                    if (response.body().getSuccessful().equalsIgnoreCase("true")) {
-                        Utils.WriteSharePrefrence(Login.this, IS_LOGIN, "true");
-                        Utils.WriteSharePrefrence(Login.this, USERNAME, response.body().getName());
-                        Utils.WriteSharePrefrence(Login.this, EMAIL, response.body().getEmail());
-                        Utils.WriteSharePrefrence(Login.this, CIVIT_ID, response.body().getId());
-                        Utils.WriteSharePrefrence(Login.this, ID, response.body().getId());
-                        Intent in = new Intent(Login.this, MyAccountActivity.class);
-                        startActivity(in);
-
-
-                        overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
-                    } else {
-                        Toast.makeText(Login.this, "Please enter valid civil id or password", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetLogin> call, Throwable t) {
-                Toast.makeText(Login.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     public boolean isValid() {
 
         boolean isvalid = true;
@@ -462,9 +408,10 @@ public class Login extends FragmentActivity implements View.OnClickListener
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class getLogin extends AsyncTask<String, String, String> {
         Dialog dialog;
-        String name, emailId, id, phone;
+        String name, emailId, id;
 
         @Override
         protected void onPreExecute() {
@@ -474,7 +421,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
 
@@ -483,7 +430,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
 
         @Override
         protected String doInBackground(String... params) {
-            HashMap<String, String> data = new HashMap<String, String>();
+            HashMap<String, String> data = new HashMap<>();
             data.put("view", "raw");
             data.put("iaction", "login");
             data.put("email", user);
@@ -500,25 +447,27 @@ public class Login extends FragmentActivity implements View.OnClickListener
             dialog.dismiss();
             Log.e("Response", "" + s);
             try {
-                JSONObject object = new JSONObject(s.toString());
+                JSONObject object = new JSONObject(s);
                 if (object.getString("successful").equalsIgnoreCase("true")) {
 
                     name = object.getString("name");
                     emailId = object.getString("email");
                     id = object.getString("id");
-                   // String msg=
-                  //  Snackbar.make(llMain, "You are logged in", Snackbar.LENGTH_SHORT).show();
+                    // String msg=
+                    //  Snackbar.make(llMain, "You are logged in", Snackbar.LENGTH_SHORT).show();
 
                     Utils.WriteSharePrefrence(Login.this, IS_LOGIN, "true");
                     Utils.WriteSharePrefrence(Login.this, USERNAME, name);
                     Utils.WriteSharePrefrence(Login.this, EMAIL, emailId);
                     Utils.WriteSharePrefrence(Login.this, CIVIT_ID, id);
                     Utils.WriteSharePrefrence(Login.this, ID, id);
+                    Utils.WriteSharePrefrence(Login.this, PHONENUMBER, object.getString("phone"));
+                    Utils.WriteSharePrefrence(Login.this, Constant.SHRED_PR.IS_SHOWN, "true");
                     Intent in = new Intent(Login.this, MyAccountActivity.class);
                     overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
                     startActivity(in);
 
-                  //  Toast.makeText(Login.this,"Login Successful", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(Login.this,"Login Successful", Toast.LENGTH_SHORT).show();
 
 //                    Utils.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_UNAME, name);
 //                    Utils.WriteSharePrefrence(getApplicationContext(), Constant.SHRED_PR.KEY_IS_EMAIL, emailId);
@@ -536,7 +485,7 @@ public class Login extends FragmentActivity implements View.OnClickListener
 
                     //   dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-                   // Toast.makeText(Login.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Login.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

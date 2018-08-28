@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,32 +17,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.BaseAppCompactActivity;
-import com.bavaria.group.retrofit.ApiClient;
-import com.bavaria.group.retrofit.ApiInterface;
-import com.bavaria.group.retrofit.Model.GetRegister;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by archirayan on 2/24/2016.
  */
 public class Register extends BaseAppCompactActivity implements View.OnClickListener {
-    EditText civilidEdt, phoneEdt, passwordEdt, phonenumberEdt;
+    EditText civilidEdt, phoneEdt;
     ImageView ivBack;
-    String username, email, strCivilId, strPhoneNo;
+    String strCivilId, strPhoneNo;
     getSignUp object;
     Button submit;
 
@@ -50,13 +42,13 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        civilidEdt = (EditText) findViewById(R.id.activity_register_username);
-        phoneEdt = (EditText) findViewById(R.id.activity_register_phone);
+        civilidEdt = findViewById(R.id.activity_register_username);
+        phoneEdt = findViewById(R.id.activity_register_phone);
 //        passwordEdt = (EditText) findViewById(R.id.activity_register_password);
 //        phonenumberEdt = (EditText) findViewById(R.id.activity_register_phno);
-        ivBack = (ImageView) findViewById(R.id.activity_register_back);
+        ivBack = findViewById(R.id.activity_register_back);
 
-        submit = (Button) findViewById(R.id.activity_register_submit);
+        submit = findViewById(R.id.activity_register_submit);
         submit.setOnClickListener(this);
         ivBack.setOnClickListener(this);
 
@@ -105,32 +97,32 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
 //            object.cancel(true);
 //        }
     }
-
-    public void callRegister() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<String, String>();
-        data.put("view", "raw");
-        data.put("iaction", "register");
-        data.put("civil_id", civilidEdt.getText().toString());
-        data.put("phone_no", phoneEdt.getText().toString());
-
-        Call<GetRegister> loginCall = apiInterface.register(data);
-        loginCall.enqueue(new Callback<GetRegister>() {
-            @Override
-            public void onResponse(Call<GetRegister> call, Response<GetRegister> response) {
-
-                if (response.body() != null) {
-
-                    Toast.makeText(Register.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetRegister> call, Throwable t) {
-                Toast.makeText(Register.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//
+//    public void callRegister() {
+//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+//        HashMap<String, String> data = new HashMap<String, String>();
+//        data.put("view", "raw");
+//        data.put("iaction", "register");
+//        data.put("civil_id", civilidEdt.getText().toString());
+//        data.put("phone_no", phoneEdt.getText().toString());
+//
+//        Call<GetRegister> loginCall = apiInterface.register(data);
+//        loginCall.enqueue(new Callback<GetRegister>() {
+//            @Override
+//            public void onResponse(Call<GetRegister> call, Response<GetRegister> response) {
+//
+//                if (response.body() != null) {
+//
+//                    Toast.makeText(Register.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetRegister> call, Throwable t) {
+//                Toast.makeText(Register.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     public boolean isValid() {
 
@@ -149,6 +141,7 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
         return isvalid;
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class getSignUp extends AsyncTask<String, String, String> {
         ProgressDialog pd;
 
@@ -163,9 +156,8 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
-            HashMap<String, String> data = new HashMap<String, String>();
+        protected String doInBackground(String... params) {
+            HashMap<String, String> data = new HashMap<>();
             data.put("view", "raw");
             data.put("iaction", "register");
             data.put("civil_id", strCivilId);
@@ -178,12 +170,12 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            Log.e("RESPONSE",""+s);
+            Log.e("RESPONSE", "" + s);
             try {
-                JSONObject object = new JSONObject(s.toString());
+                JSONObject object = new JSONObject(s);
 
-                 if (object.getString("error").equalsIgnoreCase("true")) {
-                     Log.e("RESPONSE",""+s);
+                if (object.getString("error").equalsIgnoreCase("true")) {
+                    Log.e("RESPONSE", "" + s);
                     final Dialog dialog = new Dialog(Register.this);
                     dialog.setContentView(R.layout.loginalert_dialog);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -191,9 +183,9 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
                     Window window = dialog.getWindow();
                     window.setLayout(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     window.setGravity(Gravity.CENTER);
-                    Button yesDialogBtn = (Button) dialog.findViewById(R.id.btn_ok);
-                    TextView register_txtVwTitle = (TextView) dialog.findViewById(R.id.register_txtVwTitle);
-                    String strMsg= object.getString("msg");
+                    Button yesDialogBtn = dialog.findViewById(R.id.btn_ok);
+                    TextView register_txtVwTitle = dialog.findViewById(R.id.register_txtVwTitle);
+                    String strMsg = object.getString("msg");
                     register_txtVwTitle.setText(strMsg);
 
                     yesDialogBtn.setOnClickListener(new View.OnClickListener() {
@@ -205,12 +197,12 @@ public class Register extends BaseAppCompactActivity implements View.OnClickList
 
                 } else if (object.getString("successful").equalsIgnoreCase("true")) {
 //                    Toast.makeText(Register.this, "Sucessfully Register", Toast.LENGTH_SHORT).show();
-                     Intent intent = new Intent(Register.this, Login.class);
-                     startActivity(intent);
-                     overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
+                    Intent intent = new Intent(Register.this, Login.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
                     // Toast.makeText(Register.this, object.getString("msg").toString(), Toast.LENGTH_SHORT).show();
 
-                 }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
 //                Toast.makeText(Register.this, "Something went wrong..", Toast.LENGTH_SHORT).show();

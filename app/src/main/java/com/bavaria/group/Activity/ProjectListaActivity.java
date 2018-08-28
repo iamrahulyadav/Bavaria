@@ -1,5 +1,6 @@
 package com.bavaria.group.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bavaria.group.Adapter.CatelogueAdapter;
 import com.bavaria.group.Adapter.ProjectListAdapter;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.MakeServiceCall;
@@ -35,22 +35,16 @@ public class ProjectListaActivity extends Activity {
     ArrayList<HashMap<String, String>> projectList;
     HashMap<String, String> hashMap;
     private ListView lvProjectList;
-    private ImageView ivBack;
-    private ProjectListAdapter adapter;
-    private CatelogueAdapter adapterCatelogue;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectlist);
-        lvProjectList = (ListView) findViewById(R.id.lvProjectList_ProjectListActivity);
-        ivBack = (ImageView) findViewById(R.id.ivBack_ProjectListActivity);
-        ivBack.setOnClickListener(new View.OnClickListener()
-        {
+        lvProjectList = findViewById(R.id.lvProjectList_ProjectListActivity);
+        ImageView ivBack = findViewById(R.id.ivBack_ProjectListActivity);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(ProjectListaActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
@@ -58,8 +52,7 @@ public class ProjectListaActivity extends Activity {
             }
         });
 
-        if (Utils.isOnline(getApplicationContext()))
-        {
+        if (Utils.isOnline(getApplicationContext())) {
             new getProjectCategory().execute();
         } else {
             Toast.makeText(ProjectListaActivity.this, "No internet connectivity found, Please check your internet connection", Toast.LENGTH_SHORT).show();
@@ -72,6 +65,7 @@ public class ProjectListaActivity extends Activity {
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getProjectCategory extends AsyncTask<String, String, String> {
         Dialog dialog;
 
@@ -83,9 +77,9 @@ public class ProjectListaActivity extends Activity {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.loader_layout);
             dialog.setCancelable(false);
-            projectList = new ArrayList<HashMap<String, String>>();
+            projectList = new ArrayList<>();
             projectList.clear();
-            ImageView loader = (ImageView) dialog.findViewById(R.id.loader_layout_image);
+            ImageView loader = dialog.findViewById(R.id.loader_layout_image);
             ((Animatable) loader.getDrawable()).start();
             dialog.show();
         }
@@ -101,11 +95,10 @@ public class ProjectListaActivity extends Activity {
             dialog.dismiss();
             Log.e("Response", "" + s);
             try {
-                JSONArray jArray = new JSONArray(s.toString());
-                for (int i = 0; i < jArray.length(); i++)
-                {
+                JSONArray jArray = new JSONArray(s);
+                for (int i = 0; i < jArray.length(); i++) {
                     JSONObject jObj = jArray.getJSONObject(i);
-                    hashMap = new HashMap<String, String>();
+                    hashMap = new HashMap<>();
                     hashMap.put("id", "" + jObj.getString("id"));
                     hashMap.put("parent_id", "" + jObj.getString("parent_id"));
                     hashMap.put("category_name", "" + jObj.getString("category_name"));
@@ -127,10 +120,9 @@ public class ProjectListaActivity extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            adapter = new ProjectListAdapter(ProjectListaActivity.this, projectList);
+            ProjectListAdapter adapter = new ProjectListAdapter(ProjectListaActivity.this, projectList);
             lvProjectList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
     }
-
 }

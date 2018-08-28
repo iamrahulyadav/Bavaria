@@ -2,7 +2,6 @@ package com.bavaria.group.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
 import com.bavaria.group.R;
@@ -35,7 +34,7 @@ public class PaymentOnlinePayActivity extends BaseAppCompactActivity {
         amount = intent.getStringExtra("amt");
         digits = amount.replaceAll("[^0-9]", "");
 
-        web = (WebView) findViewById(R.id.webview);
+        web = findViewById(R.id.webview);
         web.loadUrl("https://www.bavariagroup.net/pay-online/?civil_id=" + Utils.ReadSharePrefrence(PaymentOnlinePayActivity.this, CIVIT_ID) + "&amount=" + digits + "&action=payment");
 
     }

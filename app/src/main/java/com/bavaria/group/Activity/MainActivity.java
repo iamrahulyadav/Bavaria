@@ -1,6 +1,6 @@
 package com.bavaria.group.Activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -26,31 +26,31 @@ public class MainActivity extends BaseAppCompactActivity implements View.OnClick
     FrameLayout flLoginBottom, flMain;
     TextView tvInfo, tvLogin, tvSettings;
     MainScreenAdapter adapter;
-    Button mContactBtn, mLoginBtn, btContactus;
+    Button mLoginBtn, btContactus;
     Animation slide_down, slide_up;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
     }
 
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     private void init() {
-        btContactus = (Button) findViewById(R.id.btContactus);
-        mLoginBtn = (Button) findViewById(R.id.activity_main_login_Btn);
-        llMaintenance = (LinearLayout) findViewById(R.id.llMaintenance_MainActivity);
-        llPayOnline = (LinearLayout) findViewById(R.id.llPayOnline_MainActivity);
-        llAboutUs = (LinearLayout) findViewById(R.id.llAboutUs_MainActivity);
-        llProjects = (LinearLayout) findViewById(R.id.llProjects_MainActivity);
-        llPhotoVideo = (LinearLayout) findViewById(R.id.llPhotoVideo_MainActivity);
-        flLoginBottom = (FrameLayout) findViewById(R.id.flLogin_MainActivity);
-        flMain = (FrameLayout) findViewById(R.id.flMain_MainActivity);
-        llMyAccount = (LinearLayout) findViewById(R.id.llAccount_MyAccountActivity);
-        tvInfo = (TextView) findViewById(R.id.tvInformation_MainActivity);
-        tvSettings = (TextView) findViewById(R.id.tvSettings_MainActivity);
-        tvLogin = (TextView) findViewById(R.id.tvLogin_MainActivity);
+        btContactus = findViewById(R.id.btContactus);
+        mLoginBtn = findViewById(R.id.activity_main_login_Btn);
+        llMaintenance = findViewById(R.id.llMaintenance_MainActivity);
+        llPayOnline = findViewById(R.id.llPayOnline_MainActivity);
+        llAboutUs = findViewById(R.id.llAboutUs_MainActivity);
+        llProjects = findViewById(R.id.llProjects_MainActivity);
+        llPhotoVideo = findViewById(R.id.llPhotoVideo_MainActivity);
+        flLoginBottom = findViewById(R.id.flLogin_MainActivity);
+        flMain = findViewById(R.id.flMain_MainActivity);
+        llMyAccount = findViewById(R.id.llAccount_MyAccountActivity);
+        tvInfo = findViewById(R.id.tvInformation_MainActivity);
+        tvSettings = findViewById(R.id.tvSettings_MainActivity);
+        tvLogin = findViewById(R.id.tvLogin_MainActivity);
         mLoginBtn.setOnClickListener(this);
         btContactus.setOnClickListener(this);
         llMaintenance.setOnClickListener(this);
@@ -87,8 +87,7 @@ public class MainActivity extends BaseAppCompactActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         Intent in;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.btContactus:
                 in = new Intent(getApplicationContext(), ContactUsActivity.class);
                 startActivity(in);
@@ -96,8 +95,7 @@ public class MainActivity extends BaseAppCompactActivity implements View.OnClick
                 break;
 
             case R.id.llMaintenance_MainActivity:
-                if (Utils.ReadSharePrefrence(MainActivity.this, IS_LOGIN).equalsIgnoreCase("true"))
-                {
+                if (Utils.ReadSharePrefrence(MainActivity.this, IS_LOGIN).equalsIgnoreCase("true")) {
                     in = new Intent(getApplicationContext(), SupportActivity.class);
                     startActivity(in);
                     overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
@@ -167,8 +165,7 @@ public class MainActivity extends BaseAppCompactActivity implements View.OnClick
                 startActivity(loginIntent);
                 overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
 
-                if (Utils.ReadSharePrefrence(MainActivity.this, IS_LOGIN).equalsIgnoreCase("true"))
-                {
+                if (Utils.ReadSharePrefrence(MainActivity.this, IS_LOGIN).equalsIgnoreCase("true")) {
                     Intent intent = new Intent(MainActivity.this, MyAccountActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.zoom_in, R.anim.nothing);

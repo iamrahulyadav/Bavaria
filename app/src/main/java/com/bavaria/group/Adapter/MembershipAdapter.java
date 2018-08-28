@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bavaria.group.Activity.myAccount.PayNowActivity;
+import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.R;
+import com.bavaria.group.Util.Utils;
 import com.bavaria.group.retrofit.Model.MembershipDataPojo;
 
 import java.util.ArrayList;
@@ -67,7 +69,11 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.my
                     intent.putExtra("pay Amount", holder.etAmt.getText().toString());
                     intent.putExtra("bill id", arrayList.get(position).getBill_id());
                     intent.putExtra("building id", arrayList.get(position).getBuilding_id());
-                    intent.putExtra("payment type", "3");
+                    intent.putExtra("payment type", "Yearly Maintenance");
+                    intent.putExtra("name", Utils.ReadSharePrefrence(context, Constant.USERNAME));
+                    intent.putExtra("Email_id", Utils.ReadSharePrefrence(context, Constant.EMAIL));
+                    intent.putExtra("phoneNumber", Utils.ReadSharePrefrence(context, Constant.PHONENUMBER));
+
                     context.startActivity(intent);
                 }}
         });
@@ -88,17 +94,17 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.my
         public myViewHolder(View itemView) {
             super(itemView);
 
-            tvProject = (TextView) itemView.findViewById(R.id.membership_tvProjectNm);
-            tvBuilding = (TextView) itemView.findViewById(R.id.membership_tvBuildingNm);
-            tvFloor = (TextView) itemView.findViewById(R.id.membership_tvFloorNm);
-            tvFlat = (TextView) itemView.findViewById(R.id.membership_tvFlatNm);
-            tvExpiry = (TextView) itemView.findViewById(R.id.membership_tvExpiry);
-            tvAmt = (TextView) itemView.findViewById(R.id.membership_tvAmount);
-            tvPay = (TextView) itemView.findViewById(R.id.membership_tvPay);
+            tvProject = itemView.findViewById(R.id.membership_tvProjectNm);
+            tvBuilding = itemView.findViewById(R.id.membership_tvBuildingNm);
+            tvFloor = itemView.findViewById(R.id.membership_tvFloorNm);
+            tvFlat = itemView.findViewById(R.id.membership_tvFlatNm);
+            tvExpiry = itemView.findViewById(R.id.membership_tvExpiry);
+            tvAmt = itemView.findViewById(R.id.membership_tvAmount);
+            tvPay = itemView.findViewById(R.id.membership_tvPay);
 
-            etAmt = (EditText) itemView.findViewById(R.id.membership_tvTotalAmount);
+            etAmt = itemView.findViewById(R.id.membership_tvTotalAmount);
 
-            llMember = (LinearLayout) itemView.findViewById(R.id.llMembership);
+            llMember = itemView.findViewById(R.id.llMembership);
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
