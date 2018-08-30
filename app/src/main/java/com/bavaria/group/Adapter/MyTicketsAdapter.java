@@ -48,7 +48,6 @@ public class MyTicketsAdapter extends RecyclerView.Adapter<MyTicketsAdapter.myVi
                 context.startActivity(tcktIntent);
             }
         });
-
     }
 
     @Override

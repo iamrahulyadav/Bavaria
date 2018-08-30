@@ -41,7 +41,7 @@ public class PaymentTowardsAdapter extends BaseAdapter {
             viewHolder = (GuestPayAdapter.ViewHolderItem) convertView.getTag();
         }
 
-        viewHolder.textView.setText(paymentTowardsModels.get(position).getName().toString());
+        viewHolder.textView.setText(paymentTowardsModels.get(position).getName());
         return convertView;
     }
 
@@ -79,7 +79,7 @@ public class PaymentTowardsAdapter extends BaseAdapter {
             viewHolder = (GuestPayAdapter.ViewHolderItem) view.getTag();
         }
 
-        viewHolder.textView.setText(paymentTowardsModels.get(position).getName().toString());
+        viewHolder.textView.setText(paymentTowardsModels.get(position).getName());
         return view;
     }
 

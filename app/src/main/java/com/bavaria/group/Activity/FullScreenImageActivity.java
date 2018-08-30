@@ -1,13 +1,19 @@
 package com.bavaria.group.Activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +46,7 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
     public ImageView ivBack, ivShare;
     public int position;
     public CustomPagerAdapter adapter;
-
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 123;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -65,7 +71,6 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
             position = Integer.parseInt(extra.getString("position"));
         }
 
-
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,29 +78,31 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
                 finish();
-
             }
         });
 
         ivShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = pager.findViewWithTag(pager.getCurrentItem());
-                ImageView imageView = view.findViewById(R.id.ivPagerImage);
-                Uri bmpUri = getLocalBitmapUri(imageView);
-                if (bmpUri != null) {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    shareIntent.setType("*/*");
-                    overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
-                    startActivity(Intent.createChooser(shareIntent, "Share Image"));
-                } else {
-                    Toast.makeText(FullScreenImageActivity.this, "Image not loaded yet.", Toast.LENGTH_SHORT).show();
+
+                boolean result = checkPermission();
+                if (result) {
+                    View view = pager.findViewWithTag(pager.getCurrentItem());
+                    ImageView imageView = view.findViewById(R.id.ivPagerImage);
+                    Uri bmpUri = getLocalBitmapUri(imageView);
+                    if (bmpUri != null) {
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                        shareIntent.setType("*/*");
+                        overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
+                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                    } else {
+                        Toast.makeText(FullScreenImageActivity.this, "Image not loaded yet.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
         });
-
 
         //Set the pager with an adapter
         pager = findViewById(R.id.pager_FullScreenImageActivity);
@@ -107,7 +114,6 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
         } catch (NumberFormatException e) {
 //            Log.e("", "" + e);
         }
-
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -218,6 +224,61 @@ public class FullScreenImageActivity extends BaseAppCompactActivity {
                 // This page is way off-screen to the right.
                 view.setAlpha(0);
             }
+        }
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public boolean checkPermission() {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(FullScreenImageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(FullScreenImageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MultiTouchActivity.this);
+//                    alertBuilder.setCancelable(true);
+//                    alertBuilder.setTitle("Permission necessary");
+//                    alertBuilder.setMessage("Write calendar permission is necessary to write event!!!");
+//                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//                        public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(FullScreenImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+//                        }
+//                    });
+//                    AlertDialog alert = alertBuilder.create();
+//                    alert.show();
+                } else {
+                    ActivityCompat.requestPermissions(FullScreenImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_CALENDAR:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    View view = pager.findViewWithTag(pager.getCurrentItem());
+                    ImageView imageView = view.findViewById(R.id.ivPagerImage);
+                    Uri bmpUri = getLocalBitmapUri(imageView);
+                    if (bmpUri != null) {
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                        shareIntent.setType("*/*");
+                        overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
+                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                    } else {
+                        Toast.makeText(FullScreenImageActivity.this, "Image not loaded yet.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //code for deny
+                }
+                break;
         }
     }
 

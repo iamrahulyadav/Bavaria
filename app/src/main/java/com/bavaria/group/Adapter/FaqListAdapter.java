@@ -49,9 +49,9 @@ public class FaqListAdapter extends BaseAdapter {
         if (convertView == null)
             vi = inflater.inflate(R.layout.faqs_item_layout, null);
 
-        TextView name = (TextView) vi.findViewById(R.id.tvPinningads);
+        TextView name = vi.findViewById(R.id.tvPinningads);
 
-        HashMap<String, String> item = new HashMap<String, String>();
+        HashMap<String, String> item;
         item = data.get(position);
 
         //Setting all values in listview

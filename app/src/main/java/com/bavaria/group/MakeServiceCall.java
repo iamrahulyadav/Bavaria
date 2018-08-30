@@ -77,9 +77,9 @@ public class MakeServiceCall {
         } catch (Exception e) {
             System.out.println(e);
         }
-    /*
-     * end of the fix
-     */
+        /*
+         * end of the fix
+         */
 
         try {
             response = new StringBuilder();

@@ -73,7 +73,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         tvSignout.setOnClickListener(this);
 
         strCivilId = Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.EMAIL);
-        new callUserProfile().execute();
+//        new callUserProfile().execute();
 
     }
 
@@ -190,7 +190,6 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
                 e.printStackTrace();
 //                Toast.makeText(Login.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
@@ -210,7 +209,7 @@ public class MyAccountActivity extends BaseAppCompactActivity implements View.On
         protected String doInBackground(String... params) {
             HashMap<String, String> data = new HashMap<>();
 
-            data.put("civil_id", strCivilId);
+            data.put("civil_id", Utils.ReadSharePrefrence(MyAccountActivity.this, Constant.CIVIT_ID));
             data.put("type", "ajax");
             data.put("action", "verifyuser");
             data.put("view", "json");

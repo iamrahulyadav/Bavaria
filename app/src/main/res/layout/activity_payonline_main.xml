@@ -52,6 +52,7 @@
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/logout"
             android:padding="@dimen/_50sdp" />

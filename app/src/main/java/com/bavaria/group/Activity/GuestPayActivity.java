@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -52,7 +53,7 @@ public class GuestPayActivity extends AppCompatActivity {
     public static ArrayAdapter<String> othersnameAdapter;
     ArrayList<String> projects;
     ArrayList<String> buildings;
-    String[] paymentTowards = {"Select Paymemt towards..", "Yearly Maintenance", "Water Bill", "Others"};
+    String[] paymentTowards = {"Select Paymemt towards..", "Yearly Maintenance", "Water Bill", "Other"};
     String strPaymentType, building_id, getFloor, getProject, getBuilding, getFlat;
     Spinner spPaymentType, spProjects, spBuildings, spFloor, spFlat, spPaymentTowards;
     Button btnBack;
@@ -121,24 +122,25 @@ public class GuestPayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                callGuestDataSubmit();
-
-                Utils.WriteSharePrefrence(GuestPayActivity.this, CHECK_CLICK, "false");
-                Utils.WriteSharePrefrence(GuestPayActivity.this, CIVIT_ID, etCivilid.getText().toString());
-                Intent intent = new Intent(GuestPayActivity.this, PayNowActivity.class);
-                intent.putExtra("civil_id", etCivilid.getText().toString());
-                intent.putExtra("pay Amount", etAmount.getText().toString());
-                intent.putExtra("bill id", "");
-                intent.putExtra("building id", building_id);
-                intent.putExtra("payment type", strPaymentType);
-                intent.putExtra("name", etName.getText().toString());
-                intent.putExtra("phoneNumber", etPhone.getText().toString());
-                intent.putExtra("Email_id", etEmail.getText().toString());
-                intent.putExtra("project_name", getProject);
-                intent.putExtra("floor_name", getFloor);
-                intent.putExtra("flat_name", getFlat);
-                startActivity(intent);
-                overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
+//                callGuestDataSubmit();
+                if (isValid()) {
+                    Utils.WriteSharePrefrence(GuestPayActivity.this, CHECK_CLICK, "false");
+                    Utils.WriteSharePrefrence(GuestPayActivity.this, CIVIT_ID, etCivilid.getText().toString());
+                    Intent intent = new Intent(GuestPayActivity.this, PayNowActivity.class);
+                    intent.putExtra("civil_id", etCivilid.getText().toString());
+                    intent.putExtra("pay Amount", etAmount.getText().toString());
+                    intent.putExtra("bill id", "");
+                    intent.putExtra("building id", building_id);
+                    intent.putExtra("payment type", strPaymentType);
+                    intent.putExtra("name", etName.getText().toString());
+                    intent.putExtra("phoneNumber", etPhone.getText().toString());
+                    intent.putExtra("Email_id", etEmail.getText().toString());
+                    intent.putExtra("project_name", getProject);
+                    intent.putExtra("floor_name", getFloor);
+                    intent.putExtra("flat_name", getFlat);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
+                }
             }
         });
 
@@ -168,7 +170,7 @@ public class GuestPayActivity extends AppCompatActivity {
 //                    othersnameAdapter = new ArrayAdapter<String>(GuestPayActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
 //                    spPaymentType.setAdapter(othersnameAdapter);
 
-                if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Others")) {
+                if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                     payonline_llpaymentTotal.setVisibility(View.GONE);
                     payonline_llpaymentType.setVisibility(View.VISIBLE);
                     //  tvTotal.setText(verifyUserDataa.get(pos1).getFees());
@@ -176,15 +178,15 @@ public class GuestPayActivity extends AppCompatActivity {
 
                 } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Yearly Maintenance")) {
                     payonline_llpaymentType.setVisibility(View.GONE);
-                    strPaymentType = "membership";//2
+                    strPaymentType = "Yearly Maintenance";//2
 
                 } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Water Bill")) {
                     payonline_llpaymentType.setVisibility(View.GONE);
-                    strPaymentType = "water_bill";//1
+                    strPaymentType = "Water Bill";//1
+
                 } else {
                     payonline_llpaymentType.setVisibility(View.GONE);
                 }
-
             }
 
             @Override
@@ -201,12 +203,10 @@ public class GuestPayActivity extends AppCompatActivity {
                 // String code1 = othersnameAdapter.getItem(position).toString();
                 strPaymentType = spPaymentType.getSelectedItem().toString();
 
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -275,43 +275,43 @@ public class GuestPayActivity extends AppCompatActivity {
         });
     }
 
-    public void callGuestDataSubmit() {
-
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        HashMap<String, String> data = new HashMap<>();
-        data.put("view", "raw");
-        data.put("page", "projectcheck");
-        data.put("iview", "json");
-
-        data.put("name", etName.getText().toString());
-        data.put("phno", etPhone.getText().toString());
-        data.put("civilid", etCivilid.getText().toString());
-        data.put("email", etEmail.getText().toString());
-        data.put("project", spProjects.getSelectedItem().toString());
-        data.put("building", spBuildings.getSelectedItem().toString());
-        data.put("floor", spFloor.getSelectedItem().toString());
-        data.put("flat", spFlat.getSelectedItem().toString());
-        data.put("payment", spPaymentTowards.getSelectedItem().toString());
-        data.put("amount", etAmount.getText().toString());
-
-        Call<JsonObject> loginCall = apiInterface.submitGuestData(data);
-        loginCall.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                if (response.body() != null) {
-
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.i("data", "value");
-                //  Toast.makeText(ProjectDetailsActivity.this, R.string.datanotfound, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void callGuestDataSubmit() {
+//
+//        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+//        HashMap<String, String> data = new HashMap<>();
+//        data.put("view", "raw");
+//        data.put("page", "projectcheck");
+//        data.put("iview", "json");
+//
+//        data.put("name", etName.getText().toString());
+//        data.put("phno", etPhone.getText().toString());
+//        data.put("civilid", etCivilid.getText().toString());
+//        data.put("email", etEmail.getText().toString());
+//        data.put("project", spProjects.getSelectedItem().toString());
+//        data.put("building", spBuildings.getSelectedItem().toString());
+//        data.put("floor", spFloor.getSelectedItem().toString());
+//        data.put("flat", spFlat.getSelectedItem().toString());
+//        data.put("payment", spPaymentTowards.getSelectedItem().toString());
+//        data.put("amount", etAmount.getText().toString());
+//
+//        Call<JsonObject> loginCall = apiInterface.submitGuestData(data);
+//        loginCall.enqueue(new Callback<JsonObject>() {
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//
+//                if (response.body() != null) {
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Log.i("data", "value");
+//                //  Toast.makeText(ProjectDetailsActivity.this, R.string.datanotfound, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     public void callAvailabilityCheck(String strName) {
 
@@ -678,4 +678,55 @@ public class GuestPayActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isValid() {
+
+        boolean valid = true;
+
+        if (TextUtils.isEmpty(etCivilid.getText().toString())) {
+            etCivilid.setError("Please Enter Civil Id");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(etEmail.getText().toString())) {
+            etEmail.setError("Please Enter Email");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(etPhone.getText().toString())) {
+            etPhone.setError("Please Enter Phone Number");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(etAmount.getText().toString())) {
+            etAmount.setError("Please Enter Amount");
+            valid = false;
+        }
+
+        if (strPaymentType == null) {
+            Toast.makeText(GuestPayActivity.this, "Please Select Payment Type", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+//        if(strPaymentType == "Other"){
+//            Toast.makeText(GuestPayActivity.this, "Please Select Payment Type", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+
+        if (getProject == null || getProject.equals("Select Projects...")) {
+            Toast.makeText(GuestPayActivity.this, "Please Select Project", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+        if (getFloor == null || getFloor.equals("Select Floor..")) {
+            Toast.makeText(GuestPayActivity.this, "Please Select Floor", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+        if (getFlat == null || getFlat.equals("Select Flat..")) {
+            Toast.makeText(GuestPayActivity.this, "Please Select Flat", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+        return valid;
+    }
 }

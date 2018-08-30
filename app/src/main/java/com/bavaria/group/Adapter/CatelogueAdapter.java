@@ -57,8 +57,8 @@ public class CatelogueAdapter extends BaseAdapter {
 
             // well set up the ViewHolder
             viewHolder = new ViewHolderItem();
-            viewHolder.tvProjectName = (TextView) view.findViewById(R.id.tvTitle_photoVideoListActivity);
-            viewHolder.ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto_photoVideoListActivity);
+            viewHolder.tvProjectName = view.findViewById(R.id.tvTitle_photoVideoListActivity);
+            viewHolder.ivPhoto = view.findViewById(R.id.ivPhoto_photoVideoListActivity);
             // store the holder with the view.
             view.setTag(viewHolder);
         } else {
@@ -82,7 +82,7 @@ public class CatelogueAdapter extends BaseAdapter {
 //                Log.e("DATA", "===== " + hashMap.get("image"));
 
                 Bundle b = new Bundle();
-                b.putString("image", hashMap.get("image").toString());
+                b.putString("image", hashMap.get("image"));
                 intent.putExtras(b);
 //                intent.putExtra("image", hashMap.get("image").toString());
                 mContext.startActivity(intent);

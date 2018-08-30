@@ -77,7 +77,6 @@ public class FaqActivity extends BaseAppCompactActivity implements OnItemClickLi
         overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
     }
 
-
     @Override
     public void onClick(View view, int position) {
         Intent intent = new Intent(FaqActivity.this, FaqViewActivity.class);

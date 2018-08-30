@@ -5,11 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bavaria.group.R;
 import com.bavaria.group.Util.Utils;
@@ -99,12 +97,12 @@ public class OpenticketAdapter extends RecyclerView.Adapter<OpenticketAdapter.my
         public myViewHolder(final View itemView) {
             super(itemView);
 
-            tvProjectNm = (TextView) itemView.findViewById(R.id.projectNm);
-            tvBuildingNm = (TextView) itemView.findViewById(R.id.blockNm);
-            tvFloorNm = (TextView) itemView.findViewById(R.id.FloorNm);
-            tvFlatNm = (TextView) itemView.findViewById(R.id.FlatNm);
-            rbSelect = (RadioButton) itemView.findViewById(R.id.radio_btn);
-            layot_data= (RelativeLayout) itemView.findViewById(R.id.layot_data);
+            tvProjectNm = itemView.findViewById(R.id.projectNm);
+            tvBuildingNm = itemView.findViewById(R.id.blockNm);
+            tvFloorNm = itemView.findViewById(R.id.FloorNm);
+            tvFlatNm = itemView.findViewById(R.id.FlatNm);
+            rbSelect = itemView.findViewById(R.id.radio_btn);
+            layot_data = itemView.findViewById(R.id.layot_data);
             //   imgDotIndicator = (ImageView) itemView.findViewById(R.id.pageDotIndicatorImg);
         }
     }

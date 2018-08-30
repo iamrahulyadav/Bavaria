@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bavaria.group.Activity.FullScreenImageActivity;
@@ -19,7 +18,9 @@ import java.util.ArrayList;
 /**
  * Created by archirayan1 on 3/10/2016.
  */
+
 public class ProjectImageAdapter extends BaseAdapter {
+
     private static LayoutInflater inflater = null;
     ArrayList<String> imgList;
     ProjectImageAdapter adapter = this;
@@ -52,7 +53,7 @@ public class ProjectImageAdapter extends BaseAdapter {
         ViewHolder holder;
         view = inflater.inflate(R.layout.add_image_item, null);
         holder = new ViewHolder();
-        holder.ivProperty = (ImageView) view.findViewById(R.id.ivProject_ProjectDetailImage_Activity);
+        holder.ivProperty = view.findViewById(R.id.ivProject_ProjectDetailImage_Activity);
         if(imgList.get(position)!=null) {
             Glide.with(mContext)
                     .load(imgList.get(position))
@@ -84,4 +85,5 @@ public class ProjectImageAdapter extends BaseAdapter {
         ImageView ivProperty;
 
     }
+
 }

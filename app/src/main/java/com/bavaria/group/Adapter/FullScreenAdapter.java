@@ -2,7 +2,6 @@ package com.bavaria.group.Adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class FullScreenAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((View) object);
+        container.removeView((View) object);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class FullScreenAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         picList.get(position);
         View view = inflater.inflate(R.layout.item_fullscreen_image, container, false);
-        ImageView ivImage = (ImageView) view.findViewById(R.id.ivPagerImage);
+        ImageView ivImage = view.findViewById(R.id.ivPagerImage);
         ivImage.setDrawingCacheEnabled(true);
         Glide.with(context).load(picList.get(position)).placeholder(R.drawable.default_img).into(ivImage);
         container.addView(view);

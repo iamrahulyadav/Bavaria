@@ -40,13 +40,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/amount_bg"
+        android:background="@color/transperant_black"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transperant_black"
             android:paddingLeft="10dp"
             android:text="@string/replied_by"
             android:textColor="@color/white"
@@ -54,8 +53,7 @@
             android:textStyle="bold" />
         <TextView
             android:id="@+id/replier_nm"
-            android:layout_width="match_parent"
-            android:background="@color/transperant_black"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_10sdp"
             android:textColor="@color/black" />

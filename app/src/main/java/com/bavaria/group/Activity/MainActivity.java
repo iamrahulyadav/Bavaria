@@ -83,7 +83,6 @@ public class MainActivity extends BaseAppCompactActivity implements View.OnClick
 
     }
 
-
     @Override
     public void onClick(View v) {
         Intent in;

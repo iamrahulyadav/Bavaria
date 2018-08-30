@@ -1,17 +1,14 @@
 package com.bavaria.group;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bavaria.group.Activity.PhotoVideoListActivity;
-import com.bavaria.group.Activity.PhotoVideoPicsActivity;
 import com.bavaria.group.Adapter.PhotoVideoImageAdapter;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.Util.MainUtils;
@@ -36,12 +33,11 @@ public class ImageshowActivity extends AppCompatActivity {
     private String str_ImageId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageshow);
-        ivBack = (ImageView) findViewById(R.id.ivBack_PhotoVideoPicsActivity);
-        gvPicsList = (GridView) findViewById(R.id.gvImage_PhotoVideoPicsActivity);
+        ivBack = findViewById(R.id.ivBack_PhotoVideoPicsActivity);
+        gvPicsList = findViewById(R.id.gvImage_PhotoVideoPicsActivity);
         Bundle extras = getIntent().getExtras();
         mainUtils = new MainUtils(ImageshowActivity.this);
         if (extras != null) {
@@ -63,14 +59,13 @@ public class ImageshowActivity extends AppCompatActivity {
         }
     }
 
-    private class getPhotoShow extends AsyncTask<String, String, String>
-    {
+    private class getPhotoShow extends AsyncTask<String, String, String> {
         public ProgressDialog pd;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            imgList=new ArrayList<>();
+            imgList = new ArrayList<>();
             pd = new ProgressDialog(ImageshowActivity.this);
             pd.setMessage("Loading...");
             pd.setCancelable(false);
@@ -78,9 +73,8 @@ public class ImageshowActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings)
-        {
-            String str_response = mainUtils.getResponseofGet(Constant.BASE_URL + "index.php?view=raw&page=picturelist&iview=json&id=" + imgId);
+        protected String doInBackground(String... strings) {
+            String str_response = MainUtils.getResponseofGet(Constant.BASE_URL + "index.php?view=raw&page=picturelist&iview=json&id=" + imgId);
             return str_response;
         }
 
@@ -88,32 +82,25 @@ public class ImageshowActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pd.dismiss();
-            try
-            {
-                JSONObject object = new JSONObject(s.toString());
-                if (object.getString("successful").equalsIgnoreCase("true"))
-                {
+            try {
+                JSONObject object = new JSONObject(s);
+                if (object.getString("successful").equalsIgnoreCase("true")) {
                     JSONArray array = object.getJSONArray("image");
-                    for (int i = 0; i < array.length(); i++)
-                    {
+                    for (int i = 0; i < array.length(); i++) {
                         imgList.add(array.getString(i));
                     }
-                }else
-                {
+                } else {
                     Toast.makeText(ImageshowActivity.this, "Image not available", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imgList != null)
-            {
+            if (imgList != null) {
                 adapter = new PhotoVideoImageAdapter(ImageshowActivity.this, imgList);
                 gvPicsList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-            }
-            else
-            {
-                Toast.makeText(ImageshowActivity.this,"Image not available", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ImageshowActivity.this, "Image not available", Toast.LENGTH_SHORT).show();
             }
         }
     }

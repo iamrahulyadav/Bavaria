@@ -35,7 +35,6 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
         mapFragment.getMapAsync(this);
 
         init();
-
     }
 
     private void init() {
@@ -47,12 +46,11 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
         ivTwitter = findViewById(R.id.ivTwiiter_AboutusActivity);
         ivInstagram = findViewById(R.id.ivInstagram_AboutusActivity);
         ivYouTube = findViewById(R.id.ivYouTube_AboutusActivity);
-        // ivClose = (ImageView) findViewById(R.id.ivCloseContactus);
-//        FrameLayout flMapZoom = findViewById(R.id.flMapView);
+//      ivClose = (ImageView) findViewById(R.id.ivCloseContactus);
+//      FrameLayout flMapZoom = findViewById(R.id.flMapView);
         btnAppStoteApple = findViewById(R.id.btnappstoreapple);
         btnPlayStore = findViewById(R.id.btngoogleplaystore);
         btnSharelocation = findViewById(R.id.btn_sharelocation);
-
 
         emailTxt.setOnClickListener(this);
         liveChatTxt.setOnClickListener(this);
@@ -61,14 +59,12 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
         ivFb.setOnClickListener(this);
         ivInstagram.setOnClickListener(this);
         ivTwitter.setOnClickListener(this);
-//        ivClose.setOnClickListener(this);
+//      ivClose.setOnClickListener(this);
         btnAppStoteApple.setOnClickListener(this);
         btnPlayStore.setOnClickListener(this);
         btnSharelocation.setOnClickListener(this);
 
-
     }
-
 
 /*
     @Override
@@ -89,13 +85,13 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
             return;
         }
 
-
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
 
         map.addMarker(new MarkerOptions()
                 .title("Kuwait")
                 .snippet("Bavaria Group")
                 .position(sydney));
+
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -103,16 +99,17 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
                 showNewMapWithZoom();
             }
         });
-
     }*/
 
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
+
            /* case R.id.ivCloseContactus:
                 flMapZoom.setVisibility(View.GONE);
                 break;*/
+
             case R.id.ivBack_ContactUsActivity:
                 intent = new Intent(ContactUsActivity.this, MainActivity.class);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);
@@ -170,34 +167,29 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=T6ielvSc7DU&list=UUrcfXe9vn1VW58Y-Dy0Y7Sw"));
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_in, R.anim.nothing);
-
                 break;
 
             case R.id.btnappstoreapple:
                 sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Bavaria iPhone App: https://itunes.apple.com/us/app/bavaria/id1013155091?mt=8");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-
-
-            case R.id.btngoogleplaystore:
-                sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Bavaria Android App: https://play.google.com/store/apps/details?id=com.bavaria.group&hl=en");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Bavaria iPhone App: https://itunes.apple.com/us/app/bavaria/id1013155091?mt=8");
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 break;
 
+            case R.id.btngoogleplaystore:
+                sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Bavaria Android App: https://play.google.com/store/apps/details?id=com.bavaria.group&hl=en");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
 
             case R.id.btn_sharelocation:
 
                 sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Bavaria's location: https://www.google.co.in/maps?q=loc:29.3758593,47.977405");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Bavaria's location: https://www.google.co.in/maps?q=29.3758593,47.977405");
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
                 break;
@@ -213,7 +205,8 @@ public class ContactUsActivity extends FragmentActivity implements View.OnClickL
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        //mycoordinate.latitude =29.375859;    mycoordinate.longitude =47.977405;
+        //    mycoordinate.latitude = 29.375859;
+        //    mycoordinate.longitude = 47.977405;
         LatLng latlong = new LatLng(29.375859, 47.977405);
         googleMap.addMarker(new MarkerOptions().position(latlong).title(""));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlong, 9.0f));

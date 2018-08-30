@@ -3,8 +3,6 @@ package com.bavaria.group.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bavaria.group.Activity.CateloguePicsActivity;
-import com.bavaria.group.Activity.PhotoVideoPicsActivity;
-import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.ImageshowActivity;
 import com.bavaria.group.PhotoActivity;
 import com.bavaria.group.Photosetget;
@@ -24,7 +18,6 @@ import com.bavaria.group.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by archirayan on 7/11/17.
@@ -75,10 +68,10 @@ public class PhotoAdapter extends BaseAdapter {
 
 
             viewHolder = new com.bavaria.group.Adapter.PhotoVideoListAdapter.ViewHolderItem();
-            viewHolder.tvProjectName = (TextView) view.findViewById(R.id.tvTitle_photoVideoListActivity);
-            viewHolder.ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto_photoVideoListActivity);
+            viewHolder.tvProjectName = view.findViewById(R.id.tvTitle_photoVideoListActivity);
+            viewHolder.ivPhoto = view.findViewById(R.id.ivPhoto_photoVideoListActivity);
             // store the holder with the view.
-            layt_main= (LinearLayout) view.findViewById(R.id.layt_main);
+            layt_main = view.findViewById(R.id.layt_main);
             layt_main.setOnClickListener(new View.OnClickListener()
             {
                 @Override

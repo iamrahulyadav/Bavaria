@@ -72,9 +72,8 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
     String name;
     String strBuildingId;
     String strPaymentType;
-    String[] paymentTowards = {"Yearly Maintenance", "Water Bill", "Others"};
+    String[] paymentTowards = {"Yearly Maintenance", "Water Bill", "Other"};
     ArrayList<String> othersNameArraylist;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +90,15 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
         tvTotal = findViewById(R.id.payonline_tvTotalAmt);
         tvBack = findViewById(R.id.payonline_btnBack);
         ivLogout = findViewById(R.id.payonline_ivLogout);
-
         recyclerView = findViewById(R.id.payonline_recyclerview);
         spPaymentTowards = findViewById(R.id.payonline_spPriority);
         spPaymentType = findViewById(R.id.payonline_spPaymentType);
         payonline_llMain = findViewById(R.id.payonline_llMain);
         payonline_llpaymentType = findViewById(R.id.ll_paymentType);
         payonline_llpaymentTotal = findViewById(R.id.ll_paymentTotal);
+
         othersNameArraylist = new ArrayList<>();
+
         PayOnlineAdapter.lastCheckedPosition = -1;
         PayOnlineAdapter.lastCheckedPosition1 = -1;
 
@@ -112,8 +112,10 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
 
                     tvTotal.setText(verifyUserDataa.get(pos1).getFees());
                     othersNameArraylist.clear();
+
                     strPaymentType = spPaymentTowards.getSelectedItem().toString();
                     othersnameAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
+
                     spPaymentType.setAdapter(othersnameAdapter);
 
                 } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Water Bill")) {
@@ -128,20 +130,19 @@ public class PayOnlineActivity extends BaseAppCompactActivity implements View.On
                     othersnameAdapter = new ArrayAdapter<>(PayOnlineActivity.this, R.layout.spinner_item_layout, R.id.txt, othersNameArraylist);
                     spPaymentType.setAdapter(othersnameAdapter);
 
-                } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Others")) {
+                } else if (spPaymentTowards.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                     payonline_llpaymentTotal.setVisibility(View.GONE);
 
                     payonline_llpaymentType.setVisibility(View.VISIBLE);
                     //  tvTotal.setText(verifyUserDataa.get(pos1).getFees());
                     new GetOtherName().execute();
-
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
+
         });
 
         strBuildingId = Utils.ReadSharePrefrence(PayOnlineActivity.this, BUILDING_ID);

@@ -83,14 +83,14 @@ public class PaymenyHistoryAdapter extends RecyclerView.Adapter<PaymenyHistoryAd
         public myViewHolder(View itemView) {
             super(itemView);
 
-            tvProjectNm = (TextView) itemView.findViewById(R.id.paymentHistory_tvProjectNm);
-            tvPaymentTowards = (TextView) itemView.findViewById(R.id.paymentHistory_tvProjectTowards);
-            tvTransactionID = (TextView) itemView.findViewById(R.id.paymentHistory_tvTid);
-            tvTransactionDate = (TextView) itemView.findViewById(R.id.paymentHistory_tvTdate);
-            tvTransactionTime = (TextView) itemView.findViewById(R.id.paymentHistory_tvTtime);
-            tvAmt = (TextView) itemView.findViewById(R.id.paymentHistory_tvAmount);
-            tvType = (TextView) itemView.findViewById(R.id.paymentHistory_tvTtype);
-            tvView = (TextView) itemView.findViewById(R.id.paymentHistory_tvInvoice);
+            tvProjectNm = itemView.findViewById(R.id.paymentHistory_tvProjectNm);
+            tvPaymentTowards = itemView.findViewById(R.id.paymentHistory_tvProjectTowards);
+            tvTransactionID = itemView.findViewById(R.id.paymentHistory_tvTid);
+            tvTransactionDate = itemView.findViewById(R.id.paymentHistory_tvTdate);
+            tvTransactionTime = itemView.findViewById(R.id.paymentHistory_tvTtime);
+            tvAmt = itemView.findViewById(R.id.paymentHistory_tvAmount);
+            tvType = itemView.findViewById(R.id.paymentHistory_tvTtype);
+            tvView = itemView.findViewById(R.id.paymentHistory_tvInvoice);
 
         }
     }

@@ -59,7 +59,7 @@ public class AvailabilityAdapter extends RecyclerView.Adapter<AvailabilityAdapte
         public myViewHolder(View itemView)
         {
             super(itemView);
-            tvProjectName = (TextView) itemView.findViewById(R.id.availability_bllock);
+            tvProjectName = itemView.findViewById(R.id.availability_bllock);
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override

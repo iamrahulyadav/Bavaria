@@ -99,10 +99,11 @@ public class ReplyActivity extends BaseAppCompactActivity {
                     editTxtDescription.setVisibility(View.VISIBLE);
                     strEtDesc = editTxtDescription.getText().toString();
                     new callReply(ticket_id).execute();
+
                 } else {
+
                     Toast.makeText(ReplyActivity.this, "Please Enter Message.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -187,7 +188,6 @@ public class ReplyActivity extends BaseAppCompactActivity {
                         rlMessage.setAdapter(replyAdapter);
 
                     }
-
                 }
 
             } catch (JSONException e) {

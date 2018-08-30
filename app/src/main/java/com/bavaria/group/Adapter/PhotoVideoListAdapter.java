@@ -23,7 +23,9 @@ import java.util.HashMap;
 /**
  * Created by archirayan1 on 3/11/2016.
  */
+
 public class PhotoVideoListAdapter extends BaseAdapter {
+
     Context mContext;
     ArrayList<HashMap<String, String>> projectList;
     private LayoutInflater inflater = null;
@@ -59,8 +61,8 @@ public class PhotoVideoListAdapter extends BaseAdapter {
 
             // well set up the ViewHolder
             viewHolder = new ViewHolderItem();
-            viewHolder.tvProjectName = (TextView) view.findViewById(R.id.tvTitle_photoVideoListActivity);
-            viewHolder.ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto_photoVideoListActivity);
+            viewHolder.tvProjectName = view.findViewById(R.id.tvTitle_photoVideoListActivity);
+            viewHolder.ivPhoto = view.findViewById(R.id.ivPhoto_photoVideoListActivity);
             // store the holder with the view.
             view.setTag(viewHolder);
         } else {

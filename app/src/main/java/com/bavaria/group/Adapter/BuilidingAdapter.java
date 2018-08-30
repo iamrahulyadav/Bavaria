@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bavaria.group.Activity.BlockActivity;
-import com.bavaria.group.Activity.Builiding;
 import com.bavaria.group.Constant.Constant;
 import com.bavaria.group.R;
 import com.bavaria.group.Util.Utils;
@@ -65,8 +64,8 @@ public class BuilidingAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_building_list, parent, false);
             // well set up the ViewHolder
             viewHolder = new ViewHolderItem();
-            viewHolder.tvProjectName = (TextView) view.findViewById(R.id.tvProjectTitle_ProjectList);
-            viewHolder.ivBuilding = (ImageView) view.findViewById(R.id.item_project_list_Img);
+            viewHolder.tvProjectName = view.findViewById(R.id.tvProjectTitle_ProjectList);
+            viewHolder.ivBuilding = view.findViewById(R.id.item_project_list_Img);
             // store the holder with the view.
             view.setTag(viewHolder);
         } else {

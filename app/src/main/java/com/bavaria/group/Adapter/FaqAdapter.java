@@ -66,7 +66,7 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.myViewHolder> {
 
                 }
             });
-            tvPinningads = (TextView) itemView.findViewById(R.id.tvPinningads);
+            tvPinningads = itemView.findViewById(R.id.tvPinningads);
         }
     }
 }

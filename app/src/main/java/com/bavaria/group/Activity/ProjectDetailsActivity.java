@@ -126,7 +126,6 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
 
     private void getDataFromIntent() {
 
-
         catId = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, KEY_CATID);
         imagePath = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_IMAGE_PATH);
         categoryName = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_NAME);
@@ -134,7 +133,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
         categoryDesc = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CAT_DESC);
         lat = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_LAT);
         lng = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_LNG);
-        latlong = lat + lng;
+        latlong = lat + "," + lng;
         city = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_CITY);
         state = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_STATE);
         country = Utils.ReadSharePrefrence(ProjectDetailsActivity.this, Constant.SHRED_PR.KEY_COUNTRY);
@@ -175,7 +174,6 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
                     } else {
                         Toast.makeText(ProjectDetailsActivity.this, "Please check internet connection.", Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 break;
             case R.id.activity_project_details_avability:
@@ -192,7 +190,7 @@ public class ProjectDetailsActivity extends FragmentActivity implements View.OnC
                 // intent = new Intent(Intent.ACTION_VIEW, Uri.parse("www.google.co.in/maps?q=loc:"+latlong));
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT,
-                        "Bavaria location: https://www.google.co.in/maps?q=loc:" + latlong);
+                        "Bavaria location: https://www.google.co.in/maps?q=" + latlong);
                 intent.setType("text/plain");
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_out, R.anim.nothing);

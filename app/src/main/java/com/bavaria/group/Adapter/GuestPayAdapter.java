@@ -41,7 +41,7 @@ public class GuestPayAdapter extends BaseAdapter {
             viewHolder = (ViewHolderItem) convertView.getTag();
         }
 
-        viewHolder.textView.setText(guestPayDataArrayList.get(position).getFlat_name().toString());
+        viewHolder.textView.setText(guestPayDataArrayList.get(position).getFlat_name());
         return convertView;
     }
 
@@ -79,7 +79,7 @@ public class GuestPayAdapter extends BaseAdapter {
             viewHolder = (ViewHolderItem) view.getTag();
         }
 
-        viewHolder.textView.setText(guestPayDataArrayList.get(position).getFlat_name().toString());
+        viewHolder.textView.setText(guestPayDataArrayList.get(position).getFlat_name());
         return view;
     }
 

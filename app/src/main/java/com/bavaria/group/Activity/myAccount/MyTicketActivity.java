@@ -33,6 +33,7 @@ import java.util.HashMap;
  * Archirayan Infotech pvt Ltd
  * dilip.bakotiya@gmail.com || info@archirayan.com
  */
+
 public class MyTicketActivity extends BaseAppCompactActivity {
 
     RecyclerView recyclerView;
@@ -60,9 +61,9 @@ public class MyTicketActivity extends BaseAppCompactActivity {
         searchedArraylist = new ArrayList<>();
 
         ediTxtTicket.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -70,11 +71,13 @@ public class MyTicketActivity extends BaseAppCompactActivity {
                 if (viewticketdata != null) {
                     String searchFor = ediTxtTicket.getText().toString();
                     searchedArraylist = new ArrayList<>();
+
                     for (int j = 1; j < viewticketdata.size(); j++) {
                         if (viewticketdata.get(j).getSubject().contains(searchFor.toLowerCase()) || viewticketdata.get(j).getId().toLowerCase().contains(searchFor.toLowerCase())) {
                             searchedArraylist.add(viewticketdata.get(j));
                         }
                     }
+
                     mytcktAdapter = new MyTicketsAdapter(MyTicketActivity.this, searchedArraylist);
                     recyclerView.setAdapter(mytcktAdapter);
                     mytcktAdapter.notifyDataSetChanged();
@@ -83,7 +86,6 @@ public class MyTicketActivity extends BaseAppCompactActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

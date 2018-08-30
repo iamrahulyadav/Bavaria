@@ -32,14 +32,14 @@ public class CustomPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.item_fullscreen_image, container, false);
         itemView.setTag(position);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.ivPagerImage);
+        ImageView imageView = itemView.findViewById(R.id.ivPagerImage);
         imageView.setAdjustViewBounds(true);
         imageView.setDrawingCacheEnabled(true);
         imageView.setTag(position);

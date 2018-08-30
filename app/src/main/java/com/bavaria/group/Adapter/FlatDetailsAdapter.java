@@ -56,7 +56,7 @@ public class FlatDetailsAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_flat_details, parent, false);
             // well set up the ViewHolder
             viewHolder = new ViewHolderItem();
-            viewHolder.ivFlat = (ImageView) view.findViewById(R.id.ivFlatPic_FlatDetailsActivity);
+            viewHolder.ivFlat = view.findViewById(R.id.ivFlatPic_FlatDetailsActivity);
             // store the holder with the view.
             view.setTag(viewHolder);
         } else {

@@ -98,7 +98,6 @@ public class ChatActivity extends BaseAppCompactActivity implements View.OnClick
         // ...
     }
 
-
     @Override
     public void onPageStarted(String url, Bitmap favicon) {
         mWebView.setVisibility(View.INVISIBLE);

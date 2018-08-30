@@ -25,10 +25,10 @@ public class WorkingHours extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.working_hours_list, container, false);
 
-        Day = new ArrayList<String>();
-        Time = new ArrayList<String>();
+        Day = new ArrayList<>();
+        Time = new ArrayList<>();
 
-        listView = (ListView) view.findViewById(R.id.activity_contactus_working_hours_list);
+        listView = view.findViewById(R.id.activity_contactus_working_hours_list);
 
         Day.add("Sunday");
         Day.add("Moday");
